@@ -382,3 +382,387 @@ Assuming a project duration of **5 weeks**, here's a proposed timeline:
     - **"Unix Shell Programming" by Stephen G. Kochan**.
     - **"Shell Scripting: Expert Recipes for Linux, Bash, and More" by Steve Parker**.
 9. **Stack Overflow**: Community Q&A for specific implementation questions and challenges.
+
+## Project Overview
+
+The **minishell** project is part of the 42 School curriculum, challenging you to create a simple shell in C that mimics some functionalities of bash. This project emphasizes collaboration, project management, and adherence to coding standards. You'll delve into concepts like process management, file descriptors, parsing, and execution of commands.
+
+---
+
+## Team Roles and Collaboration
+
+**Partner A** and **Partner B** should:
+
+- **Communicate Regularly**: Maintain open lines of communication through meetings, messaging apps, or collaborative platforms.
+- **Version Control**: Use Git or another version control system to manage code collaboratively.
+- **Code Reviews**: Regularly review each other's code to maintain high quality and consistency.
+- **Pair Programming**: Work together on complex sections to combine strengths and knowledge.
+- **Knowledge Sharing**: Ensure both partners understand all parts of the project for seamless integration and debugging.
+
+---
+
+## Average Time of Completion
+
+- **Average Duration**: Most student pairs complete the minishell project in **3 to 5 weeks**.
+- **Minimum Time**: Experienced pairs with strong backgrounds have completed it in **2 weeks**.
+- **Maximum Time**: Some pairs take up to **6 to 8 weeks**, often due to complex bugs or scheduling conflicts.
+
+> Note: These estimates are based on experiences shared by students in forums, blogs, and project documentation related to the 42 School curriculum.
+>
+
+---
+
+## Project Requirements Breakdown
+
+### Mandatory Features
+
+- **Prompt Display**: Show a prompt when waiting for a new command.
+- **Command History**: Implement a working history feature using the `readline` library.
+- **Command Execution**: Search and launch executables based on the `PATH` variable, relative, or absolute paths.
+- **Signal Handling**:
+    - `ctrl-C`: Interrupts and displays a new prompt.
+    - `ctrl-D`: Exits the shell.
+    - `ctrl-\`: Does nothing.
+- **Redirections**:
+    - `<` : Redirect input.
+    - `>` : Redirect output.
+    - `<<` : Heredoc, read input until a delimiter is found.
+    - `>>` : Append output redirection.
+- **Pipes**: Implement the pipe `|` to connect commands.
+- **Environment Variables**: Handle `$` expansions, including `$?` for the last exit status.
+- **Quoting**:
+    - **Single Quotes `'`**: Prevent interpretation of all metacharacters.
+    - **Double Quotes `"`**: Prevent interpretation except for `$` (variable expansion).
+- **Built-in Commands**:
+    - `echo` with `n` option.
+    - `cd` with relative or absolute paths.
+    - `pwd` with no options.
+    - `export` with no options.
+    - `unset` with no options.
+    - `env` with no options or arguments.
+    - `exit` with no options.
+
+### Constraints
+
+- **Global Variables**: Only one global variable is allowed (for signal handling).
+- **Allowed Functions**: Must use only the allowed external functions specified in the project.
+- **Memory Management**: No memory leaks are permitted (excluding those from `readline`).
+- **Norm Compliance**: Code must comply with the Norm coding standards of 42 School.
+
+---
+
+## High-Level Structure and Modules
+
+### Common Modules
+
+Based on successful implementations and recommendations, the project can be divided into the following modules:
+
+1. **Main Loop**: Core loop handling prompt display and user input.
+2. **Input Handling**: Reading and preliminary processing of input, including checking for unclosed quotes.
+3. **Lexer/Tokenizer**: Breaking input into tokens (words and operators).
+4. **Parser**: Constructing command structures from tokens, handling syntax rules.
+5. **Expander**: Handling environment variable expansion and wildcard expansion.
+6. **Executor**: Executing commands, managing built-ins and external commands.
+7. **Built-in Commands**: Implementing the required built-in functions.
+8. **Environment Management**: Handling environment variables and their manipulation.
+9. **Redirections**: Managing input/output redirections and heredocs.
+10. **Pipes**: Handling inter-process communication via pipes.
+11. **Signal Handling**: Managing signals (`ctrl-C`, `ctrl-D`, `ctrl-\`).
+12. **History Management**: Implementing command history using the `readline` library.
+13. **Utilities**: Helper functions and common utilities.
+14. **Error Handling**: Providing user-friendly error messages and handling exit statuses.
+15. **Memory Management**: Ensuring all allocated memory is properly freed.
+
+### Number of Modules
+
+- **Typical Range**: 10 to 15 modules, depending on the level of granularity.
+- **Minimum**: Around 8 modules covering essential functionalities.
+- **Maximum**: Up to 20 modules for highly granular separation.
+
+> Note: The number of modules should reflect your team's preference for code organization. More modules can improve readability but may require careful management.
+>
+
+---
+
+## Task Allocation
+
+### Partner A Responsibilities
+
+### Parsing and Lexing
+
+- **Research Focus**:
+    - Shell parsing techniques and syntax rules.
+    - Tokenization methods.
+    - Handling quotes and escape sequences.
+- **Implementation Tasks**:
+    - Develop the lexer/tokenizer to split input into tokens.
+    - Implement the parser to build abstract syntax trees or command structures.
+    - Handle single and double quotes, ensuring proper grouping of words.
+    - Detect and report syntax errors (e.g., unclosed quotes, invalid tokens).
+
+### Environment and Variable Expansion
+
+- **Research Focus**:
+    - How shells expand variables and handle special parameters like `$?`.
+    - Quoting rules affecting variable expansion.
+- **Implementation Tasks**:
+    - Implement the expander to handle `$` variables within double quotes and unquoted text.
+    - Manage the environment variable list, including `export` and `unset` built-in commands.
+
+### Built-in Commands
+
+- **Commands to Implement**:
+    - `echo` with `n` option.
+    - `cd` with relative or absolute paths.
+    - `pwd` with no options.
+
+### Signal Handling
+
+- **Research Focus**:
+    - Unix signal handling using `signal` and `sigaction`.
+    - Proper handling of `SIGINT`, `SIGQUIT`, and `EOF`.
+- **Implementation Tasks**:
+    - Set up signal handlers to mimic bash behavior.
+    - Ensure the shell responds correctly to `ctrl-C`, `ctrl-D`, and `ctrl-\`.
+
+### Partner B Responsibilities
+
+### Execution and Process Management
+
+- **Research Focus**:
+    - System calls: `fork`, `execve`, `wait`, `waitpid`.
+    - Process creation, execution flow, and termination.
+- **Implementation Tasks**:
+    - Execute external commands using `execve`.
+    - Handle child and parent processes appropriately.
+    - Manage the `$?` variable for exit statuses.
+
+### Redirections and Pipes
+
+- **Research Focus**:
+    - File descriptors and their manipulation.
+    - Redirection operators and their effects.
+    - Pipe creation with `pipe()` and data flow between processes.
+- **Implementation Tasks**:
+    - Implement input/output redirections (`<`, `>`, `<<`, `>>`).
+    - Handle heredoc (`<<`) functionality, ensuring proper input collection.
+    - Manage pipes to connect the output of one command to the input of another.
+
+### Built-in Commands and History
+
+- **Commands to Implement**:
+    - `export` with no options.
+    - `unset` with no options.
+    - `env` with no options or arguments.
+    - `exit` with no options.
+- **History Management**:
+    - Integrate the `readline` library to provide command history functionality.
+
+### Shared Responsibilities
+
+- **Main Loop and Integration**:
+    - Collaborate on the main loop that ties all modules together.
+    - Ensure seamless integration between parsing, execution, and other components.
+- **Error and Memory Management**:
+    - Provide consistent error messages and exit statuses.
+    - Ensure proper memory allocation and deallocation to prevent leaks.
+- **Testing and Debugging**:
+    - Develop comprehensive test cases covering various scenarios.
+    - Perform code reviews and debug collaboratively.
+
+---
+
+## Timeline and Milestones
+
+Assuming a project duration of **5 weeks**, here's a proposed timeline:
+
+### Week 1: Research and Planning
+
+- **Day 1-2**:
+    - Set up the project repository with the necessary directory structure.
+    - Create the initial `Makefile` and header files (`project.h`).
+    - Outline modules and define interfaces between them.
+- **Day 3-5**:
+    - **Partner A**:
+        - Research parsing, lexing, and quoting rules.
+        - Begin drafting the lexer/tokenizer.
+    - **Partner B**:
+        - Research process management, redirections, and pipes.
+        - Start setting up the execution framework.
+
+### Week 2: Initial Implementation
+
+- **Day 6-10**:
+    - **Partner A**:
+        - Implement the lexer/tokenizer.
+        - Begin work on the parser, handling basic command structures.
+    - **Partner B**:
+        - Implement basic command execution without redirections or pipes.
+        - Test execution of simple external commands.
+    - **Integration**:
+        - Combine parsing and execution to run simple commands.
+
+### Week 3: Advanced Features
+
+- **Day 11-14**:
+    - **Partner A**:
+        - Enhance the parser to handle quotes and variable expansion.
+        - Implement the expander module.
+    - **Partner B**:
+        - Implement input/output redirections.
+        - Begin implementing pipes and test simple pipelines.
+- **Day 15-17**:
+    - **Partner A**:
+        - Implement signal handling, ensuring correct responses.
+        - Begin working on built-in commands assigned.
+    - **Partner B**:
+        - Complete pipe implementation, ensuring compatibility with redirections.
+        - Implement heredoc functionality.
+
+### Week 4: Built-in Commands and Testing
+
+- **Day 18-21**:
+    - **Partner A**:
+        - Finalize built-in commands (`echo`, `cd`, `pwd`).
+    - **Partner B**:
+        - Implement built-in commands (`export`, `unset`, `env`, `exit`).
+        - Integrate command history using `readline`.
+- **Day 22-24**:
+    - **Integration**:
+        - Incorporate built-in commands into the executor.
+        - Begin comprehensive testing of individual modules.
+
+### Week 5: Testing, Debugging, and Polishing
+
+- **Day 25-28**:
+    - Perform extensive testing of all features, including edge cases.
+    - Fix bugs and refine implementations.
+    - Ensure compliance with the Norm and project requirements.
+- **Day 29-31**:
+    - Refactor code for readability and maintainability.
+    - Finalize documentation, including `README.md` and inline comments.
+    - Prepare for project submission and potential presentations.
+
+---
+
+## Development Guidelines
+
+### Coding Standards
+
+- **Function Design**:
+    - Keep functions short and focused on a single task.
+    - Use clear and descriptive names for functions and variables.
+    - Minimize the number of function parameters.
+- **Code Organization**:
+    - Organize code into modules based on functionality.
+    - Keep related functions and definitions together.
+- **Refactoring**:
+    - Regularly review and improve code.
+    - Eliminate redundant code (DRY principle).
+    - Ensure consistent coding style throughout the project.
+- **Comments and Documentation**:
+    - Comment on complex sections to explain the "why" behind decisions.
+    - Use the `README.md` to provide an overview and usage instructions.
+
+### Version Control
+
+- **Commit Practices**:
+    - Make frequent commits with descriptive messages.
+    - Use feature branches for developing new modules or features.
+- **Collaboration**:
+    - Merge changes regularly to minimize conflicts.
+    - Conduct code reviews before merging significant changes.
+
+### Testing
+
+- **Unit Testing**:
+    - Test individual modules and functions with various inputs.
+    - Check for correct handling of edge cases and invalid data.
+- **Integration Testing**:
+    - Test how modules interact with each other.
+    - Simulate user interactions and typical command sequences.
+
+### Communication
+
+- **Regular Meetings**:
+    - Schedule daily or regular check-ins to discuss progress and obstacles.
+    - Adjust plans based on new insights or challenges.
+- **Tools**:
+    - Use collaborative platforms like Trello, Slack, or Asana for task management.
+
+### Memory Management
+
+- **Best Practices**:
+    - Allocate memory only when necessary and free it promptly.
+    - Use tools like Valgrind to detect memory leaks.
+    - Remember that leaks from `readline` are acceptable as per the project guidelines.
+
+---
+
+## Research and Resources
+
+### Partner A Should Research
+
+- **Shell Parsing Techniques**:
+    - How shells interpret commands and handle syntax.
+    - Dealing with special characters and whitespace.
+- **Lexical Analysis and Parsing in C**:
+    - Implementing state machines for tokenization.
+    - Building parsers for command structures.
+- **Signal Handling in Unix**:
+    - Reliable signal handling using `sigaction`.
+    - Differences between signals in interactive and non-interactive modes.
+- **Environment Variables Management**:
+    - Implementing custom environment variable lists.
+    - Modifying `env` without using restricted functions.
+
+### Partner B Should Research
+
+- **Process Management in Unix**:
+    - Details of `fork`, `execve`, and process hierarchies.
+    - Managing multiple child processes and reaping zombies.
+- **Inter-Process Communication (IPC)**:
+    - Creating and managing pipes for data transfer.
+    - Handling multiple pipes in command chains.
+- **File Descriptor Manipulation**:
+    - Using `dup` and `dup2` to redirect input/output.
+    - Managing file descriptors to prevent leaks.
+- **Built-in Commands Implementation**:
+    - Nuances of each built-in command and their effects on the environment.
+    - Edge cases and error handling for built-ins.
+- **Using the Readline Library**:
+    - Integrating `readline` for input and history management.
+    - Customizing prompt display and handling `readline` signals.
+
+### General Resources
+
+- **Documentation**:
+    - POSIX standard documentation for system calls and behaviors.
+    - Man pages (`man fork`, `man execve`, etc.) for detailed function usage.
+- **Community Forums**:
+    - 42 School forums for project-specific discussions.
+    - Stack Overflow for troubleshooting and specific questions.
+- **Books and Tutorials**:
+    - *Advanced Programming in the UNIX Environment* by W. Richard Stevens.
+    - *The Linux Programming Interface* by Michael Kerrisk.
+    - Online articles on shell implementation and command execution.
+
+---
+
+## References
+
+1. **Student Project Documentation**:
+    - [Minishell by Maia de Graaf and Alfred Polycarpe](https://github.com/maiadegraaf/minishell): Provided insights into project structuring and implementation details.
+    - [Minishell by Vportens](https://github.com/vportens/minishell): Offered a breakdown of parsing, built-ins, redirections, and execution.
+2. **Books**:
+    - *Advanced Programming in the UNIX Environment* by W. Richard Stevens: Comprehensive resource on Unix system calls and process management.
+    - *The Linux Programming Interface* by Michael Kerrisk: Detailed explanations of Linux system programming concepts.
+3. **Online Resources**:
+    - Beej's Guide to Unix IPC: Resource on inter-process communication.
+    - GNU Readline Library Documentation: Official documentation for `readline`.
+4. **POSIX Standard Documentation**: Authoritative source for system call behaviors and standards.
+5. **Man Pages**: Use the `man` command to access manuals for functions like `fork`, `execve`, `signal`, etc.
+6. **Community Q&A**:
+    - Stack Overflow: For specific implementation questions and troubleshooting.
+7. **Shell Development Tutorials**:
+    - TutorialsPoint and similar platforms for Unix signal handling and process management tutorials.
