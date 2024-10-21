@@ -4,16 +4,16 @@
 
 ---
 
-1. [Project Overview](https://www.notion.so/Minishell-Project-Guide-1263d100d1e880d1b5b8ccdbe841d33f?pvs=21)
-2. [Team Roles and Collaboration](https://www.notion.so/Minishell-Project-Guide-1263d100d1e880d1b5b8ccdbe841d33f?pvs=21)
-3. [Average Time of Completion](https://www.notion.so/Minishell-Project-Guide-1263d100d1e880d1b5b8ccdbe841d33f?pvs=21)
-4. [Project Requirements Breakdown](https://www.notion.so/Minishell-Project-Guide-1263d100d1e880d1b5b8ccdbe841d33f?pvs=21)
-5. [High-Level Structure and Modules](https://www.notion.so/Minishell-Project-Guide-1263d100d1e880d1b5b8ccdbe841d33f?pvs=21)
-6. [Task Allocation](https://www.notion.so/Minishell-Project-Guide-1263d100d1e880d1b5b8ccdbe841d33f?pvs=21)
-7. [Timeline and Milestones](https://www.notion.so/Minishell-Project-Guide-1263d100d1e880d1b5b8ccdbe841d33f?pvs=21)
-8. [Development Guidelines](https://www.notion.so/Minishell-Project-Guide-1263d100d1e880d1b5b8ccdbe841d33f?pvs=21)
-9. [Research and Resources](https://www.notion.so/Minishell-Project-Guide-1263d100d1e880d1b5b8ccdbe841d33f?pvs=21)
-10. [References](https://www.notion.so/Minishell-Project-Guide-1263d100d1e880d1b5b8ccdbe841d33f?pvs=21)
+1. [Project Overview](https://github.com/tmurua/minishell?tab=readme-ov-file#project-overview)
+2. [Team Roles and Collaboration](https://github.com/tmurua/minishell?tab=readme-ov-file#team-roles-and-collaboration)
+3. [Average Time of Completion](https://github.com/tmurua/minishell?tab=readme-ov-file#average-time-of-completion)
+4. [Project Requirements Breakdown](https://github.com/tmurua/minishell?tab=readme-ov-file#project-requirements-breakdown)
+5. [High-Level Structure and Modules](https://github.com/tmurua/minishell?tab=readme-ov-file#high-level-structure-and-modules)
+6. [Task Allocation](https://github.com/tmurua/minishell?tab=readme-ov-file#task-allocation)
+7. [Timeline and Milestones](https://github.com/tmurua/minishell?tab=readme-ov-file#timeline-and-milestones)
+8. [Development Guidelines](https://github.com/tmurua/minishell?tab=readme-ov-file#development-guidelines)
+9. [Research and Resources](https://github.com/tmurua/minishell?tab=readme-ov-file#research-and-resources)
+10. [References](https://github.com/tmurua/minishell?tab=readme-ov-file#references)
 
 ---
 
@@ -42,7 +42,7 @@ The **minishell** project is part of the 42 School curriculum, requiring you to 
 - **Maximum Time**: Others have taken up to **6 to 8 weeks**, often due to complex bugs, scheduling issues, or learning curves.
 
 > Note: These estimates are based on anecdotal data from student experiences shared on forums and discussion boards related to the 42 School curriculum.
-> 
+>
 
 ---
 
@@ -110,7 +110,7 @@ Based on common practices among students and recommendations from programming re
 - **Maximum**: 15 or more modules, for very granular separation.
 
 > Note: The number of modules often reflects the team's preference for code organization and modularity. More modules can enhance readability and maintainability but may require more careful management.
-> 
+>
 
 ---
 
