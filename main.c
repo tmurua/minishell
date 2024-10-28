@@ -3,14 +3,20 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
+/*   By: dlemaire <dlemaire@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 11:19:43 by dlemaire          #+#    #+#             */
-/*   Updated: 2024/10/28 12:16:39 by dlemaire         ###   ########.fr       */
+/*   Updated: 2024/10/28 12:37:18 by dlemaire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+void	parse_arguments(void)
+{
+	printf("arguments got parsed");
+	return ;
+}
 
 int	main(int ac, char *av[], char *envp[])
 {
@@ -19,6 +25,7 @@ int	main(int ac, char *av[], char *envp[])
 		printf("minishell does not accept arguments\n");
 		exit(0);
 	}
-	(void) envp;
+	parse_arguments();
+	(void) envp;	
 	return (0);
 }
