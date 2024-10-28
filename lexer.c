@@ -6,7 +6,7 @@
 /*   By: dlemaire <dlemaire@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 17:35:59 by dlemaire          #+#    #+#             */
-/*   Updated: 2024/10/28 19:53:00 by dlemaire         ###   ########.fr       */
+/*   Updated: 2024/10/28 20:03:10 by dlemaire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ int	ft_iswhitespaces(const char *str)
 	return (1);
 }
 
-char	*ft_strndup(const char *s, size_t n)
+char	*ft_strndup(const char *s, int n)
 {
 	int		index;
 	char	*copy;
@@ -81,16 +81,15 @@ t_token create_token(int type, char *value)
 
 t_token get_next_token(t_lexer *lexer)
 {
-    t_token token;
     size_t  start_pos;
     size_t  length;
     char    *arg;
 
-    while (lexer->current_char != '\0' && ft_iswhitespaces(lexer->current_char))
+    while (lexer->current_char != '\0' && ft_iswhitespaces(&lexer->current_char))
     {
         move_forward(lexer);
     }
-    if (ft_strncmp(lexer->str[lexer->pos], "echo", 4) == 0)
+    if (ft_strncmp(&lexer->str[lexer->pos], "echo", 4) == 0)
     {
         lexer->pos += 4;
         lexer->current_char = lexer->str[lexer->pos];
@@ -107,7 +106,7 @@ t_token get_next_token(t_lexer *lexer)
         if (lexer->current_char == '"')
         {
             length = lexer->pos - start_pos;
-            arg = ft_strndup(lexer->str[start_pos], length);
+            arg = ft_strndup(&lexer->str[start_pos], length);
             move_forward(lexer);
             return (create_token(ARGUMENT, arg));
         }
@@ -123,7 +122,6 @@ t_token get_next_token(t_lexer *lexer)
 void    run_lexer(char *str)
 {
     t_lexer lexer;
-    t_token token;
     t_token *tokens;
     int i;
     
