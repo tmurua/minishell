@@ -6,7 +6,7 @@
 /*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 09:08:10 by tmurua            #+#    #+#             */
-/*   Updated: 2024/10/28 11:35:50 by tmurua           ###   ########.fr       */
+/*   Updated: 2024/10/28 12:09:19 by tmurua           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 /* libraries */
 # include "./libft/libft.h"
-/* printf */
+/* printf, perror */
 # include <stdio.h>
 /* malloc, free, exit, getenv */
 # include <stdlib.h>
@@ -23,15 +23,19 @@
 # include <readline/readline.h>
 /* add_history */
 # include <readline/history.h>
-/* strerror, perror */
+/* strerror */
 # include <string.h>
-/* write, access, close, dup, dup2, pipe, unlink, read */
-# include <unistd.h>  // isatty, ttyname, ttyslot, getcwd, chdir
+/*	read, write, access, close, unlink,
+	fork, execve, getpid, getppid,
+	isatty, ttyname, ttyslot
+	getcwd, chdir
+	dup, dup2, pipe	*/
+# include <unistd.h>
 /* open */
 # include <fcntl.h>
 /* opendir, readdir, closedir */
 # include <dirent.h>
-/* fork, wait, waitpid, wait3, wait4, execve */
+/* fork, execve */
 # include <sys/types.h>
 /* wait, waitpid, wait3, wait4 */
 # include <sys/wait.h>
@@ -47,8 +51,6 @@
 # include <curses.h>
 /* perror */
 # include <errno.h>
-
-/* open,close */
 
 /* macros*/
 
