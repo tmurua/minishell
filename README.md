@@ -92,9 +92,10 @@
     git push
     ```
 
-5. **Switch Back to Your Branch:**
+5. **Delete a Branch:**
     ```bash
-    git checkout branch-name
+    git branch -d branch-name
+    git push origin --delete branch-name
     ```
 
 - **Resolve Conflicts:** If there are any merge conflicts during the `git merge` step, Git will notify you. You'll need to manually resolve these conflicts in the affected files, then add and commit the resolved files.
