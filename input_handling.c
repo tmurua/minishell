@@ -6,7 +6,7 @@
 /*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 16:48:08 by tmurua            #+#    #+#             */
-/*   Updated: 2024/10/28 18:42:51 by tmurua           ###   ########.fr       */
+/*   Updated: 2024/10/28 20:55:08 by tmurua           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,10 +20,14 @@ void	main_input_loop(int ac, char **av)
 	while (1)
 	{
 		input = read_user_input();
+		if (input == NULL || !ft_strncmp(input, "exit", 5))
+		{
+			free(input);
+			rl_clear_history();
+			exit (0);
+		}
 		if (*input)
 			add_history(input);
-		if (input == NULL || !ft_strncmp(input, "exit", 5))
-			exit (0);
 		printf("you entered: %s\n", input);
 		free(input);
 	}
