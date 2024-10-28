@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   input_handling.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dlemaire <dlemaire@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 16:48:08 by tmurua            #+#    #+#             */
-/*   Updated: 2024/10/28 20:40:46 by dlemaire         ###   ########.fr       */
+/*   Updated: 2024/10/28 21:13:34 by tmurua           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,16 +16,18 @@ void	main_input_loop(int ac, char **av)
 {
 	char	*input;
 
-	(void)ac;
-	(void)av;
-	//handle_multiple_args(ac, av);
+	handle_multiple_args(ac, av);
 	while (1)
 	{
 		input = read_user_input();
+		if (input == NULL || !ft_strncmp(input, "exit", 5))
+		{
+			free(input);
+			rl_clear_history();
+			exit (0);
+		}
 		if (*input)
 			add_history(input);
-		if (input == NULL || !ft_strncmp(input, "exit", 5))
-			exit (0);
 		printf("you entered: %s\n", input);
 		run_lexer(input);
 		free(input);

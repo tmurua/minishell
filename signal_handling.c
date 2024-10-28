@@ -1,21 +1,36 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   signal_handling.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/10/28 11:19:43 by dlemaire          #+#    #+#             */
-/*   Updated: 2024/10/28 21:12:18 by tmurua           ###   ########.fr       */
+/*   Created: 2024/10/28 19:47:34 by tmurua            #+#    #+#             */
+/*   Updated: 2024/10/28 20:01:47 by tmurua           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	main(int ac, char *av[], char *envp[])
+void	setup_signal_handler(void)
 {
-	setup_signal_handler();
-	main_input_loop(ac, av);
-	(void) envp;
-	return (0);
+	struct sigaction	sa_int;
+
+	sa_int.sa_handler = handle_sigint;
+	sa_int.sa_flags = SA_RESTART;
+	sigemptyset(&sa_int.sa_mask);
+	if (sigaction(SIGINT, &sa_int, NULL) == -1)
+	{
+		perror("sigaction");
+		exit(EXIT_FAILURE);
+	}
+}
+
+void	handle_sigint(int sig)
+{
+	(void)sig;
+	write(STDOUT_FILENO, "\n", 1);
+	rl_replace_line("", 0);
+	rl_on_new_line();
+	rl_redisplay();
 }

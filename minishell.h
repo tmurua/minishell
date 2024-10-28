@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dlemaire <dlemaire@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 09:08:10 by tmurua            #+#    #+#             */
-/*   Updated: 2024/10/28 19:57:32 by dlemaire         ###   ########.fr       */
+/*   Updated: 2024/10/28 21:11:53 by tmurua           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,5 +75,9 @@ typedef struct s_token
 void	main_input_loop(int ac, char **av);
 void	handle_multiple_args(int ac, char **av);
 char	*read_user_input(void);
+
+/* signal_handling.c */
+void	setup_signal_handler(void);
+void	handle_sigint(int sig);
 
 #endif
