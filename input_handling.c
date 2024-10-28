@@ -6,7 +6,7 @@
 /*   By: dlemaire <dlemaire@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 16:48:08 by tmurua            #+#    #+#             */
-/*   Updated: 2024/10/28 19:57:17 by dlemaire         ###   ########.fr       */
+/*   Updated: 2024/10/28 20:40:46 by dlemaire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,9 @@ void	main_input_loop(int ac, char **av)
 {
 	char	*input;
 
-	handle_multiple_args(ac, av);
+	(void)ac;
+	(void)av;
+	//handle_multiple_args(ac, av);
 	while (1)
 	{
 		input = read_user_input();

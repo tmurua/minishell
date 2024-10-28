@@ -6,7 +6,7 @@
 /*   By: dlemaire <dlemaire@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 17:35:59 by dlemaire          #+#    #+#             */
-/*   Updated: 2024/10/28 20:03:10 by dlemaire         ###   ########.fr       */
+/*   Updated: 2024/10/28 20:40:35 by dlemaire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,7 @@ t_token create_token(int type, char *value)
 
     token.type = type;
     token.value = value;
+    token.next = NULL;
     return (token);
 }
 
@@ -95,18 +96,17 @@ t_token get_next_token(t_lexer *lexer)
         lexer->current_char = lexer->str[lexer->pos];
         return (create_token(BUILTIN_CMD, "echo"));
     }
-    if (lexer->current_char == '"')
+    if (ft_isalnum(lexer->current_char))
     {
-        move_forward(lexer);
         start_pos = lexer->pos;
-        while (lexer->current_char != '"' && lexer->current_char != '\0')
+        while (ft_isalnum(lexer->current_char))
         {
             move_forward(lexer);
         }
         if (lexer->current_char == '"')
         {
             length = lexer->pos - start_pos;
-            arg = ft_strndup(&lexer->str[start_pos], length);
+            arg = ft_strndup(lexer->str[start_pos], length);
             move_forward(lexer);
             return (create_token(ARGUMENT, arg));
         }
@@ -133,5 +133,6 @@ void    run_lexer(char *str)
         tokens[i] = get_next_token(&lexer);
         if (tokens[i].type == INVALID_TOKEN)
             break;
+        i++;
     }
 }
