@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
+/*   By: dlemaire <dlemaire@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 09:08:10 by tmurua            #+#    #+#             */
-/*   Updated: 2024/10/28 17:01:54 by tmurua           ###   ########.fr       */
+/*   Updated: 2024/10/28 19:55:09 by dlemaire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,5 +75,8 @@ typedef struct s_token
 void	main_input_loop(int ac, char **av);
 void	handle_multiple_args(int ac, char **av);
 char	*read_user_input(void);
+
+/* lexer.c */
+void    run_lexer(char *str);
 
 #endif
