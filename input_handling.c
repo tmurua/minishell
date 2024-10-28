@@ -1,20 +1,43 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   input_handling.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/10/28 11:19:43 by dlemaire          #+#    #+#             */
-/*   Updated: 2024/10/28 16:59:02 by tmurua           ###   ########.fr       */
+/*   Created: 2024/10/28 16:48:08 by tmurua            #+#    #+#             */
+/*   Updated: 2024/10/28 17:01:08 by tmurua           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	main(int ac, char *av[], char *envp[])
+void	main_input_loop(int ac, char **av)
 {
-	main_input_loop(ac, av);
-	(void) envp;
-	return (0);
+	char	*input;
+
+	handle_multiple_args(ac, av);
+	while (1)
+	{
+		input = read_user_input();
+		printf("you entered: %s\n", input);
+		free(input);
+	}
+}
+
+void	handle_multiple_args(int ac, char **av)
+{
+	if (ac != 1 || av[1])
+	{
+		printf("minishell does not accept arguments\n");
+		exit(0);
+	}
+}
+
+char	*read_user_input(void)
+{
+	char	*input;
+
+	input = readline("minishell$> ");
+	return (input);
 }

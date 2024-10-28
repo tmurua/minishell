@@ -6,7 +6,7 @@
 /*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 09:08:10 by tmurua            #+#    #+#             */
-/*   Updated: 2024/10/28 15:42:12 by tmurua           ###   ########.fr       */
+/*   Updated: 2024/10/28 17:01:54 by tmurua           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,8 @@ typedef struct s_token
 
 /* function prototypes */
 /* input_handling.c */
-char	*handle_input(void);
+void	main_input_loop(int ac, char **av);
+void	handle_multiple_args(int ac, char **av);
+char	*read_user_input(void);
 
 #endif
