@@ -2,48 +2,48 @@
 
 ## Mandatory part
 
-1. **Prompt Display**: Displays a prompt `minishell` and waits for user input.
+- [x] 1. **Prompt Display**: Displays a prompt `minishell` and waits for user input.
 
-2. **Command History**:
+- [ ] 2. **Command History**:
    - minishell maintains a history of commands entered by the user.
 
-3. **Command Execution**:
+- [ ] 3. **Command Execution**:
    - minishell searches for and executes the correct executable based on the `PATH` environment variable or using a relative or absolute path.
    - minishell can execute external commands found in the system's `PATH` environment variable, or using a relative or absolute path.
    - minishell does not need to handle unclosed quotes or special characters like `\` or `;`.
 
-4.  **Quote Handling**:
+- [ ] 4.  **Quote Handling**:
    - **Single Quotes (`'`)**: Prevent the shell from interpreting meta-characters within the quotes.
    - **Double Quotes (`"`):** Prevent the shell from interpreting meta-characters within the quotes except for the `$` character.
 
-5.  **Redirections**:
+- [ ] 5.  **Redirections**:
    - Input Redirection (`<`): Redirects input from a file.
    - Output Redirection (`>`): Redirects output to a file.
    - Append Output Redirection (`>>`): Appends output to the end of a file.
    - Heredoc (`<<`): Reads input until a delimiter is found.
 
-6.  **Pipes (`|`)**:
+- [ ] 6.  **Pipes (`|`)**:
    - minishell supports pipelines, allowing the output of one command to be the input of another.
 
-7.  **Environment Variable Expansion**:
+- [ ] 7.  **Environment Variable Expansion**:
    - minishell expands environment variables prefixed with `$` followed by a sequence of characters into their corresponding values.
 
-8.  **Signal Handling**:
+- [ ] 8.  **Signal Handling**:
    - minishell handles signals like `Ctrl+C`, `Ctrl+D`, and `Ctrl+\` appropriately, using at most one global variable for signal handling.
-   - **`Ctrl+C`** (`SIGINT`): Displays a new prompt on a new line.
-   - **`Ctrl+D`**: Sends an EOF character which can be detected as an empty input from `readline`. Exits the shell.
-   - **`Ctrl+\`** (`SIGQUIT`): Does nothing.
+   - [ ]  **`Ctrl+C`** (`SIGINT`): Displays a new prompt on a new line.
+   - [x]  **`Ctrl+D`**: Sends an EOF character which can be detected as an empty input from `readline`. Exits the shell.
+   - [ ]  **`Ctrl+\`** (`SIGQUIT`): Does nothing.
 
-9.  **Built-in Commands**:
-   - `echo` with `-n` option: Displays a line of text.
-   - `cd` with a relative or absolute path: Changes the current working directory.
-   - `pwd`: Prints the current working directory.
-   - `export`: Sets environment variables.
-   - `unset`: Unsets environment variables.
-   - `env`: Displays the environment variables.
-   - `exit`: Exits the shell.
+- [ ] 9.  **Built-in Commands**:
+   - [ ] `echo` with `-n` option: Displays a line of text.
+   - [ ] `cd` with a relative or absolute path: Changes the current working directory.
+   - [ ] `pwd`: Prints the current working directory.
+   - [ ] `export`: Sets environment variables.
+   - [ ] `unset`: Unsets environment variables.
+   - [ ] `env`: Displays the environment variables.
+   - [x] `exit`: Exits the shell.
 
-10. **Memory Management**:
+- [ ] 10. **Memory Management**:
     - The shell handles memory allocation and deallocation properly. Memory leaks from the `readline` function are acceptable and do not need to be fixed.
 
 ## Allowed Functions

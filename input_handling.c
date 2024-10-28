@@ -6,7 +6,7 @@
 /*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 16:48:08 by tmurua            #+#    #+#             */
-/*   Updated: 2024/10/28 17:01:08 by tmurua           ###   ########.fr       */
+/*   Updated: 2024/10/28 18:07:46 by tmurua           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,12 @@ void	main_input_loop(int ac, char **av)
 	while (1)
 	{
 		input = read_user_input();
+		if (input == NULL)
+		{
+			printf("exit\n");
+			exit (0);
+		}
+		exit_input(input);
 		printf("you entered: %s\n", input);
 		free(input);
 	}
@@ -40,4 +46,13 @@ char	*read_user_input(void)
 
 	input = readline("minishell$> ");
 	return (input);
+}
+
+void	exit_input(char *input)
+{
+	if (!ft_strncmp(input, "exit", 5))
+	{
+		printf("exit\n");
+		exit (0);
+	}
 }
