@@ -58,6 +58,15 @@
   - **Terminal Control**: `ioctl`.
 
 ---
+## Github collaboration
+**For clarity in the commit history, we use the following prefixes**
+
+  - `feat:` for new features and major functionalities.
+  - `fix:` for bug fixes or corrections.
+  - `docs:` for documentation updates.
+  - `style:` for code style improvements and refactoring.
+
+---
 ### Common Modules
 
 1. **Main Loop**: Core loop handling prompt display and user input.
