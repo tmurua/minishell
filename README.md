@@ -59,12 +59,45 @@
 
 ---
 ## Github collaboration
-**For clarity in the commit history, we use the following prefixes**
+**For clarity, in the commit history, we use the following prefixes**
 
   - `feat:` for new features and major functionalities.
   - `fix:` for bug fixes or corrections.
   - `docs:` for documentation updates.
   - `style:` for code style improvements and refactoring.
+
+### Git Workflow
+1. **Create a New Branch:**
+    ```bash
+    git checkout -b branch-name
+    ```
+
+2. **Push New Branch to GitHub:**
+    ```bash
+    git push -u origin branch-name
+    ```
+
+3. **Stay Updated with Main Branch:**
+    ```bash
+    git checkout main
+    git pull
+    git checkout branch-name
+    git merge main
+    ```
+
+4. **Merge Branch into Main:**
+    ```bash
+    git checkout main
+    git merge branch-name
+    git push
+    ```
+
+5. **Switch Back to Your Branch:**
+    ```bash
+    git checkout branch-name
+    ```
+
+- **Resolve Conflicts:** If there are any merge conflicts during the `git merge` step, Git will notify you. You'll need to manually resolve these conflicts in the affected files, then add and commit the resolved files.
 
 ---
 ### Common Modules
