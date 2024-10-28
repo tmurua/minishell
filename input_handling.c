@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   input_handling.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
+/*   By: dlemaire <dlemaire@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 16:48:08 by tmurua            #+#    #+#             */
-/*   Updated: 2024/10/28 18:42:51 by tmurua           ###   ########.fr       */
+/*   Updated: 2024/10/28 19:57:17 by dlemaire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ void	main_input_loop(int ac, char **av)
 		if (input == NULL || !ft_strncmp(input, "exit", 5))
 			exit (0);
 		printf("you entered: %s\n", input);
+		run_lexer(input);
 		free(input);
 	}
 }
