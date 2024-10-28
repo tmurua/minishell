@@ -6,7 +6,7 @@
 /*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 09:08:10 by tmurua            #+#    #+#             */
-/*   Updated: 2024/10/28 13:36:18 by tmurua           ###   ########.fr       */
+/*   Updated: 2024/10/28 15:42:12 by tmurua           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,13 +55,23 @@
 /* macros*/
 
 /* structures */
+/* enumerates all possible token types in minishell */
+typedef enum e_token_type
+{
+	INVALID_TOKEN,
+	ARGUMENT,
+	BUILTIN_CMD
+}	t_token_type;
+
 typedef struct s_token
 {
 	char			*value;
-	// type of token
+	t_token_type	type;
 	struct s_token	*next;
 }	t_token;
 
 /* function prototypes */
+/* input_handling.c */
+char	*handle_input(void);
 
 #endif

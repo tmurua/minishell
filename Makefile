@@ -13,7 +13,7 @@ all: $(NAME)
 $(NAME): $(OBJ)
 	make -C ./libft --no-print-directory
 	echo "libft compiled"
-	$(CC) $(CFLAGS) -o $(NAME) $(OBJ) $(LIBFT)
+	$(CC) $(CFLAGS) -o $(NAME) $(OBJ) $(LIBFT) -lreadline
 	echo "$(NAME) generated"
 
 %.o: %.c
