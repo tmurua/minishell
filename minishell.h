@@ -6,7 +6,7 @@
 /*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 09:08:10 by tmurua            #+#    #+#             */
-/*   Updated: 2024/10/28 12:14:03 by tmurua           ###   ########.fr       */
+/*   Updated: 2024/10/28 13:36:18 by tmurua           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,10 +52,15 @@
 /* perror */
 # include <errno.h>
 
-
 /* macros*/
 
 /* structures */
+typedef struct s_token
+{
+	char			*value;
+	// type of token
+	struct s_token	*next;
+}	t_token;
 
 /* function prototypes */
 
