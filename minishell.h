@@ -6,7 +6,7 @@
 /*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 09:08:10 by tmurua            #+#    #+#             */
-/*   Updated: 2024/10/28 10:56:56 by tmurua           ###   ########.fr       */
+/*   Updated: 2024/10/28 11:35:50 by tmurua           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@
 /* tgetent, tgetflag, tgetnum, tgetstr, tgoto, tputs */
 # include <curses.h>
 /* perror */
-# include <errno.h>    // errno
+# include <errno.h>
 
 /* open,close */
 

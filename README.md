@@ -31,7 +31,7 @@
 8.  **Signal Handling**:
    - minishell handles signals like `Ctrl+C`, `Ctrl+D`, and `Ctrl+\` appropriately, using at most one global variable for signal handling.
    - **`Ctrl+C`** (`SIGINT`): Displays a new prompt on a new line.
-   - **`Ctrl+D`**: Exits the shell.
+   - **`Ctrl+D`**: Sends an EOF character which can be detected as an empty input from `readline`. Exits the shell.
    - **`Ctrl+\`** (`SIGQUIT`): Does nothing.
 
 9.  **Built-in Commands**:
@@ -48,7 +48,7 @@
 
 ## Allowed Functions
 
-  - **Standard C library**: `malloc`, `free`, `write`, `read`, `close`, .
+  - **Standard C library**: `malloc`, `free`, `write`, `read`, `close`.
   - **Input/Output**: `readline`, `rl_clear_history`, `rl_on_new_line`, `rl_replace_line`, `rl_redisplay`, `add_history`, `printf`, `perror`, `strerror`, `isatty`, `ttyname`, `ttyslot`, `tgetent`, `tgetflag`, `tgetnum`, `tgetstr`, `tgoto`, `tputs`.
   - **Process Control**: `fork`, `wait`, `waitpid`, `wait3`, `wait4`, `kill`, `exit`, `execve`.
   - **Signal Handling**: `signal`, `sigaction`, `sigemptyset`, `sigaddset`.
