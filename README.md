@@ -4,7 +4,7 @@
 
 - [x] 1. **Prompt Display**: Displays a prompt `minishell` and waits for user input.
 
-- [ ] 2. **Command History**:
+- [x] 2. **Command History**:
    - minishell maintains a history of commands entered by the user.
 
 - [ ] 3. **Command Execution**:
@@ -27,6 +27,7 @@
 
 - [ ] 7.  **Environment Variable Expansion**:
    - minishell expands environment variables prefixed with `$` followed by a sequence of characters into their corresponding values.
+   - minishell handles $? which should expand to the exit status of the most recently executed foreground pipeline
 
 - [ ] 8.  **Signal Handling**:
    - minishell handles signals like `Ctrl+C`, `Ctrl+D`, and `Ctrl+\` appropriately, using at most one global variable for signal handling.
