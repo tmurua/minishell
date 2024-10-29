@@ -6,56 +6,11 @@
 /*   By: dlemaire <dlemaire@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 17:35:59 by dlemaire          #+#    #+#             */
-/*   Updated: 2024/10/29 12:44:11 by dlemaire         ###   ########.fr       */
+/*   Updated: 2024/10/29 14:44:11 by dlemaire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-// A lexical analyzer reads characters from the input and groups them into 
-// token objects
-// -> trim white spaces
-// -> recognize keywords
-// -> create tokens
-
 #include "minishell.h"
-
-typedef struct s_lexer {
-    const char  *str;
-    size_t      pos;
-    char        current_char;
-} t_lexer;
-
-int	ft_iswhitespaces(const char *str)
-{
-	int	i;
-
-	i = 0;
-	while (str[i] != '\0')
-	{
-		if (str[i] != ' ' && str[i] != '\t' && str[i] != '\n' && 
-			str[i] != '\v' && str[i] != '\f' && str[i] != '\r')
-			return (0);
-		i++;
-	}
-	return (1);
-}
-
-char	*ft_strndup(const char *s, int n)
-{
-	int		index;
-	char	*copy;
-
-	copy = malloc((n + 1) * sizeof(char));
-	if (!copy)
-		return (NULL);
-	index = 0;
-	while (index <= n)
-	{
-		copy[index] = s[index];
-		index++;
-	}
-	copy[index] = '\0';
-	return (copy);
-}
 
 t_lexer init_lexer(const char *arg)
 {
@@ -92,7 +47,7 @@ t_token get_next_token(t_lexer *lexer)
     size_t  length;
     char    *arg;
 
-    while (lexer->current_char != '\0' && ft_iswhitespaces(&lexer->current_char))
+    while (lexer->current_char != '\0' && ft_iswhitespace(lexer->current_char))
     {
         move_forward(lexer);
     }
@@ -122,20 +77,44 @@ t_token get_next_token(t_lexer *lexer)
     return (create_token(INVALID_TOKEN, NULL));
 }
 
+int count_tokens(const char *str)
+{
+    int count = 0;
+    int in_token_flag = 0;
+
+    while (*str != '\0')
+    {
+        if (!ft_iswhitespace(*str) && !in_token_flag)
+        {
+            in_token_flag = 1;
+            count++;
+        }
+        else if (ft_iswhitespace(*str))
+        {
+            in_token_flag = 0;
+        }
+        str++;
+    }
+    return count;
+}
+
 void    run_lexer(char *str)
 {
     t_lexer lexer;
     t_token *tokens;
-    int i;
+    int     token_amount;
+    int     i;
     
     lexer = init_lexer(str);
-    tokens = malloc(sizeof(t_token) * 3); // needs logic to determine amount of tokens
+    token_amount = count_tokens(str);
+    tokens = malloc(sizeof(t_token) * token_amount);
     i = 0;
-    while (i < 3)
+    while (i < token_amount)
     {
         tokens[i] = get_next_token(&lexer);
         if (tokens[i].type == INVALID_TOKEN)
             break;
         i++;
     }
+    // what are we doing with this?
 }

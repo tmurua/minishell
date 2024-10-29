@@ -6,7 +6,11 @@
 /*   By: dlemaire <dlemaire@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 09:08:10 by tmurua            #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2024/10/29 12:46:20 by dlemaire         ###   ########.fr       */
+=======
+/*   Updated: 2024/10/29 14:36:46 by dlemaire         ###   ########.fr       */
+>>>>>>> lexer
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +74,12 @@ typedef struct s_token
 	t_token_type	type;
 	struct s_token	*next;
 }	t_token;
+
+typedef struct s_lexer {
+    const char  *str;
+    size_t      pos;
+    char        current_char;
+} t_lexer;
 
 /* function prototypes */
 /* input_handling.c */
