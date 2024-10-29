@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
+/*   By: dlemaire <dlemaire@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 09:08:10 by tmurua            #+#    #+#             */
-/*   Updated: 2024/10/28 21:11:53 by tmurua           ###   ########.fr       */
+/*   Updated: 2024/10/29 12:21:31 by dlemaire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,8 @@ typedef enum e_token_type
 {
 	INVALID_TOKEN,
 	ARGUMENT,
-	BUILTIN_CMD
+	BUILTIN_CMD,
+	SYMBOL,
 }	t_token_type;
 
 typedef struct s_token
