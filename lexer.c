@@ -6,9 +6,15 @@
 /*   By: dlemaire <dlemaire@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 17:35:59 by dlemaire          #+#    #+#             */
-/*   Updated: 2024/10/28 20:40:35 by dlemaire         ###   ########.fr       */
+/*   Updated: 2024/10/29 12:44:11 by dlemaire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+// A lexical analyzer reads characters from the input and groups them into 
+// token objects
+// -> trim white spaces
+// -> recognize keywords
+// -> create tokens
 
 #include "minishell.h"
 
@@ -90,11 +96,11 @@ t_token get_next_token(t_lexer *lexer)
     {
         move_forward(lexer);
     }
-    if (ft_strncmp(&lexer->str[lexer->pos], "echo", 4) == 0)
+    if (ft_strncmp(&lexer->str[lexer->pos], "echo", 4) == 0 && !ft_isalnum(lexer->str[lexer->pos + 4]))
     {
         lexer->pos += 4;
         lexer->current_char = lexer->str[lexer->pos];
-        return (create_token(BUILTIN_CMD, "echo"));
+        return (create_token(BUILTIN_CMD, ft_strndup("echo", 4)));
     }
     if (ft_isalnum(lexer->current_char))
     {
@@ -103,18 +109,15 @@ t_token get_next_token(t_lexer *lexer)
         {
             move_forward(lexer);
         }
-        if (lexer->current_char == '"')
-        {
-            length = lexer->pos - start_pos;
-            arg = ft_strndup(lexer->str[start_pos], length);
-            move_forward(lexer);
-            return (create_token(ARGUMENT, arg));
-        }
-        else
-        {
-            printf("Error: unterminated string\n");
-            exit(1);           
-        }
+        length = lexer->pos - start_pos;
+        arg = ft_strndup(lexer->str[start_pos], length);
+        return (create_token(ARGUMENT, arg));
+    }
+    if (lexer->current_char != '\0')
+    {
+        printf("Error: Invalid token at position %zu\n", lexer->pos);
+        move_forward(lexer);
+        return create_token(INVALID_TOKEN, NULL);
     }
     return (create_token(INVALID_TOKEN, NULL));
 }

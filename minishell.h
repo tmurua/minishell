@@ -6,7 +6,7 @@
 /*   By: dlemaire <dlemaire@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 09:08:10 by tmurua            #+#    #+#             */
-/*   Updated: 2024/10/29 12:21:31 by dlemaire         ###   ########.fr       */
+/*   Updated: 2024/10/29 12:46:20 by dlemaire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,5 +80,8 @@ char	*read_user_input(void);
 /* signal_handling.c */
 void	setup_signal_handler(void);
 void	handle_sigint(int sig);
+
+/* lexer.c */
+void    run_lexer(char *str);
 
 #endif
