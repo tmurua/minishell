@@ -6,9 +6,15 @@
 /*   By: dlemaire <dlemaire@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 17:35:59 by dlemaire          #+#    #+#             */
-/*   Updated: 2024/10/29 14:44:11 by dlemaire         ###   ########.fr       */
+/*   Updated: 2024/10/29 14:47:47 by dlemaire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+// A lexical analyzer reads characters from the input and groups them
+// into token objects
+// -> skip white spaces
+// -> find keywords
+// -> create token
 
 #include "minishell.h"
 
