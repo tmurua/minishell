@@ -6,11 +6,7 @@
 /*   By: dlemaire <dlemaire@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 09:08:10 by tmurua            #+#    #+#             */
-<<<<<<< HEAD
-/*   Updated: 2024/10/29 12:46:20 by dlemaire         ###   ########.fr       */
-=======
-/*   Updated: 2024/10/29 14:36:46 by dlemaire         ###   ########.fr       */
->>>>>>> lexer
+/*   Updated: 2024/10/29 20:02:52 by dlemaire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +51,6 @@
 # include <curses.h>
 /* perror */
 # include <errno.h>
-
 /* macros*/
 
 /* structures */
@@ -81,6 +76,24 @@ typedef struct s_lexer {
     char        current_char;
 } t_lexer;
 
+typedef enum s_node_type {
+    NODE_COMMAND,
+    NODE_BUILTIN,
+} t_node_type;
+
+typedef struct s_command_node
+{
+	char    *cmd_name;
+	char    **args;
+}	t_command_node;
+
+typedef struct s_ast_node
+{
+	t_node_type         type;
+    t_command_node      command; // *union* might be used here later
+	struct s_ast_node	*next;
+}	t_ast_node;
+
 /* function prototypes */
 /* input_handling.c */
 void	main_input_loop(int ac, char **av);
@@ -92,6 +105,10 @@ void	setup_signal_handler(void);
 void	handle_sigint(int sig);
 
 /* lexer.c */
-void    run_lexer(char *str);
+t_token    *run_lexer(char *str);
+void		free_tokens(t_token *tokens);
+
+/* ast.c */
+t_ast_node  *parse_tokens(t_token *tokens);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: dlemaire <dlemaire@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 17:35:59 by dlemaire          #+#    #+#             */
-/*   Updated: 2024/10/29 14:47:47 by dlemaire         ###   ########.fr       */
+/*   Updated: 2024/10/29 20:04:42 by dlemaire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,18 @@
 // -> create token
 
 #include "minishell.h"
+
+void	free_tokens(t_token *tokens)
+{
+	if (!tokens)
+		return ;
+	while (tokens)
+	{
+		free(tokens->value);
+		tokens++;
+	}
+	free(tokens);
+}
 
 t_lexer init_lexer(const char *arg)
 {
@@ -71,7 +83,7 @@ t_token get_next_token(t_lexer *lexer)
             move_forward(lexer);
         }
         length = lexer->pos - start_pos;
-        arg = ft_strndup(lexer->str[start_pos], length);
+        arg = ft_strndup(&lexer->str[start_pos], length);
         return (create_token(ARGUMENT, arg));
     }
     if (lexer->current_char != '\0')
@@ -104,7 +116,7 @@ int count_tokens(const char *str)
     return count;
 }
 
-void    run_lexer(char *str)
+t_token    *run_lexer(char *str)
 {
     t_lexer lexer;
     t_token *tokens;
@@ -122,5 +134,6 @@ void    run_lexer(char *str)
             break;
         i++;
     }
+    return (tokens);
     // what are we doing with this?
 }
