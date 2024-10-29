@@ -13,8 +13,8 @@ CFILES =	ft_strlen.c		ft_strlcpy.c	ft_strlcat.c	\
 			ft_strmapi.c	ft_striteri.c	ft_split.c		\
 			ft_itoa.c		ft_print_char.c	ft_print_str.c	\
 			ft_print_int.c	ft_print_unsigned_int.c	ft_print_hex.c \
-			ft_print_pointer.c	ft_printf.c	\
-			ft_atol.c
+			ft_print_pointer.c	ft_printf.c	ft_iswhitespace.c \
+			ft_atol.c       ft_strndup.c
 
 OBJECTS = $(CFILES:.c=.o)
 
