@@ -3,19 +3,21 @@
 /*                                                        :::      ::::::::   */
 /*   input_handling.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dlemaire <dlemaire@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 16:48:08 by tmurua            #+#    #+#             */
-/*   Updated: 2024/10/29 20:11:45 by dlemaire         ###   ########.fr       */
+/*   Updated: 2024/10/31 12:25:49 by tmurua           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	main_input_loop(int ac, char **av)
+void	main_input_loop(int ac, char **av, char **envp)
 {
 	char	*input;
+	char	**args;
 	t_token	*tokens;
+	int		i;
 
 	handle_multiple_args(ac, av);
 	while (1)
@@ -32,6 +34,18 @@ void	main_input_loop(int ac, char **av)
 		printf("you entered: %s\n", input);
 		tokens = run_lexer(input);
 		//parse_tokens(tokens);
+		args = ft_split(input, ' ');
+		if (execute_builtin(args, envp) == -1)
+		{
+			// execute_external_command(args);
+		}
+		i = 0;
+		while (args[i])
+		{
+			free(args[i]);
+			i++;
+		}
+		free(args);
 		free_tokens(tokens);
 		free(input);
 	}

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dlemaire <dlemaire@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 09:08:10 by tmurua            #+#    #+#             */
-/*   Updated: 2024/10/29 20:14:37 by dlemaire         ###   ########.fr       */
+/*   Updated: 2024/10/31 12:27:53 by tmurua           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,45 +70,53 @@ typedef struct s_token
 	struct s_token	*next;
 }	t_token;
 
-typedef struct s_lexer {
-    const char  *str;
-    size_t      pos;
-    char        current_char;
-} t_lexer;
+typedef struct s_lexer
+{
+	const char	*str;
+	size_t		pos;
+	char		current_char;
+}	t_lexer;
 
-typedef enum s_node_type {
-    NODE_COMMAND,
-    NODE_BUILTIN,
-} t_node_type;
+typedef enum s_node_type
+{
+	NODE_COMMAND,
+	NODE_BUILTIN,
+}	t_node_type;
 
 typedef struct s_command_node
 {
-	char    *cmd_name;
-	char    **args;
+	char	*cmd_name;
+	char	**args;
 }	t_command_node;
 
 typedef struct s_ast_node
 {
-	t_node_type         type;
-    t_command_node      command; // *union* might be used here later
+	t_node_type			type;
+	t_command_node		command; // *union* might be used here later
 	struct s_ast_node	*next;
 }	t_ast_node;
 
 /* function prototypes */
 /* input_handling.c */
-void	main_input_loop(int ac, char **av);
-void	handle_multiple_args(int ac, char **av);
-char	*read_user_input(void);
+void		main_input_loop(int ac, char **av, char **envp);
+void		handle_multiple_args(int ac, char **av);
+char		*read_user_input(void);
 
 /* signal_handling.c */
-void	setup_signal_handler(void);
-void	handle_sigint(int sig);
+void		setup_signal_handler(void);
+void		handle_sigint(int sig);
 
 /* lexer.c */
-t_token    *run_lexer(char *str);
+t_token		*run_lexer(char *str);
 void		free_tokens(t_token *tokens);
 
 /* ast.c */
-t_ast_node  *parse_tokens(t_token *tokens);
+t_ast_node	*parse_tokens(t_token *tokens);
+
+/* builtin_commands.c */
+void		print_builtin_error(char *command, char *message);
+int			builtin_cd(char **args);
+int			builtin_echo(char **args);
+int			execute_builtin(char **args, char **envp);
 
 #endif
