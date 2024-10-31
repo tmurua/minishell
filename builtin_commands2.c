@@ -6,7 +6,7 @@
 /*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/31 13:33:08 by tmurua            #+#    #+#             */
-/*   Updated: 2024/10/31 16:05:12 by tmurua           ###   ########.fr       */
+/*   Updated: 2024/10/31 17:05:35 by tmurua           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,61 +70,8 @@ int	builtin_env(char **args, char **envp)
 	return (0);
 }
 
-/*
-int	builtin_export(char **args, char **envp)
-{
-	char	*key;
-	char	*value;
-	char	*equal_sign;
-
-	if (args[1] == NULL)
-	{
-		print_builtin_error("export", "expected argument");
-		return (1);
-	}
-	equal_sign = ft_strchr(args[1], '=');
-	if (equal_sign == NULL)
-	{
-		print_builtin_error("export", "invalid format");
-		return (1);
-	}
-	*equal_sign = '\0';
-	key = args[1];
-	value = equal_sign + 1;
-	if (setenv(key, value, 1) != 0)
-	{
-		perror("minishell: export");
-		return (1);
-	}
-	return (0);
-}
-
-
-int	builtin_unset(char **args)
-{
-	int	i;
-
-	if (args[1] == NULL)
-	{
-		print_builtin_error("unset", "expected argument");
-		return (1);
-	}
-	i = 1;
-	while (args[i] != NULL)
-	{
-		if (unsetenv(args[i]) != 0)
-		{
-			perror("minishell: unset");
-			return (1);
-		}
-		i++;
-	}
-	return (0);
-}
-*/
-
-/*for now it's commented out since it's dependent on variable expansion,
-which by itself is closely related to the tokenization process*/
+/* commented out since it's dependent on variable expansion, which by itself is
+closely related to tokenization process, same applies for export and unset */
 /*int	builtin_echo(char **args)
 {
 	int	i;
