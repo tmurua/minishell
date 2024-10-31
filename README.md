@@ -31,7 +31,7 @@
 
 - [ ] 8.  **Signal Handling**:
    - minishell handles signals like `Ctrl+C`, `Ctrl+D`, and `Ctrl+\` appropriately, using at most one global variable for signal handling.
-   - [ ]  **`Ctrl+C`** (`SIGINT`): Displays a new prompt on a new line.
+   - [x]  **`Ctrl+C`** (`SIGINT`): Displays a new prompt on a new line.
    - [x]  **`Ctrl+D`**: Sends an EOF character which can be detected as an empty input from `readline`. Exits the shell.
    - [ ]  **`Ctrl+\`** (`SIGQUIT`): Does nothing.
 
@@ -41,7 +41,7 @@
    - [x] `pwd`: Prints the current working directory.
    - [ ] `export`: Sets environment variables.
    - [ ] `unset`: Unsets environment variables.
-   - [ ] `env`: Displays the environment variables.
+   - [x] `env`: Displays the environment variables.
    - [x] `exit`: Exits the shell.
 
 - [ ] 10. **Memory Management**:

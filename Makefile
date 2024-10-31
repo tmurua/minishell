@@ -10,7 +10,8 @@ SRC =	main.c \
 		\
 		signal_handling.c \
 		\
-		builtin_commands.c
+		builtin_commands.c\
+		builtin_commands2.c
 # lexer.c ast.c
 OBJ = $(SRC:.c=.o)
 
