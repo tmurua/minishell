@@ -6,7 +6,7 @@
 /*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 09:08:10 by tmurua            #+#    #+#             */
-/*   Updated: 2024/10/31 12:27:53 by tmurua           ###   ########.fr       */
+/*   Updated: 2024/10/31 13:13:44 by tmurua           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,6 +101,8 @@ typedef struct s_ast_node
 void		main_input_loop(int ac, char **av, char **envp);
 void		handle_multiple_args(int ac, char **av);
 char		*read_user_input(void);
+void		execute_command(char **args, char **envp);
+void		cleanup_input(char **args, t_token *tokens, char *input);
 
 /* signal_handling.c */
 void		setup_signal_handler(void);
@@ -114,6 +116,7 @@ void		free_tokens(t_token *tokens);
 t_ast_node	*parse_tokens(t_token *tokens);
 
 /* builtin_commands.c */
+int			handle_exit_command(char *input);
 void		print_builtin_error(char *command, char *message);
 int			builtin_cd(char **args);
 int			builtin_echo(char **args);

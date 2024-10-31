@@ -6,11 +6,22 @@
 /*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 15:53:43 by tmurua            #+#    #+#             */
-/*   Updated: 2024/10/31 12:27:46 by tmurua           ###   ########.fr       */
+/*   Updated: 2024/10/31 13:02:26 by tmurua           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+int	handle_exit_command(char *input)
+{
+	if (input == NULL || !ft_strncmp(input, "exit", 5))
+	{
+		free(input);
+		rl_clear_history();
+		exit (0);
+	}
+	return (0);
+}
 
 /* print error messages for built-in commands */
 void	print_builtin_error(char *command, char *message)
