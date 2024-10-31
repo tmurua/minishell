@@ -9,10 +9,10 @@ SRC =	main.c \
 		input_handling.c \
 		\
 		signal_handling.c \
-		\
+		lexer.c\
 		builtin_commands.c\
 		builtin_commands2.c
-# lexer.c ast.c
+# ast.c
 OBJ = $(SRC:.c=.o)
 
 all: $(NAME)

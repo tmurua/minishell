@@ -6,7 +6,7 @@
 /*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 09:08:10 by tmurua            #+#    #+#             */
-/*   Updated: 2024/10/31 16:03:20 by tmurua           ###   ########.fr       */
+/*   Updated: 2024/10/31 18:39:50 by tmurua           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,7 +104,7 @@ void		main_input_loop(int ac, char **av, char **envp);
 void		handle_multiple_args(int ac, char **av);
 char		*read_user_input(void);
 void		execute_command(char **args, char **envp);
-void		cleanup_input(char **args, char *input);
+void		cleanup_input(char **args, t_token *tokens, char *input);
 
 /* signal_handling.c */
 void		setup_signal_handler(void);
