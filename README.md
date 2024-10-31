@@ -37,8 +37,8 @@
 
 - [ ] 9.  **Built-in Commands**:
    - [ ] `echo` with `-n` option: Displays a line of text.
-   - [ ] `cd` with a relative or absolute path: Changes the current working directory.
-   - [ ] `pwd`: Prints the current working directory.
+   - [x] `cd` with a relative or absolute path: Changes the current working directory.
+   - [x] `pwd`: Prints the current working directory.
    - [ ] `export`: Sets environment variables.
    - [ ] `unset`: Unsets environment variables.
    - [ ] `env`: Displays the environment variables.

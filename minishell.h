@@ -6,7 +6,7 @@
 /*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 09:08:10 by tmurua            #+#    #+#             */
-/*   Updated: 2024/10/31 14:04:33 by tmurua           ###   ########.fr       */
+/*   Updated: 2024/10/31 14:22:17 by tmurua           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,7 +121,7 @@ t_ast_node	*parse_tokens(t_token *tokens);
 int			handle_exit_command(char *input);
 void		print_builtin_error(char *command, char *message);
 int			builtin_cd(char **args);
-int			builtin_pwd(void);
+int			builtin_pwd(char **args);
 int			execute_builtin(char **args, char **envp);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 15:53:43 by tmurua            #+#    #+#             */
-/*   Updated: 2024/10/31 14:03:56 by tmurua           ###   ########.fr       */
+/*   Updated: 2024/10/31 14:21:39 by tmurua           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,11 +58,16 @@ int	builtin_cd(char **args)
 /*
 getcwd() sets current working directory path into a path_buffer of size PATH_MAX
 then ft_putendl_fd() outputs the current working directory path */
-int	builtin_pwd(void)
+int	builtin_pwd(char **args)
 {
 	char	*current_working_directory;
 	char	path_buffer[PATH_MAX];
 
+	if (args[1] != NULL)
+	{
+		ft_putstr_fd("pwd: too many arguments\n", STDERR_FILENO);
+		return (1);
+	}
 	current_working_directory = getcwd(path_buffer, PATH_MAX);
 	if (current_working_directory == NULL)
 	{
@@ -81,7 +86,7 @@ int	execute_builtin(char **args, char **envp)
 	if (ft_strncmp(args[0], "cd", 3) == 0)
 		return (builtin_cd(args));
 	else if (ft_strncmp(args[0], "pwd", 4) == 0)
-		return (builtin_pwd());
+		return (builtin_pwd(args));
 	//else if (ft_strncmp(args[0], "echo", 5) == 0)
 	//	return (builtin_echo(args));
 	//else if (ft_strncmp(args[0], "env", 4) == 0)
