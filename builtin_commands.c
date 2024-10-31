@@ -6,7 +6,7 @@
 /*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 15:53:43 by tmurua            #+#    #+#             */
-/*   Updated: 2024/10/31 13:02:26 by tmurua           ###   ########.fr       */
+/*   Updated: 2024/10/31 14:03:56 by tmurua           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,28 +55,21 @@ int	builtin_cd(char **args)
 	return (0);
 }
 
-/* prints the arguments to standard output */
-int	builtin_echo(char **args)
+/*
+getcwd() sets current working directory path into a path_buffer of size PATH_MAX
+then ft_putendl_fd() outputs the current working directory path */
+int	builtin_pwd(void)
 {
-	int	i;
-	int	newline;
+	char	*current_working_directory;
+	char	path_buffer[PATH_MAX];
 
-	i = 1;
-	newline = 1;
-	if (args[1] != NULL && ft_strncmp(args[1], "-n", 3) == 0)
+	current_working_directory = getcwd(path_buffer, PATH_MAX);
+	if (current_working_directory == NULL)
 	{
-		newline = 0;
-		i++;
+		perror("minishell: pwd");
+		return (1);
 	}
-	while (args[i] != NULL)
-	{
-		ft_putstr_fd(args[i], STDOUT_FILENO);
-		if (args[i + 1] != NULL)
-			ft_putstr_fd(" ", STDOUT_FILENO);
-		i++;
-	}
-	if (newline)
-		ft_putstr_fd("\n", STDOUT_FILENO);
+	ft_putendl_fd(current_working_directory, STDOUT_FILENO);
 	return (0);
 }
 
@@ -87,10 +80,10 @@ int	execute_builtin(char **args, char **envp)
 		return (-1);
 	if (ft_strncmp(args[0], "cd", 3) == 0)
 		return (builtin_cd(args));
-	else if (ft_strncmp(args[0], "echo", 5) == 0)
-		return (builtin_echo(args));
-	//else if (ft_strncmp(args[0], "pwd", 4) == 0)
-	//	return (builtin_pwd());
+	else if (ft_strncmp(args[0], "pwd", 4) == 0)
+		return (builtin_pwd());
+	//else if (ft_strncmp(args[0], "echo", 5) == 0)
+	//	return (builtin_echo(args));
 	//else if (ft_strncmp(args[0], "env", 4) == 0)
 	//	return (builtin_env(*envp));
 	//else if (ft_strncmp(args[0], "export", 7) == 0)

@@ -6,7 +6,7 @@
 /*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 16:48:08 by tmurua            #+#    #+#             */
-/*   Updated: 2024/10/31 13:24:27 by tmurua           ###   ########.fr       */
+/*   Updated: 2024/10/31 13:54:49 by tmurua           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ void	main_input_loop(int ac, char **av, char **envp)
 {
 	char	*input;
 	char	**args;
-	t_token	*tokens;
+	//t_token	*tokens;
 
 	handle_multiple_args(ac, av);
 	while (1)
@@ -27,11 +27,11 @@ void	main_input_loop(int ac, char **av, char **envp)
 		if (*input)
 			add_history(input);
 		printf("you entered: %s\n", input);
-		tokens = run_lexer(input);
+		//tokens = run_lexer(input);
 		//parse_tokens(tokens);
 		args = ft_split(input, ' ');
 		execute_command(args, envp);
-		cleanup_input(args, tokens, input);
+		cleanup_input(args, input);
 	}
 }
 
@@ -61,7 +61,7 @@ void	execute_command(char **args, char **envp)
 	}
 }
 
-void	cleanup_input(char **args, t_token *tokens, char *input)
+void	cleanup_input(char **args, char *input)
 {
 	int	i;
 
@@ -75,6 +75,6 @@ void	cleanup_input(char **args, t_token *tokens, char *input)
 		}
 		free(args);
 	}
-	free_tokens(tokens);
+	//free_tokens(tokens);
 	free(input);
 }

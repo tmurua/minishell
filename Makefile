@@ -7,11 +7,11 @@ LIBFT = ./libft/libft.a
 
 SRC =	main.c \
 		input_handling.c \
-		lexer.c \
+		\
 		signal_handling.c \
 		\
 		builtin_commands.c
-# ast.c
+# lexer.c ast.c
 OBJ = $(SRC:.c=.o)
 
 all: $(NAME)

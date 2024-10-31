@@ -6,7 +6,7 @@
 /*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 09:08:10 by tmurua            #+#    #+#             */
-/*   Updated: 2024/10/31 13:13:44 by tmurua           ###   ########.fr       */
+/*   Updated: 2024/10/31 14:04:33 by tmurua           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,8 @@
 # include <curses.h>
 /* perror */
 # include <errno.h>
+/* PATH_MAX */
+# include <limits.h>
 /* macros*/
 
 /* structures */
@@ -102,7 +104,7 @@ void		main_input_loop(int ac, char **av, char **envp);
 void		handle_multiple_args(int ac, char **av);
 char		*read_user_input(void);
 void		execute_command(char **args, char **envp);
-void		cleanup_input(char **args, t_token *tokens, char *input);
+void		cleanup_input(char **args, char *input);
 
 /* signal_handling.c */
 void		setup_signal_handler(void);
@@ -119,7 +121,7 @@ t_ast_node	*parse_tokens(t_token *tokens);
 int			handle_exit_command(char *input);
 void		print_builtin_error(char *command, char *message);
 int			builtin_cd(char **args);
-int			builtin_echo(char **args);
+int			builtin_pwd(void);
 int			execute_builtin(char **args, char **envp);
 
 #endif
