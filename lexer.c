@@ -3,15 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
+/*   By: dlemaire <dlemaire@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 17:35:59 by dlemaire          #+#    #+#             */
-/*   Updated: 2024/10/31 18:49:32 by tmurua           ###   ########.fr       */
+/*   Updated: 2024/11/02 16:45:44 by dlemaire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 // A lexical analyzer reads characters from the input and groups them
-// into token objects
+// into token objects (commands / arguments / pipes / redirections)
 // -> skip white spaces
 // -> find keywords
 // -> create token

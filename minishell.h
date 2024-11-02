@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
+/*   By: dlemaire <dlemaire@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 09:08:10 by tmurua            #+#    #+#             */
-/*   Updated: 2024/10/31 18:39:50 by tmurua           ###   ########.fr       */
+/*   Updated: 2024/11/02 16:46:57 by dlemaire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,6 +96,8 @@ typedef struct s_ast_node
 	t_node_type			type;
 	t_command_node		command; // *union* might be used here later
 	struct s_ast_node	*next;
+	// left
+	// right
 }	t_ast_node;
 
 /* function prototypes */
