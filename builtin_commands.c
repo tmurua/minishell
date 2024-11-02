@@ -6,7 +6,7 @@
 /*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 15:53:43 by tmurua            #+#    #+#             */
-/*   Updated: 2024/10/31 16:02:55 by tmurua           ###   ########.fr       */
+/*   Updated: 2024/11/02 17:22:37 by tmurua           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,25 @@ int	too_many_arguments(char **args)
 		ft_putstr_fd("pwd: too many arguments\n", STDERR_FILENO);
 		return (1);
 	}
+	return (0);
+}
+
+int	is_builtin_command(const char *word)
+{
+	if (ft_strncmp(word, "echo", 5) == 0)
+		return (1);
+	if (ft_strncmp(word, "cd", 3) == 0)
+		return (1);
+	if (ft_strncmp(word, "pwd", 4) == 0)
+		return (1);
+	if (ft_strncmp(word, "export", 7) == 0)
+		return (1);
+	if (ft_strncmp(word, "unset", 6) == 0)
+		return (1);
+	if (ft_strncmp(word, "env", 4) == 0)
+		return (1);
+	if (ft_strncmp(word, "exit", 5) == 0)
+		return (1);
 	return (0);
 }
 
