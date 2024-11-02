@@ -6,7 +6,7 @@
 /*   By: dlemaire <dlemaire@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 09:08:10 by tmurua            #+#    #+#             */
-/*   Updated: 2024/10/29 20:02:52 by dlemaire         ###   ########.fr       */
+/*   Updated: 2024/11/02 16:42:51 by dlemaire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,6 +92,8 @@ typedef struct s_ast_node
 	t_node_type         type;
     t_command_node      command; // *union* might be used here later
 	struct s_ast_node	*next;
+	// left
+	// right
 }	t_ast_node;
 
 /* function prototypes */

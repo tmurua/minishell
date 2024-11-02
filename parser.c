@@ -1,14 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ast.c                                              :+:      :+:    :+:   */
+/*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dlemaire <dlemaire@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 17:10:48 by dlemaire          #+#    #+#             */
-/*   Updated: 2024/10/29 20:10:14 by dlemaire         ###   ########.fr       */
+/*   Updated: 2024/11/02 16:42:43 by dlemaire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+// Parser reads tokens and creates AST nodes (like a converter) and link them
+// with hierarchical realtionship (build the tree)
 
 // AST: hierarchical syntactic structure of the source program
 
@@ -17,7 +20,8 @@
 // the semantically meaningful components of that construct
 
 // In an abstract syntax tree for an expression, each
-// interior node represents an operator. 
+// interior node (vs.leaves) represents an operator. There position dictates
+// the precedence
 
 #include "minishell.h"
 
