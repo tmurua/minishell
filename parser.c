@@ -6,7 +6,7 @@
 /*   By: dlemaire <dlemaire@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 17:10:48 by dlemaire          #+#    #+#             */
-/*   Updated: 2024/11/02 16:42:43 by dlemaire         ###   ########.fr       */
+/*   Updated: 2024/11/02 18:36:30 by dlemaire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,15 +85,16 @@ t_ast_node  *create_ast_node(t_node_type type, char *cmd_name, char *args[])
 
 t_ast_node  *parse_tokens(t_token *tokens)
 {
-    t_ast_node  *ast_head;
+    t_ast_node  *ast_root;
     t_ast_node  **current;
     char        *cmd_name;
     char        *args[3]; // how to set this dynamically?
     int         i;
     t_node_type type;
 
-    ast_head = NULL;
-    current[0] = ast_head;
+    ast_root = NULL;
+    current = NULL;
+    current[0] = ast_root;
     while (tokens)
     {
         if (!tokens->value)
@@ -111,5 +112,5 @@ t_ast_node  *parse_tokens(t_token *tokens)
         *current = create_ast_node(type, cmd_name, args);
         current = &(*current)->next;
     }
-    return (ast_head);
+    return (ast_root);
 }
