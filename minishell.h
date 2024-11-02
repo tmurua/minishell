@@ -6,7 +6,7 @@
 /*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 09:08:10 by tmurua            #+#    #+#             */
-/*   Updated: 2024/10/31 18:39:50 by tmurua           ###   ########.fr       */
+/*   Updated: 2024/11/02 17:20:10 by tmurua           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,8 +111,20 @@ void		setup_signal_handler(void);
 void		handle_sigint(int sig);
 
 /* lexer.c */
+t_lexer		init_lexer(const char *arg);
+void		move_forward(t_lexer *lexer);
 t_token		*run_lexer(char *str);
+
+/* get_next_token.c */
+t_token		*get_next_token(t_lexer *lexer);
+void		skip_whitespace(t_lexer *lexer);
+char		*collect_word(t_lexer *lexer);
+char		*collect_symbol(t_lexer *lexer);
+
+/* token_utils.c */
+t_token		*create_token(t_token_type type, char *value);
 void		free_tokens(t_token *tokens);
+int		count_tokens(const char *str);
 
 /* ast.c */
 t_ast_node	*parse_tokens(t_token *tokens);
@@ -121,6 +133,7 @@ t_ast_node	*parse_tokens(t_token *tokens);
 int			handle_exit_command(char *input);
 void		print_builtin_error(char *command, char *message);
 int			too_many_arguments(char **args);
+int			is_builtin_command(const char *word);
 int			execute_builtin(char **args, char **envp);
 
 /* builtin_commands2.c */
