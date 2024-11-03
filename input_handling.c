@@ -6,7 +6,7 @@
 /*   By: dlemaire <dlemaire@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 16:48:08 by tmurua            #+#    #+#             */
-/*   Updated: 2024/11/03 20:56:42 by dlemaire         ###   ########.fr       */
+/*   Updated: 2024/11/03 20:57:26 by dlemaire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ void	main_input_loop(int ac, char **av, char **envp)
 			add_history(input);
 		printf("you entered: %s\n", input);
 		tokens = run_lexer(input);
-		//parse_tokens(tokens);
+		parse_tokens(tokens);
 		free_tokens(tokens);
 		free(input);
 	}
