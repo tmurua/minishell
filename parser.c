@@ -6,11 +6,7 @@
 /*   By: dlemaire <dlemaire@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 17:10:48 by dlemaire          #+#    #+#             */
-<<<<<<< HEAD
-/*   Updated: 2024/11/02 19:25:35 by dlemaire         ###   ########.fr       */
-=======
-/*   Updated: 2024/11/02 18:36:30 by dlemaire         ###   ########.fr       */
->>>>>>> ast
+/*   Updated: 2024/11/03 17:32:54 by dlemaire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,13 +88,32 @@ t_ast_node  *parse_tokens(t_token *tokens)
     t_ast_node  *ast_root;
     t_ast_node  **current;
     char        *cmd_name;
-    char        *args[3]; // how to set this dynamically?
+    char        **args; // how to set this dynamically?
     int         i;
     t_node_type type;
+    int         num_args;
 
-    ast_root = NULL;
-    current = NULL;
+    ast_root = malloc(sizeof(t_ast_node));
+    if (!ast_root)
+        return (NULL);    
+    ft_memset(ast_root, 0, sizeof(t_ast_node));
+    current = malloc(sizeof(t_ast_node *));
+    if (!current)
+        return (NULL);
     current[0] = ast_root;
+    num_args = get_args_count();
+    args = malloc(num_args * sizeof(char *));
+    if (!args)
+        return (NULL);
+    i = 0;
+    while (i < num_args)
+    {
+        args[i] = NULL;
+        i++;
+    }
+    
+    
+    
     while (tokens)
     {
         if (!tokens->value)
