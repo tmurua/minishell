@@ -6,7 +6,7 @@
 /*   By: dlemaire <dlemaire@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 17:35:59 by dlemaire          #+#    #+#             */
-/*   Updated: 2024/11/02 16:11:49 by dlemaire         ###   ########.fr       */
+/*   Updated: 2024/11/03 20:04:33 by dlemaire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,14 +20,22 @@
 
 void	free_tokens(t_token *tokens)
 {
-	if (!tokens)
+	int i;
+    int count;
+
+    if (!tokens)
 		return ;
-	while (tokens)
+    count = count_tokens_in_arr(tokens);
+    i = 0;
+    while (i < count)
 	{
-		free(tokens->value);
-		tokens++;
+		if (tokens[i].value != NULL)
+            free(tokens[i].value);
+        tokens[i].value = NULL;
+        i++;
 	}
 	free(tokens);
+    tokens = NULL;
 }
 
 t_lexer init_lexer(const char *arg)

@@ -6,7 +6,7 @@
 /*   By: dlemaire <dlemaire@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 09:08:10 by tmurua            #+#    #+#             */
-/*   Updated: 2024/11/02 16:42:51 by dlemaire         ###   ########.fr       */
+/*   Updated: 2024/11/03 20:32:31 by dlemaire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ typedef struct s_token
 {
 	char			*value;
 	t_token_type	type;
-	struct s_token	*next;
+	struct s_token	*next; // store tokens as linked list or array?
 }	t_token;
 
 typedef struct s_lexer {
@@ -110,7 +110,8 @@ void	handle_sigint(int sig);
 t_token    *run_lexer(char *str);
 void		free_tokens(t_token *tokens);
 
-/* ast.c */
+/* parser.c */
 t_ast_node  *parse_tokens(t_token *tokens);
+int			count_tokens_in_arr(t_token *tokens);
 
 #endif
