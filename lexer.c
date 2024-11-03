@@ -3,17 +3,28 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
+/*   By: dlemaire <dlemaire@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 17:35:59 by dlemaire          #+#    #+#             */
-/*   Updated: 2024/11/02 17:29:42 by tmurua           ###   ########.fr       */
+/*   Updated: 2024/11/03 20:56:06 by dlemaire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-/* initialize lexer structure with the input string */
-t_lexer	init_lexer(const char *arg)
+void	free_tokens(t_token *tokens)
+{
+	if (!tokens)
+		return ;
+	while (tokens)
+	{
+		free(tokens->value);
+		tokens++;
+	}
+	free(tokens);
+}
+
+t_lexer init_lexer(const char *arg)
 {
 	t_lexer	lexer;
 

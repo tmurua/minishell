@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
+/*   By: dlemaire <dlemaire@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 09:08:10 by tmurua            #+#    #+#             */
-/*   Updated: 2024/11/02 17:30:51 by tmurua           ###   ########.fr       */
+/*   Updated: 2024/11/03 20:53:09 by dlemaire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ typedef struct s_token
 {
 	char			*value;
 	t_token_type	type;
-	struct s_token	*next;
+	struct s_token	*next; // store tokens as linked list or array?
 }	t_token;
 
 typedef struct s_lexer
@@ -129,18 +129,6 @@ void		free_tokens(t_token *tokens);
 int		count_tokens(const char *str);
 
 /* ast.c */
-t_ast_node	*parse_tokens(t_token *tokens);
-
-/* builtin_commands.c */
-int			handle_exit_command(char *input);
-void		print_builtin_error(char *command, char *message);
-int			too_many_arguments(char **args);
-int			is_builtin_command(const char *word);
-int			execute_builtin(char **args, char **envp);
-
-/* builtin_commands2.c */
-int			builtin_cd(char **args);
-int			builtin_pwd(char **args);
-int			builtin_env(char **args, char **envp);
+t_ast_node  *parse_tokens(t_token *tokens);
 
 #endif

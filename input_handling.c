@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   input_handling.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
+/*   By: dlemaire <dlemaire@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 16:48:08 by tmurua            #+#    #+#             */
-/*   Updated: 2024/10/31 18:40:06 by tmurua           ###   ########.fr       */
+/*   Updated: 2024/11/03 20:56:42 by dlemaire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,9 @@ void	main_input_loop(int ac, char **av, char **envp)
 	char	*input;
 	char	**args;
 	t_token	*tokens;
-
-	handle_multiple_args(ac, av);
+	(void)ac;
+	(void)av;
+	// handle_multiple_args(ac, av);
 	while (1)
 	{
 		input = read_user_input();
@@ -29,9 +30,8 @@ void	main_input_loop(int ac, char **av, char **envp)
 		printf("you entered: %s\n", input);
 		tokens = run_lexer(input);
 		//parse_tokens(tokens);
-		args = ft_split(input, ' ');
-		execute_command(args, envp);
-		cleanup_input(args, tokens, input);
+		free_tokens(tokens);
+		free(input);
 	}
 }
 
