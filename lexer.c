@@ -3,28 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dlemaire <dlemaire@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 17:35:59 by dlemaire          #+#    #+#             */
-/*   Updated: 2024/11/03 20:56:06 by dlemaire         ###   ########.fr       */
+/*   Updated: 2024/11/04 18:45:40 by tmurua           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	free_tokens(t_token *tokens)
-{
-	if (!tokens)
-		return ;
-	while (tokens)
-	{
-		free(tokens->value);
-		tokens++;
-	}
-	free(tokens);
-}
-
-t_lexer init_lexer(const char *arg)
+t_lexer	init_lexer(const char *arg)
 {
 	t_lexer	lexer;
 

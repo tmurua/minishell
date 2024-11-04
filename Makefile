@@ -5,7 +5,15 @@ CFLAGS = -Wall -Wextra -Werror -g
 
 LIBFT = ./libft/libft.a
 
-SRC =	main.c input_handling.c lexer.c signal_handling.c parser.c
+SRC =	main.c \
+		input_handling.c \
+		lexer.c \
+		get_next_token.c \
+		token_utils.c \
+		builtin_commands.c \
+		builtin_commands2.c \
+		signal_handling.c \
+		parser.c
 OBJ = $(SRC:.c=.o)
 
 all: $(NAME)

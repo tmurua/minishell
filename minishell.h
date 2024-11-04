@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dlemaire <dlemaire@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 09:08:10 by tmurua            #+#    #+#             */
-/*   Updated: 2024/11/03 20:58:53 by dlemaire         ###   ########.fr       */
+/*   Updated: 2024/11/04 17:48:17 by tmurua           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,11 +126,11 @@ char		*collect_symbol(t_lexer *lexer);
 /* token_utils.c */
 t_token		*create_token(t_token_type type, char *value);
 void		free_tokens(t_token *tokens);
-int		count_tokens(const char *str);
+int			count_tokens(const char *str);
 
 /* parser.c */
 t_ast_node	*parse_tokens(t_token *tokens);
-int 		count_tokens_in_arr(t_token *tokens);
+int			count_tokens_in_arr(t_token *tokens);
 
 /* builtin_commands.c */
 int			handle_exit_command(char *input);
