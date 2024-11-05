@@ -6,7 +6,7 @@
 /*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 16:48:08 by tmurua            #+#    #+#             */
-/*   Updated: 2024/11/04 18:41:45 by tmurua           ###   ########.fr       */
+/*   Updated: 2024/11/05 17:25:27 by tmurua           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,6 @@ void	main_input_loop(int ac, char **av, char **envp)
 	}
 }
 
-
 void	handle_multiple_args(int ac, char **av)
 {
 	if (ac != 1 || av[1])
@@ -56,6 +55,12 @@ char	*read_user_input(void)
 void	execute_command(char **args, char **envp)
 {
 	if (execute_builtin(args, envp) == -1)
+	{
+		ignore_signal_handlers();
+		execute_builtin(args, envp);
+		setup_prompt_signals();
+	}
+	else
 	{
 		// execute_external_command(args);
 	}

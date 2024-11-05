@@ -6,7 +6,7 @@
 /*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 09:08:10 by tmurua            #+#    #+#             */
-/*   Updated: 2024/11/04 17:48:17 by tmurua           ###   ########.fr       */
+/*   Updated: 2024/11/05 18:13:16 by tmurua           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,8 +109,12 @@ void		execute_command(char **args, char **envp);
 void		cleanup_input(char **args, t_token *tokens, char *input);
 
 /* signal_handling.c */
-void		setup_signal_handler(void);
-void		handle_sigint(int sig);
+void		setup_prompt_signals(void);
+void		setup_sigint_handler(void);
+void		handle_sigint_at_prompt(int sig);
+void		setup_sigquit_handler(void);
+void		reset_signal_handlers(void);
+void		ignore_signal_handlers(void);
 
 /* lexer.c */
 t_lexer		init_lexer(const char *arg);

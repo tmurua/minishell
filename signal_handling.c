@@ -6,31 +6,115 @@
 /*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 19:47:34 by tmurua            #+#    #+#             */
-/*   Updated: 2024/10/28 20:01:47 by tmurua           ###   ########.fr       */
+/*   Updated: 2024/11/05 18:47:41 by tmurua           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	setup_signal_handler(void)
-{
-	struct sigaction	sa_int;
+/* 	both the old and new implementations handle signals (SIGINT and SIGQUIT)
+	in the same way for built-in commands like cd, pwd, etc.
+	since these commands are executed in the parent process (minishell itself),
+	the signal handling doesn't diverge between the two implementations.
 
-	sa_int.sa_handler = handle_sigint;
-	sa_int.sa_flags = SA_RESTART;
-	sigemptyset(&sa_int.sa_mask);
-	if (sigaction(SIGINT, &sa_int, NULL) == -1)
+	the real differences between the old and refactored implementations will
+	appear when we implement External Commands in the following ways:
+	Child Processes: executing external commands creates child processes using
+	fork() and exec(). the refactored signal handling will ensure that:
+		Parent Shell: properly ignores or handles signals to remain stable.
+		Child Processes: have default signal behaviors.
+
+	also now we handle exit correctly, meaning that
+	all child processes will be terminated before exiting */
+
+
+/*	sets up signal handlers for the shell prompt.
+	handles SIGINT (Ctrl+C) and ignores SIGQUIT (Ctrl+\). */
+void	setup_prompt_signals(void)
+{
+	setup_sigint_handler();
+	setup_sigquit_handler();
+}
+
+/*	setup SIGINT (Ctrl+C) signal handler for the prompt
+	declare a sigaction structure to specify the action for SIGINT
+	configure signal action to use handle_sigint_at_prompt
+	when SIGINT received, SA_RESTART flag restarts interrupted system calls
+	sigemptyset() initializes the signal mask to exclude all signals
+	apply the sigaction for SIGINT, if it fails, print an error and exit */
+void	setup_sigint_handler(void)
+{
+	struct sigaction	sa;
+
+	sa.sa_handler = handle_sigint_at_prompt;
+	sa.sa_flags = SA_RESTART;
+	sigemptyset(&sa.sa_mask);
+	if (sigaction(SIGINT, &sa, NULL) == -1)
 	{
-		perror("sigaction");
+		perror("minishell: sigaction");
 		exit(EXIT_FAILURE);
 	}
 }
 
-void	handle_sigint(int sig)
+/*	signal handler for SIGINT (Ctrl+C) at prompt
+	writes \n, clear current line, goes to next line, and redisplays prompt */
+void	handle_sigint_at_prompt(int sig)
 {
 	(void)sig;
 	write(STDOUT_FILENO, "\n", 1);
 	rl_replace_line("", 0);
 	rl_on_new_line();
 	rl_redisplay();
+}
+
+/*	setup SIGQUIT (Ctrl+\) signal handler to ignore it at the prompt
+	declare a sigaction structure to specify the action for SIGQUIT
+	configure signal action to use SIG_IGN, i.e. to ignore SIGQUIT
+	when SIGQUIT received, SA_RESTART flag restarts interrupted system calls
+	sigemptyset() initializes the signal mask to exclude all signals
+	apply the sigaction for SIGQUIT, if it fails, print an error and exit */
+void	setup_sigquit_handler(void)
+{
+	struct sigaction	sa;
+
+	sa.sa_handler = SIG_IGN;
+	sa.sa_flags = SA_RESTART;
+	sigemptyset(&sa.sa_mask);
+	if (sigaction(SIGQUIT, &sa, NULL) == -1)
+	{
+		perror("minishell: sigaction");
+		exit(EXIT_FAILURE);
+	}
+}
+
+/*	resets signal handlers to their default behavior.
+	used in child processes before executing external commands */
+void	reset_signal_handlers(void)
+{
+	if (signal(SIGINT, SIG_DFL) == SIG_ERR)
+	{
+		perror("minishell: signal");
+		exit(EXIT_FAILURE);
+	}
+	if (signal(SIGQUIT, SIG_DFL) == SIG_ERR)
+	{
+		perror("minishell: signal");
+		exit(EXIT_FAILURE);
+	}
+}
+
+/*	ignores SIGINT and SIGQUIT in parent process during command execution,
+	preventing shell from being interrupted by these signals */
+void	ignore_signal_handlers(void)
+{
+	if (signal(SIGINT, SIG_IGN) == SIG_ERR)
+	{
+		perror("minishell: signal");
+		exit(EXIT_FAILURE);
+	}
+	if (signal(SIGQUIT, SIG_IGN) == SIG_ERR)
+	{
+		perror("minishell: signal");
+		exit(EXIT_FAILURE);
+	}
 }
