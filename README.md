@@ -45,6 +45,19 @@
 
 - [ ] 10. **Memory Management**:
     - The shell handles memory allocation and deallocation properly. Memory leaks from the `readline` function are acceptable and do not need to be fixed.
+	 - suppressions.supp file is currently supressing the memory leaks caused by `readline()`. To use it with valgrind, the command is:
+	```bash
+	 valgrind --suppressions=suppressions.supp --leak-check=full --show-leak-kinds=all ./minishell
+	```
+	- If there are no other leaks from other functions other than `readline()`, the output after `exit` is going to be something like:
+	```bash
+	==00001== LEAK SUMMARY:
+	==00001==    definitely lost: 0 bytes in 0 blocks
+	==00001==    indirectly lost: 0 bytes in 0 blocks
+	==00001==      possibly lost: 0 bytes in 0 blocks
+	==00001==    still reachable: 0 bytes in 0 blocks
+	==00001==         suppressed: 204,161 bytes in 221 blocks
+	```
 
 ## Allowed Functions
 
