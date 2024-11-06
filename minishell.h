@@ -6,7 +6,7 @@
 /*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 09:08:10 by tmurua            #+#    #+#             */
-/*   Updated: 2024/11/05 18:13:16 by tmurua           ###   ########.fr       */
+/*   Updated: 2024/11/06 11:51:15 by tmurua           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,6 +115,12 @@ void		handle_sigint_at_prompt(int sig);
 void		setup_sigquit_handler(void);
 void		reset_signal_handlers(void);
 void		ignore_signal_handlers(void);
+
+/* external_commands.c */
+void		execute_external_cmd(char **cmd_and_args, char **envp);
+pid_t		fork_child_process(void);
+void		execute_in_child(char **cmd_and_args, char **envp);
+void		handle_parent_process(pid_t child_pid);
 
 /* lexer.c */
 t_lexer		init_lexer(const char *arg);

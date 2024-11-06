@@ -13,7 +13,8 @@ SRC =	main.c \
 		builtin_commands.c \
 		builtin_commands2.c \
 		signal_handling.c \
-		parser.c
+		parser.c \
+		external_commands.c
 OBJ = $(SRC:.c=.o)
 
 all: $(NAME)

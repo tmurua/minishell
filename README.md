@@ -9,7 +9,6 @@
 
 - [ ] 3. **Command Execution**:
    - minishell searches for and executes the correct executable based on the `PATH` environment variable or using a relative or absolute path.
-   - minishell can execute external commands found in the system's `PATH` environment variable, or using a relative or absolute path.
    - minishell does not need to handle unclosed quotes or special characters like `\` or `;`.
 
 - [ ] 4.  **Quote Handling**:

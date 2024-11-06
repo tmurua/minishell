@@ -6,7 +6,7 @@
 /*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 16:48:08 by tmurua            #+#    #+#             */
-/*   Updated: 2024/11/05 17:25:27 by tmurua           ###   ########.fr       */
+/*   Updated: 2024/11/06 11:59:10 by tmurua           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ void	main_input_loop(int ac, char **av, char **envp)
 			add_history(input);
 		printf("you entered: %s\n", input);
 		tokens = run_lexer(input);
-		//parse_tokens(tokens);
+		// parse_tokens(tokens);
 		args = ft_split(input, ' ');
 		execute_command(args, envp);
 		cleanup_input(args, tokens, input);
@@ -54,15 +54,13 @@ char	*read_user_input(void)
 
 void	execute_command(char **args, char **envp)
 {
-	if (execute_builtin(args, envp) == -1)
-	{
-		ignore_signal_handlers();
+	if (is_builtin_command(args[0]))
 		execute_builtin(args, envp);
-		setup_prompt_signals();
-	}
 	else
 	{
-		// execute_external_command(args);
+		ignore_signal_handlers();
+		execute_external_cmd(args, envp);
+		setup_prompt_signals();
 	}
 }
 
