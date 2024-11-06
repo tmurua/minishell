@@ -6,7 +6,7 @@
 /*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 09:08:10 by tmurua            #+#    #+#             */
-/*   Updated: 2024/11/06 11:51:15 by tmurua           ###   ########.fr       */
+/*   Updated: 2024/11/06 16:38:38 by tmurua           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@
 /* macros*/
 
 /* structures */
-/* enumerates all possible token types in minishell */
+/* enumerate all possible token types in minishell */
 typedef enum e_token_type
 {
 	INVALID_TOKEN,
@@ -72,11 +72,21 @@ typedef struct s_token
 	struct s_token	*next;
 }	t_token;
 
+/* enumerate 3 possible states for minishell (state machine approach) */
+typedef enum e_lexer_state
+{
+	DEFAULT_STATE,
+	SINGLE_QUOTE_STATE,
+	DOUBLE_QUOTE_STATE,
+}	t_lexer_state;
+
+
 typedef struct s_lexer
 {
-	const char	*str;
-	size_t		pos;
-	char		current_char;
+	const char		*str;
+	size_t			pos;
+	char			current_char;
+	t_lexer_state	state;
 }	t_lexer;
 
 typedef enum s_node_type

@@ -6,7 +6,7 @@
 /*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 17:35:59 by dlemaire          #+#    #+#             */
-/*   Updated: 2024/11/04 18:45:40 by tmurua           ###   ########.fr       */
+/*   Updated: 2024/11/06 16:39:47 by tmurua           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ t_lexer	init_lexer(const char *arg)
 	lexer.str = arg;
 	lexer.pos = 0;
 	lexer.current_char = arg[0];
+	lexer.state = DEFAULT_STATE;
 	return (lexer);
 }
 
