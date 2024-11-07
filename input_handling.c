@@ -6,7 +6,7 @@
 /*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 16:48:08 by tmurua            #+#    #+#             */
-/*   Updated: 2024/11/07 10:34:47 by tmurua           ###   ########.fr       */
+/*   Updated: 2024/11/07 15:51:03 by tmurua           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 void	main_input_loop(int ac, char **av, char **envp)
 {
 	char	*input;
-	char	**args;
 	t_token	*tokens;
 
 	handle_multiple_args(ac, av);
@@ -29,9 +28,8 @@ void	main_input_loop(int ac, char **av, char **envp)
 		printf("you entered: %s\n", input);
 		tokens = run_lexer(input);
 		// parse_tokens(tokens);
-		args = ft_split(input, ' ');
-		execute_command(args, envp);
-		cleanup_input(args, tokens, input);
+		execute_command(tokens, envp);
+		cleanup_input(tokens, input);
 	}
 }
 
@@ -52,20 +50,10 @@ char	*read_user_input(void)
 	return (input);
 }
 
-void	cleanup_input(char **args, t_token *tokens, char *input)
+void	cleanup_input(t_token *tokens, char *input)
 {
-	int	i;
-
-	if (args)
-	{
-		i = 0;
-		while (args[i])
-		{
-			free(args[i]);
-			i++;
-		}
-		free(args);
-	}
-	free_tokens(tokens);
-	free(input);
+	if (tokens)
+		free_tokens(tokens);
+	if (input)
+		free(input);
 }

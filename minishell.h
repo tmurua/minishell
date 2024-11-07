@@ -6,7 +6,7 @@
 /*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 09:08:10 by tmurua            #+#    #+#             */
-/*   Updated: 2024/11/07 12:25:16 by tmurua           ###   ########.fr       */
+/*   Updated: 2024/11/07 15:50:27 by tmurua           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,7 +115,7 @@ typedef struct s_ast_node
 void		main_input_loop(int ac, char **av, char **envp);
 void		handle_multiple_args(int ac, char **av);
 char		*read_user_input(void);
-void		cleanup_input(char **args, t_token *tokens, char *input);
+void		cleanup_input(t_token *tokens, char *input);
 
 /* lexer.c */
 t_token		*run_lexer(char *str);
@@ -149,7 +149,8 @@ void		reset_signal_handlers(void);
 void		ignore_signal_handlers(void);
 
 /* execute_commands.c */
-void		execute_command(char **args, char **envp);
+void		execute_command(t_token *tokens, char **envp);
+char		**tokens_to_args(t_token *tokens);
 
 /* builtin_commands.c */
 int			handle_exit_command(char *input);
