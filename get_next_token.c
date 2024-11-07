@@ -6,11 +6,15 @@
 /*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/01 16:42:16 by tmurua            #+#    #+#             */
-/*   Updated: 2024/11/07 10:23:25 by tmurua           ###   ########.fr       */
+/*   Updated: 2024/11/07 19:22:12 by tmurua           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+#define TOKEN_COMPLETE 1
+#define TOKEN_CONTINUE 0
+#define TOKEN_ERROR   -1
 
 /*	after skipping any leading whitespace, collect the next token,
 	determine its type (BUILTIN_CMD or ARGUMENT) and return * to new token */
@@ -32,44 +36,98 @@ t_token	*get_next_token(t_lexer *lexer)
 	return (token);
 }
 
-/*	create & return buffer str to collect chars from lexer input to form a token
-	if current_char is ' or " collect_quoted_token(), else append char 1 by 1 */
 char	*collect_token(t_lexer *lexer)
 {
 	char	*buffer;
+	int		status;
 
 	buffer = ft_strdup("");
 	if (!buffer)
 		return (NULL);
-	while (lexer->current_char != '\0' && !ft_iswhitespace(lexer->current_char))
+	while (lexer->current_char != '\0')
 	{
-		if (lexer->current_char == '\'' || lexer->current_char == '"')
-			collect_quoted_token(lexer, &buffer);
-		else
-			advance_and_append(lexer, &buffer);
-		if (!buffer)
+		if (lexer->state == DEFAULT_STATE)
+			status = handle_default_state(lexer, &buffer);
+		else if (lexer->state == SINGLE_QUOTE_STATE)
+			status = handle_single_quote_state(lexer, &buffer);
+		else if (lexer->state == DOUBLE_QUOTE_STATE)
+			status = handle_double_quote_state(lexer, &buffer);
+		if (status == TOKEN_COMPLETE)
+			break ;
+		else if (status == TOKEN_ERROR)
+		{
+			free(buffer);
 			return (NULL);
+		}
 	}
 	return (buffer);
 }
 
-/*	if current_char was ' or " = quote_char, move lexer forward 1 char, append
-	next chars normally until another ' or "" is found to move forward & end */
-void	collect_quoted_token(t_lexer *lexer, char **buffer)
+int	handle_default_state(t_lexer *lexer, char **buffer)
 {
-	char	quote_char;
-
-	quote_char = lexer->current_char;
-	move_forward(lexer);
-	while (lexer->current_char != '\0' && lexer->current_char != quote_char)
-		advance_and_append(lexer, buffer);
-	if (lexer->current_char == quote_char)
+	if (ft_iswhitespace(lexer->current_char))
+		return (TOKEN_COMPLETE);
+	else if (lexer->current_char == '\'')
+	{
+		lexer->state = SINGLE_QUOTE_STATE;
 		move_forward(lexer);
+	}
+	else if (lexer->current_char == '"')
+	{
+		lexer->state = DOUBLE_QUOTE_STATE;
+		move_forward(lexer);
+	}
+	/*else if (lexer->current_char == '$')
+	{
+		if (!handle_variable_expansion(lexer, buffer))
+			return (TOKEN_ERROR);
+	}*/
+	else
+	{
+		if (!advance_and_append(lexer, buffer))
+			return (TOKEN_ERROR);
+	}
+	return (TOKEN_CONTINUE);
+}
+
+int	handle_single_quote_state(t_lexer *lexer, char **buffer)
+{
+	if (lexer->current_char == '\'')
+	{
+		lexer->state = DEFAULT_STATE;
+		move_forward(lexer);
+	}
+	else
+	{
+		if (!advance_and_append(lexer, buffer))
+			return (TOKEN_ERROR);
+	}
+	return (TOKEN_CONTINUE);
+}
+
+int	handle_double_quote_state(t_lexer *lexer, char **buffer)
+{
+	if (lexer->current_char == '"')
+	{
+		lexer->state = DEFAULT_STATE;
+		move_forward(lexer);
+	}
+	/*else if (lexer->current_char == '$')
+	{
+		if (!handle_variable_expansion(lexer, buffer))
+			return (-1);
+	}*/
+	else
+	{
+		if (!advance_and_append(lexer, buffer))
+			return (TOKEN_ERROR);
+	}
+	return (TOKEN_CONTINUE);
 }
 
 /*	current_char_str: temp str to hold current_char as a null-terminated str
 	join current buffer with current_char_str at the end, move lexer forward */
-void	advance_and_append(t_lexer *lexer, char **buffer)
+int	advance_and_append(t_lexer *lexer, char **buffer)
 {
 	char	current_char_str[2];
 	char	*new_buffer;
@@ -81,8 +139,9 @@ void	advance_and_append(t_lexer *lexer, char **buffer)
 	{
 		free(*buffer);
 		*buffer = NULL;
-		return ;
+		return (0);
 	}
 	*buffer = new_buffer;
 	move_forward(lexer);
+	return (1);
 }

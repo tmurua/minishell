@@ -6,7 +6,7 @@
 /*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 09:08:10 by tmurua            #+#    #+#             */
-/*   Updated: 2024/11/07 17:30:41 by tmurua           ###   ########.fr       */
+/*   Updated: 2024/11/07 18:49:53 by tmurua           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,8 +126,10 @@ void		token_to_list(t_token **tokens, t_token **current, t_token *new);
 /* get_next_token.c */
 t_token		*get_next_token(t_lexer *lexer);
 char		*collect_token(t_lexer *lexer);
-void		collect_quoted_token(t_lexer *lexer, char **buffer);
-void		advance_and_append(t_lexer *lexer, char **buffer);
+int			handle_default_state(t_lexer *lexer, char **buffer);
+int			handle_single_quote_state(t_lexer *lexer, char **buffer);
+int			handle_double_quote_state(t_lexer *lexer, char **buffer);
+int			advance_and_append(t_lexer *lexer, char **buffer);
 
 /* token_utils.c */
 void		skip_whitespace(t_lexer *lexer);
