@@ -6,12 +6,13 @@
 /*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/07 10:32:58 by tmurua            #+#    #+#             */
-/*   Updated: 2024/11/07 16:48:50 by tmurua           ###   ########.fr       */
+/*   Updated: 2024/11/07 17:52:36 by tmurua           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+/* token_to_args: convert linked list of tokens into array of args */
 void	execute_command(t_token *tokens, char **envp)
 {
 	char	**args;
@@ -30,40 +31,59 @@ void	execute_command(t_token *tokens, char **envp)
 	free_arguments(args);
 }
 
+/* count_tokens, allocate_args_array, copy_token_values */
 char	**tokens_to_args(t_token *tokens)
 {
-	t_token	*current;
 	char	**args;
-	int		count;
-	int		i;
+	int		token_count;
 
-	count = 0;
-	current = tokens;
-	while (current)
-	{
-		count++;
-		current = current->next;
-	}
-	args = malloc(sizeof(char *) * (count + 1));
+	token_count = count_tokens(tokens);
+	args = allocate_args_array(token_count);
 	if (!args)
 		return (NULL);
-	current = tokens;
+	if (copy_token_values(tokens, args) == -1)
+	{
+		free_arguments(args);
+		return (NULL);
+	}
+	return (args);
+}
+
+/* malloc array with count +1 elements & init last to NULL, to mark end of it */
+char	**allocate_args_array(int count)
+{
+	char	**args;
+
+	args = malloc(sizeof(char *) * (count + 1));
+	if (!args)
+	{
+		perror("minishell: allocate_args_array");
+		return (NULL);
+	}
+	args[count] = NULL;
+	return (args);
+}
+
+/* duplicates each token's value using 'ft_strdup' and stores it in the array */
+int	copy_token_values(t_token *tokens, char **args)
+{
+	int		i;
+	t_token	*current;
+
 	i = 0;
+	current = tokens;
 	while (current)
 	{
 		args[i] = ft_strdup(current->value);
 		if (!args[i])
 		{
-			while (i > 0)
-				free(args[--i]);
-			free(args);
-			return (NULL);
+			perror("minishell: copy_token_values");
+			return (-1);
 		}
 		current = current->next;
 		i++;
 	}
-	args[i] = NULL;
-	return (args);
+	return (0);
 }
 
 void	free_arguments(char **args)

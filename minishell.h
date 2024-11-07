@@ -6,7 +6,7 @@
 /*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 09:08:10 by tmurua            #+#    #+#             */
-/*   Updated: 2024/11/07 16:50:39 by tmurua           ###   ########.fr       */
+/*   Updated: 2024/11/07 17:30:41 by tmurua           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,7 +133,7 @@ void		advance_and_append(t_lexer *lexer, char **buffer);
 void		skip_whitespace(t_lexer *lexer);
 t_token		*create_token(t_token_type type, char *value);
 void		free_tokens(t_token *tokens);
-int			count_tokens(const char *str);
+int			count_tokens(t_token *tokens);
 char		*ft_strjoin_free(char *s1, const char *s2);
 
 /* parser.c */
@@ -151,6 +151,8 @@ void		ignore_signal_handlers(void);
 /* execute_commands.c */
 void		execute_command(t_token *tokens, char **envp);
 char		**tokens_to_args(t_token *tokens);
+char		**allocate_args_array(int count);
+int			copy_token_values(t_token *tokens, char **args);
 void		free_arguments(char **args);
 
 /* builtin_commands.c */

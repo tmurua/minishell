@@ -6,27 +6,11 @@
 /*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 19:47:34 by tmurua            #+#    #+#             */
-/*   Updated: 2024/11/05 18:47:41 by tmurua           ###   ########.fr       */
+/*   Updated: 2024/11/07 17:18:50 by tmurua           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-/* 	both the old and new implementations handle signals (SIGINT and SIGQUIT)
-	in the same way for built-in commands like cd, pwd, etc.
-	since these commands are executed in the parent process (minishell itself),
-	the signal handling doesn't diverge between the two implementations.
-
-	the real differences between the old and refactored implementations will
-	appear when we implement External Commands in the following ways:
-	Child Processes: executing external commands creates child processes using
-	fork() and exec(). the refactored signal handling will ensure that:
-		Parent Shell: properly ignores or handles signals to remain stable.
-		Child Processes: have default signal behaviors.
-
-	also now we handle exit correctly, meaning that
-	all child processes will be terminated before exiting */
-
 
 /*	sets up signal handlers for the shell prompt.
 	handles SIGINT (Ctrl+C) and ignores SIGQUIT (Ctrl+\). */

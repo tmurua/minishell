@@ -6,7 +6,7 @@
 /*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/02 17:02:08 by tmurua            #+#    #+#             */
-/*   Updated: 2024/11/07 10:21:01 by tmurua           ###   ########.fr       */
+/*   Updated: 2024/11/07 17:25:23 by tmurua           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,26 +51,17 @@ void	free_tokens(t_token *tokens)
 	}
 }
 
-/* count nbr of tokens in input str*/
-int	count_tokens(const char *str)
+int	count_tokens(t_token *tokens)
 {
-	int	count;
-	int	in_token_flag;
+	int		count;
+	t_token	*current;
 
 	count = 0;
-	in_token_flag = 0;
-	while (*str != '\0')
+	current = tokens;
+	while (current)
 	{
-		if (!ft_iswhitespace(*str) && !in_token_flag)
-		{
-			in_token_flag = 1;
-			count++;
-		}
-		else if (ft_iswhitespace(*str))
-		{
-			in_token_flag = 0;
-		}
-		str++;
+		count++;
+		current = current->next;
 	}
 	return (count);
 }
