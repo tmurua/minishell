@@ -6,7 +6,7 @@
 /*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 09:08:10 by tmurua            #+#    #+#             */
-/*   Updated: 2024/11/07 10:43:26 by tmurua           ###   ########.fr       */
+/*   Updated: 2024/11/07 12:25:16 by tmurua           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,7 +128,6 @@ t_token		*get_next_token(t_lexer *lexer);
 char		*collect_token(t_lexer *lexer);
 void		collect_quoted_token(t_lexer *lexer, char **buffer);
 void		advance_and_append(t_lexer *lexer, char **buffer);
-void		collect_unquoted_token(t_lexer *lexer, char **buffer);
 
 /* token_utils.c */
 void		skip_whitespace(t_lexer *lexer);
