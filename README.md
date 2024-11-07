@@ -32,7 +32,7 @@
    - minishell handles signals like `Ctrl+C`, `Ctrl+D`, and `Ctrl+\` appropriately, using at most one global variable for signal handling.
    - [x]  **`Ctrl+C`** (`SIGINT`): Displays a new prompt on a new line.
    - [x]  **`Ctrl+D`**: Sends an EOF character which can be detected as an empty input from `readline`. Exits the shell.
-   - [ ]  **`Ctrl+\`** (`SIGQUIT`): Does nothing.
+   - [x]  **`Ctrl+\`** (`SIGQUIT`): Does nothing.
 
 - [ ] 9.  **Built-in Commands**:
    - [ ] `echo` with `-n` option: Displays a line of text.

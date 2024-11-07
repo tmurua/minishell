@@ -10,10 +10,11 @@ SRC =	main.c \
 		lexer.c \
 		get_next_token.c \
 		token_utils.c \
+		parser.c \
+		signal_handling.c \
+		execute_commands.c \
 		builtin_commands.c \
 		builtin_commands2.c \
-		signal_handling.c \
-		parser.c \
 		external_commands.c
 OBJ = $(SRC:.c=.o)
 

@@ -6,7 +6,7 @@
 /*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 09:08:10 by tmurua            #+#    #+#             */
-/*   Updated: 2024/11/07 09:14:51 by tmurua           ###   ########.fr       */
+/*   Updated: 2024/11/07 10:43:26 by tmurua           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,22 +115,7 @@ typedef struct s_ast_node
 void		main_input_loop(int ac, char **av, char **envp);
 void		handle_multiple_args(int ac, char **av);
 char		*read_user_input(void);
-void		execute_command(char **args, char **envp);
 void		cleanup_input(char **args, t_token *tokens, char *input);
-
-/* signal_handling.c */
-void		setup_prompt_signals(void);
-void		setup_sigint_handler(void);
-void		handle_sigint_at_prompt(int sig);
-void		setup_sigquit_handler(void);
-void		reset_signal_handlers(void);
-void		ignore_signal_handlers(void);
-
-/* external_commands.c */
-void		execute_external_cmd(char **cmd_and_args, char **envp);
-pid_t		fork_child_process(void);
-void		execute_in_child(char **cmd_and_args, char **envp);
-void		handle_parent_process(pid_t child_pid);
 
 /* lexer.c */
 t_token		*run_lexer(char *str);
@@ -156,6 +141,17 @@ char		*ft_strjoin_free(char *s1, const char *s2);
 t_ast_node	*parse_tokens(t_token *tokens);
 int			count_tokens_in_arr(t_token *tokens);
 
+/* signal_handling.c */
+void		setup_prompt_signals(void);
+void		setup_sigint_handler(void);
+void		handle_sigint_at_prompt(int sig);
+void		setup_sigquit_handler(void);
+void		reset_signal_handlers(void);
+void		ignore_signal_handlers(void);
+
+/* execute_commands.c */
+void		execute_command(char **args, char **envp);
+
 /* builtin_commands.c */
 int			handle_exit_command(char *input);
 void		print_builtin_error(char *command, char *message);
@@ -167,5 +163,11 @@ int			execute_builtin(char **args, char **envp);
 int			builtin_cd(char **args);
 int			builtin_pwd(char **args);
 int			builtin_env(char **args, char **envp);
+
+/* external_commands.c */
+void		execute_external_cmd(char **cmd_and_args, char **envp);
+pid_t		fork_child_process(void);
+void		execute_in_child(char **cmd_and_args, char **envp);
+void		handle_parent_process(pid_t child_pid);
 
 #endif
