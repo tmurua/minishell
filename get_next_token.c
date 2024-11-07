@@ -6,12 +6,14 @@
 /*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/01 16:42:16 by tmurua            #+#    #+#             */
-/*   Updated: 2024/11/02 17:17:35 by tmurua           ###   ########.fr       */
+/*   Updated: 2024/11/07 10:23:25 by tmurua           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+/*	after skipping any leading whitespace, collect the next token,
+	determine its type (BUILTIN_CMD or ARGUMENT) and return * to new token */
 t_token	*get_next_token(t_lexer *lexer)
 {
 	t_token	*token;
@@ -20,48 +22,67 @@ t_token	*get_next_token(t_lexer *lexer)
 	skip_whitespace(lexer);
 	if (lexer->current_char == '\0')
 		return (NULL);
-	if (ft_isalnum(lexer->current_char))
-	{
-		value = collect_word(lexer);
-		if (is_builtin_command(value))
-			token = create_token(BUILTIN_CMD, value);
-		else
-			token = create_token(ARGUMENT, value);
-		return (token);
-	}
+	value = collect_token(lexer);
+	if (!value)
+		return (NULL);
+	if (is_builtin_command(value))
+		token = create_token(BUILTIN_CMD, value);
 	else
+		token = create_token(ARGUMENT, value);
+	return (token);
+}
+
+/*	create & return buffer str to collect chars from lexer input to form a token
+	if current_char is ' or " collect_quoted_token(), else append char 1 by 1 */
+char	*collect_token(t_lexer *lexer)
+{
+	char	*buffer;
+
+	buffer = ft_strdup("");
+	if (!buffer)
+		return (NULL);
+	while (lexer->current_char != '\0' && !ft_iswhitespace(lexer->current_char))
 	{
-		value = collect_symbol(lexer);
-		// add logic to determine type of symbol
-		token = create_token(SYMBOL, value);
-		return (token);
+		if (lexer->current_char == '\'' || lexer->current_char == '"')
+			collect_quoted_token(lexer, &buffer);
+		else
+			advance_and_append(lexer, &buffer);
+		if (!buffer)
+			return (NULL);
 	}
+	return (buffer);
 }
 
-void	skip_whitespace(t_lexer *lexer)
+/*	if current_char was ' or " = quote_char, move lexer forward 1 char, append
+	next chars normally until another ' or "" is found to move forward & end */
+void	collect_quoted_token(t_lexer *lexer, char **buffer)
 {
-	while (lexer->current_char != '\0' && ft_iswhitespace(lexer->current_char))
-		move_forward(lexer);
-}
+	char	quote_char;
 
-char	*collect_word(t_lexer *lexer)
-{
-	size_t	start_pos;
-	char	*word;
-
-	start_pos = lexer->pos;
-	while (lexer->current_char != '\0'
-		&& ft_isalnum(lexer->current_char))
-		move_forward(lexer);
-	word = ft_substr(lexer->str, start_pos, lexer->pos - start_pos);
-	return (word);
-}
-
-char	*collect_symbol(t_lexer *lexer)
-{
-	char	*symbol;
-
-	symbol = ft_substr(lexer->str, lexer->pos, 1);
+	quote_char = lexer->current_char;
 	move_forward(lexer);
-	return (symbol);
+	while (lexer->current_char != '\0' && lexer->current_char != quote_char)
+		advance_and_append(lexer, buffer);
+	if (lexer->current_char == quote_char)
+		move_forward(lexer);
+}
+
+/*	current_char_str: temp str to hold current_char as a null-terminated str
+	join current buffer with current_char_str at the end, move lexer forward */
+void	advance_and_append(t_lexer *lexer, char **buffer)
+{
+	char	current_char_str[2];
+	char	*new_buffer;
+
+	current_char_str[0] = lexer->current_char;
+	current_char_str[1] = '\0';
+	new_buffer = ft_strjoin_free(*buffer, current_char_str);
+	if (!new_buffer)
+	{
+		free(*buffer);
+		*buffer = NULL;
+		return ;
+	}
+	*buffer = new_buffer;
+	move_forward(lexer);
 }

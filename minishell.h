@@ -6,7 +6,7 @@
 /*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 09:08:10 by tmurua            #+#    #+#             */
-/*   Updated: 2024/11/07 09:02:03 by tmurua           ###   ########.fr       */
+/*   Updated: 2024/11/07 09:14:51 by tmurua           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,14 +140,17 @@ void		token_to_list(t_token **tokens, t_token **current, t_token *new);
 
 /* get_next_token.c */
 t_token		*get_next_token(t_lexer *lexer);
-void		skip_whitespace(t_lexer *lexer);
-char		*collect_word(t_lexer *lexer);
-char		*collect_symbol(t_lexer *lexer);
+char		*collect_token(t_lexer *lexer);
+void		collect_quoted_token(t_lexer *lexer, char **buffer);
+void		advance_and_append(t_lexer *lexer, char **buffer);
+void		collect_unquoted_token(t_lexer *lexer, char **buffer);
 
 /* token_utils.c */
+void		skip_whitespace(t_lexer *lexer);
 t_token		*create_token(t_token_type type, char *value);
 void		free_tokens(t_token *tokens);
 int			count_tokens(const char *str);
+char		*ft_strjoin_free(char *s1, const char *s2);
 
 /* parser.c */
 t_ast_node	*parse_tokens(t_token *tokens);

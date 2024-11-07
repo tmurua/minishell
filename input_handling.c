@@ -6,7 +6,7 @@
 /*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 16:48:08 by tmurua            #+#    #+#             */
-/*   Updated: 2024/11/06 11:59:10 by tmurua           ###   ########.fr       */
+/*   Updated: 2024/11/07 10:25:22 by tmurua           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,7 @@ char	*read_user_input(void)
 	return (input);
 }
 
+/* needs to be changed to use tokens instead of args */
 void	execute_command(char **args, char **envp)
 {
 	if (is_builtin_command(args[0]))
