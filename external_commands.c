@@ -6,7 +6,7 @@
 /*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/06 08:57:29 by tmurua            #+#    #+#             */
-/*   Updated: 2024/11/06 11:51:17 by tmurua           ###   ########.fr       */
+/*   Updated: 2024/11/07 16:53:41 by tmurua           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 /*	fork new child process with fork_child_process(), if forking works execute
 	external command in child process with execute_in_child(), if not run
 	handle_parent_process() so parent process waits for child proces to finish*/
-void	execute_external_cmd(char **cmd_and_args, char **envp)
+void	execute_external_cmd(char **cmd_args, char **envp, t_token *tokens)
 {
 	pid_t	child_pid;
 
@@ -23,7 +23,7 @@ void	execute_external_cmd(char **cmd_and_args, char **envp)
 	if (child_pid < 0)
 		return ;
 	if (child_pid == 0)
-		execute_in_child(cmd_and_args, envp);
+		execute_in_child(cmd_args, envp, tokens);
 	else
 		handle_parent_process(child_pid);
 }
@@ -41,13 +41,16 @@ pid_t	fork_child_process(void)
 
 /*	reset signal handlers to default in child process
 	execute external command in child process with excve() */
-void	execute_in_child(char **cmd_and_args, char **envp)
+void	execute_in_child(char **cmd_and_args, char **envp, t_token *tokens)
 {
 	reset_signal_handlers();
 	execve(cmd_and_args[0], cmd_and_args, envp);
 	perror("minishell: execve");
+	free_arguments(cmd_and_args);
+	free_tokens(tokens);
 	exit(EXIT_FAILURE);
 }
+
 
 /*	ignore_signal_handlers to prevent shell interruptions while waiting
 	wait for child process to finish, and after is finished

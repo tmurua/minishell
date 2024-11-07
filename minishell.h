@@ -6,7 +6,7 @@
 /*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 09:08:10 by tmurua            #+#    #+#             */
-/*   Updated: 2024/11/07 15:50:27 by tmurua           ###   ########.fr       */
+/*   Updated: 2024/11/07 16:50:39 by tmurua           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -151,6 +151,7 @@ void		ignore_signal_handlers(void);
 /* execute_commands.c */
 void		execute_command(t_token *tokens, char **envp);
 char		**tokens_to_args(t_token *tokens);
+void		free_arguments(char **args);
 
 /* builtin_commands.c */
 int			handle_exit_command(char *input);
@@ -165,9 +166,9 @@ int			builtin_pwd(char **args);
 int			builtin_env(char **args, char **envp);
 
 /* external_commands.c */
-void		execute_external_cmd(char **cmd_and_args, char **envp);
+void		execute_external_cmd(char **cmd_args, char **envp, t_token *tokens);
 pid_t		fork_child_process(void);
-void		execute_in_child(char **cmd_and_args, char **envp);
+void		execute_in_child(char **cmd_and_args, char **envp, t_token *tokens);
 void		handle_parent_process(pid_t child_pid);
 
 #endif
