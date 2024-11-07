@@ -6,7 +6,7 @@
 /*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 09:08:10 by tmurua            #+#    #+#             */
-/*   Updated: 2024/11/06 16:38:38 by tmurua           ###   ########.fr       */
+/*   Updated: 2024/11/07 09:02:03 by tmurua           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,9 +133,10 @@ void		execute_in_child(char **cmd_and_args, char **envp);
 void		handle_parent_process(pid_t child_pid);
 
 /* lexer.c */
+t_token		*run_lexer(char *str);
 t_lexer		init_lexer(const char *arg);
 void		move_forward(t_lexer *lexer);
-t_token		*run_lexer(char *str);
+void		token_to_list(t_token **tokens, t_token **current, t_token *new);
 
 /* get_next_token.c */
 t_token		*get_next_token(t_lexer *lexer);

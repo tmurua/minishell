@@ -6,11 +6,35 @@
 /*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 17:35:59 by dlemaire          #+#    #+#             */
-/*   Updated: 2024/11/06 16:39:47 by tmurua           ###   ########.fr       */
+/*   Updated: 2024/11/07 09:01:00 by tmurua           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+t_token	*run_lexer(char *str)
+{
+	t_lexer	lexer;
+	t_token	*tokens;
+	t_token	*current_token;
+	t_token	*new_token;
+
+	lexer = init_lexer(str);
+	tokens = NULL;
+	current_token = NULL;
+	while (lexer.current_char != '\0')
+	{
+		skip_whitespace(&lexer);
+		new_token = get_next_token(&lexer);
+		if (!new_token || new_token->type == INVALID_TOKEN)
+		{
+			free_tokens(tokens);
+			return (NULL);
+		}
+		token_to_list(&tokens, &current_token, new_token);
+	}
+	return (tokens);
+}
 
 t_lexer	init_lexer(const char *arg)
 {
@@ -33,31 +57,11 @@ void	move_forward(t_lexer *lexer)
 		lexer->current_char = '\0';
 }
 
-t_token	*run_lexer(char *str)
+void	token_to_list(t_token **tokens, t_token **current, t_token *new)
 {
-	t_lexer	lexer;
-	t_token	*tokens;
-	t_token	*current_token;
-	t_token	*new_token;
-
-	lexer = init_lexer(str);
-	tokens = NULL;
-	current_token = NULL;
-	while (lexer.current_char != '\0')
-	{
-		new_token = get_next_token(&lexer);
-		if (!new_token)
-			break ;
-		if (new_token->type == INVALID_TOKEN)
-		{
-			free_tokens(tokens);
-			return (NULL);
-		}
-		if (!tokens)
-			tokens = new_token;
-		else
-			current_token->next = new_token;
-		current_token = new_token;
-	}
-	return (tokens);
+	if (!*tokens)
+		*tokens = new;
+	else
+		(*current)->next = new;
+	*current = new;
 }
