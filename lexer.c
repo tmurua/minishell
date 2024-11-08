@@ -6,7 +6,7 @@
 /*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 17:35:59 by dlemaire          #+#    #+#             */
-/*   Updated: 2024/11/07 09:01:00 by tmurua           ###   ########.fr       */
+/*   Updated: 2024/11/08 13:40:30 by tmurua           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ t_token	*run_lexer(char *str)
 	return (tokens);
 }
 
+/*	initialize lexer with the input string, set position and state */
 t_lexer	init_lexer(const char *arg)
 {
 	t_lexer	lexer;
@@ -47,8 +48,15 @@ t_lexer	init_lexer(const char *arg)
 	return (lexer);
 }
 
+/*	skip all leading whitespace characters in the input */
+void	skip_whitespace(t_lexer *lexer)
+{
+	while (lexer->current_char != '\0' && ft_iswhitespace(lexer->current_char))
+		advance_lexer_char(lexer);
+}
+
 /* moves lexer forward by one char, update current_char based on new position */
-void	move_forward(t_lexer *lexer)
+void	advance_lexer_char(t_lexer *lexer)
 {
 	lexer->pos++;
 	if (lexer->pos < ft_strlen(lexer->str))
@@ -57,11 +65,22 @@ void	move_forward(t_lexer *lexer)
 		lexer->current_char = '\0';
 }
 
-void	token_to_list(t_token **tokens, t_token **current, t_token *new)
+/*	after skipping any leading whitespace, collect the next token,
+	determine its type (BUILTIN_CMD or ARGUMENT) and return * to new token */
+t_token	*get_next_token(t_lexer *lexer)
 {
-	if (!*tokens)
-		*tokens = new;
+	t_token	*token;
+	char	*value;
+
+	skip_whitespace(lexer);
+	if (lexer->current_char == '\0')
+		return (NULL);
+	value = collect_token(lexer);
+	if (!value)
+		return (NULL);
+	if (is_builtin_command(value))
+		token = create_token(BUILTIN_CMD, value);
 	else
-		(*current)->next = new;
-	*current = new;
+		token = create_token(ARGUMENT, value);
+	return (token);
 }

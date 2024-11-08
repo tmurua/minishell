@@ -6,7 +6,7 @@
 /*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 09:08:10 by tmurua            #+#    #+#             */
-/*   Updated: 2024/11/07 18:49:53 by tmurua           ###   ########.fr       */
+/*   Updated: 2024/11/08 13:37:42 by tmurua           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,9 @@
 /* PATH_MAX */
 # include <limits.h>
 /* macros*/
+# define TOKEN_COMPLETE	1
+# define TOKEN_CONTINUE	0
+# define TOKEN_ERROR	-1
 
 /* structures */
 /* enumerate all possible token types in minishell */
@@ -120,23 +123,23 @@ void		cleanup_input(t_token *tokens, char *input);
 /* lexer.c */
 t_token		*run_lexer(char *str);
 t_lexer		init_lexer(const char *arg);
-void		move_forward(t_lexer *lexer);
-void		token_to_list(t_token **tokens, t_token **current, t_token *new);
-
-/* get_next_token.c */
+void		skip_whitespace(t_lexer *lexer);
+void		advance_lexer_char(t_lexer *lexer);
 t_token		*get_next_token(t_lexer *lexer);
+
+/* lexer_state_handler.c */
 char		*collect_token(t_lexer *lexer);
 int			handle_default_state(t_lexer *lexer, char **buffer);
 int			handle_single_quote_state(t_lexer *lexer, char **buffer);
 int			handle_double_quote_state(t_lexer *lexer, char **buffer);
 int			advance_and_append(t_lexer *lexer, char **buffer);
 
-/* token_utils.c */
-void		skip_whitespace(t_lexer *lexer);
+/* lexer_utils.c */
+char		*ft_strjoin_free(char *s1, const char *s2);
+int			count_tokens(t_token *tokens);
 t_token		*create_token(t_token_type type, char *value);
 void		free_tokens(t_token *tokens);
-int			count_tokens(t_token *tokens);
-char		*ft_strjoin_free(char *s1, const char *s2);
+void		token_to_list(t_token **tokens, t_token **current, t_token *new);
 
 /* parser.c */
 t_ast_node	*parse_tokens(t_token *tokens);

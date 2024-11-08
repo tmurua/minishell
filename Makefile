@@ -8,8 +8,8 @@ LIBFT = ./libft/libft.a
 SRC =	main.c \
 		input_handling.c \
 		lexer.c \
-		get_next_token.c \
-		token_utils.c \
+		lexer_state_handler.c \
+		lexer_utils.c \
 		parser.c \
 		signal_handling.c \
 		execute_commands.c \
