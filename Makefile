@@ -10,6 +10,7 @@ SRC =	main.c \
 		lexer.c \
 		lexer_state_handler.c \
 		lexer_utils.c \
+		variable_expansion.c \
 		parser.c \
 		signal_handling.c \
 		execute_commands.c \

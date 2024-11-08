@@ -6,7 +6,7 @@
 /*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 15:53:43 by tmurua            #+#    #+#             */
-/*   Updated: 2024/11/02 17:22:37 by tmurua           ###   ########.fr       */
+/*   Updated: 2024/11/08 17:55:41 by tmurua           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ int	handle_exit_command(char *input)
 	{
 		free(input);
 		rl_clear_history();
+		printf("exit\n");
 		exit (0);
 	}
 	return (0);

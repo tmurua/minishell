@@ -6,7 +6,7 @@
 /*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/01 16:42:16 by tmurua            #+#    #+#             */
-/*   Updated: 2024/11/08 14:25:56 by tmurua           ###   ########.fr       */
+/*   Updated: 2024/11/08 15:58:24 by tmurua           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,11 +56,11 @@ int	handle_default_state(t_lexer *lexer, char **buffer)
 		lexer->state = DOUBLE_QUOTE_STATE;
 		advance_lexer_char(lexer);
 	}
-	/*else if (lexer->current_char == '$')
+	else if (lexer->current_char == '$')
 	{
 		if (!handle_variable_expansion(lexer, buffer))
 			return (TOKEN_ERROR);
-	}*/
+	}
 	else
 	{
 		if (!advance_and_append(lexer, buffer))
@@ -93,11 +93,11 @@ int	handle_double_quote_state(t_lexer *lexer, char **buffer)
 		lexer->state = DEFAULT_STATE;
 		advance_lexer_char(lexer);
 	}
-	/*else if (lexer->current_char == '$')
+	else if (lexer->current_char == '$')
 	{
 		if (!handle_variable_expansion(lexer, buffer))
 			return (TOKEN_ERROR);
-	}*/
+	}
 	else
 	{
 		if (!advance_and_append(lexer, buffer))
