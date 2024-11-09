@@ -6,7 +6,7 @@
 /*   By: dlemaire <dlemaire@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 09:08:10 by tmurua            #+#    #+#             */
-/*   Updated: 2024/11/09 20:09:43 by dlemaire         ###   ########.fr       */
+/*   Updated: 2024/11/09 21:24:04 by dlemaire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@
 /* enumerate all possible token types in minishell */
 typedef enum e_token_type
 {
-	INVALID_TOKEN,
+	INVALID_TOKEN,//	<-- would delete all 4
 	ARGUMENT,
 	BUILTIN_CMD,
 	SYMBOL,
@@ -73,7 +73,6 @@ typedef enum e_token_type
 	TOKEN_PIPE,
 	TOKEN_AND,
 	TOKEN_OR,
-	TOKEN_EOF, // last token
 }	t_token_type;
 
 typedef enum s_node_type // needs to be renamed e_node_type

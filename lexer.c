@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
+/*   By: dlemaire <dlemaire@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 17:35:59 by dlemaire          #+#    #+#             */
-/*   Updated: 2024/11/08 13:40:30 by tmurua           ###   ########.fr       */
+/*   Updated: 2024/11/09 21:50:37 by dlemaire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,6 @@ void	advance_lexer_char(t_lexer *lexer)
 	determine its type (BUILTIN_CMD or ARGUMENT) and return * to new token */
 t_token	*get_next_token(t_lexer *lexer)
 {
-	t_token	*token;
 	char	*value;
 
 	skip_whitespace(lexer);
@@ -78,9 +77,10 @@ t_token	*get_next_token(t_lexer *lexer)
 	value = collect_token(lexer);
 	if (!value)
 		return (NULL);
-	if (is_builtin_command(value))
-		token = create_token(BUILTIN_CMD, value);
+	if (ft_strncmp(value, "|", 2) == 0)
+		return (create_token(TOKEN_PIPE, value));
+	else if (is_builtin_command(value))
+		return (create_token(BUILTIN_CMD, value));
 	else
-		token = create_token(ARGUMENT, value);
-	return (token);
+		return (create_token(TOKEN_EXEC, value));
 }
