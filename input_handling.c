@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   input_handling.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
+/*   By: dlemaire <dlemaire@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 16:48:08 by tmurua            #+#    #+#             */
-/*   Updated: 2024/11/07 15:51:03 by tmurua           ###   ########.fr       */
+/*   Updated: 2024/11/09 20:12:23 by dlemaire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ void	main_input_loop(int ac, char **av, char **envp)
 			add_history(input);
 		printf("you entered: %s\n", input);
 		tokens = run_lexer(input);
-		// parse_tokens(tokens);
+		parse_expression(&tokens, 0); // create macro (no magic number)
 		execute_command(tokens, envp);
 		cleanup_input(tokens, input);
 	}

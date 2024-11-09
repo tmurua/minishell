@@ -6,7 +6,7 @@
 /*   By: dlemaire <dlemaire@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 09:08:10 by tmurua            #+#    #+#             */
-/*   Updated: 2024/11/09 19:50:52 by dlemaire         ###   ########.fr       */
+/*   Updated: 2024/11/09 20:09:43 by dlemaire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -158,8 +158,8 @@ char		*get_variable_value(const char *var_name);
 int			append_to_buffer(char **buffer, const char *str);
 
 /* parser.c */
-t_ast_node	*parse_tokens(t_token *tokens);
-int			count_tokens_in_arr(t_token *tokens);
+t_ast_node	*parse_expression(t_token **current_token,
+				int precedence_threshold);
 
 /* signal_handling.c */
 void		setup_prompt_signals(void);
