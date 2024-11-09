@@ -6,7 +6,7 @@
 /*   By: dlemaire <dlemaire@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 17:10:48 by dlemaire          #+#    #+#             */
-/*   Updated: 2024/11/09 19:36:01 by dlemaire         ###   ########.fr       */
+/*   Updated: 2024/11/09 20:03:20 by dlemaire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,24 @@
 // the precedence
 
 #include "minishell.h"
+
+void	ft_tkadd_back(t_token **tokens, t_token *new)
+{
+	t_token	*tmp;
+
+	if (tokens)
+	{
+		tmp = *tokens;
+		if (*tokens == NULL)
+			*tokens = new;
+		else
+		{
+			while (tmp->next)
+				tmp = tmp->next;
+			tmp->next = new;
+		}
+	}
+}
 
 void	eat_token(t_token **current_token)
 {
@@ -73,7 +91,7 @@ t_ast_node	*parse_command(t_token **current_token)
 		tmp = *current_token;
 		*current_token = (*current_token)->next;
 		tmp->next = NULL;
-		ft_lstadd_back(&node->tokens, tmp);
+		ft_tkadd_back(&node->tokens, tmp);
 	}
 	return (node);
 }
@@ -85,7 +103,7 @@ t_ast_node	*parse_expression(t_token **current_token, int precedence_threshold)
 	int			precedence_lvl;
 	int			delimiter;
 
-	left = is_leaf(current_token);
+	left = parse_command(current_token);
 	if (!left)
 		return (NULL);
 	while (*current_token && is_statement_delimiter((*current_token)->type)
@@ -94,7 +112,7 @@ t_ast_node	*parse_expression(t_token **current_token, int precedence_threshold)
 		delimiter = (*current_token)->type;
 		precedence_lvl = get_precedence_lvl(delimiter) + 1;
 		eat_token(current_token);
-		right = is_branch(current_token, precedence_lvl);
+		right = parse_expression(current_token, precedence_lvl);
 		if (!right)
 			break ;
 		left = create_ast_node(delimiter, left, right);

@@ -6,7 +6,7 @@
 /*   By: dlemaire <dlemaire@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 09:08:10 by tmurua            #+#    #+#             */
-/*   Updated: 2024/11/09 19:38:36 by dlemaire         ###   ########.fr       */
+/*   Updated: 2024/11/09 19:50:52 by dlemaire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,10 +116,10 @@ typedef struct s_command_node
 
 typedef struct s_ast_node
 {
-	t_token			*tokens;
-	t_node_type		type;
-	struct s_ast	*left;
-	struct s_ast	*right;
+	t_token				*tokens;
+	t_node_type			type;
+	struct s_ast_node	*left;
+	struct s_ast_node	*right;
 }	t_ast_node;
 
 /* function prototypes */
