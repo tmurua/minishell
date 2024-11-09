@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
+/*   By: dlemaire <dlemaire@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 09:08:10 by tmurua            #+#    #+#             */
-/*   Updated: 2024/11/08 18:47:31 by tmurua           ###   ########.fr       */
+/*   Updated: 2024/11/09 19:38:36 by dlemaire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,22 @@ typedef enum e_token_type
 	ARGUMENT,
 	BUILTIN_CMD,
 	SYMBOL,
+
+	TOKEN_BI_ECHO,
+	TOKEN_EXEC,
+	TOKEN_ARGUMENT,
+	TOKEN_PIPE,
+	TOKEN_AND,
+	TOKEN_OR,
+	TOKEN_EOF, // last token
 }	t_token_type;
+
+typedef enum s_node_type // needs to be renamed e_node_type
+{
+	NODE_COMMAND,
+	NODE_PIPE,
+	NODE_BUILTIN, // would delete
+}	t_node_type;
 
 typedef struct s_token
 {
@@ -92,11 +107,6 @@ typedef struct s_lexer
 	t_lexer_state	state;
 }	t_lexer;
 
-typedef enum s_node_type
-{
-	NODE_COMMAND,
-	NODE_BUILTIN,
-}	t_node_type;
 
 typedef struct s_command_node
 {
@@ -106,11 +116,10 @@ typedef struct s_command_node
 
 typedef struct s_ast_node
 {
-	t_node_type			type;
-	t_command_node		command; // *union* might be used here later
-	struct s_ast_node	*next;
-	// left
-	// right
+	t_token			*tokens;
+	t_node_type		type;
+	struct s_ast	*left;
+	struct s_ast	*right;
 }	t_ast_node;
 
 /* function prototypes */
