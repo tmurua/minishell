@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   interpreter.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dlemaire <dlemaire@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/02 16:26:15 by dlemaire          #+#    #+#             */
-/*   Updated: 2024/11/11 16:49:28 by dlemaire         ###   ########.fr       */
+/*   Updated: 2024/11/11 18:38:39 by tmurua           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void	read_tree(t_ast_node *root)
 	}
 	else if (root->type == NODE_COMMAND)
 	{
-		if (root->tokens->type == TOKEN_BI_ECHO)
+		if (root->tokens->type == TOKEN_BUILTIN_CMD)
 			printf("implement echo\n");
 		else
 			printf("execute executable\n");
