@@ -6,7 +6,7 @@
 /*   By: dlemaire <dlemaire@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 17:10:48 by dlemaire          #+#    #+#             */
-/*   Updated: 2024/11/09 20:13:01 by dlemaire         ###   ########.fr       */
+/*   Updated: 2024/11/11 16:21:40 by dlemaire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,7 +115,12 @@ t_ast_node	*parse_expression(t_token **current_token, int precedence_threshold)
 		right = parse_expression(current_token, precedence_lvl);
 		if (!right)
 			break ;
-		left = create_ast_node(delimiter, left, right);
+		if (delimiter == TOKEN_PIPE)
+			left = create_ast_node(NODE_PIPE, left, right);
+		else if (delimiter == TOKEN_AND)
+			left = create_ast_node(NODE_AND, left, right);
+		else if (delimiter == TOKEN_OR)
+			left = create_ast_node(NODE_OR, left, right);
 	}
 	return (left);
 }

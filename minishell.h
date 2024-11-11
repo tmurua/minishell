@@ -6,7 +6,7 @@
 /*   By: dlemaire <dlemaire@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 09:08:10 by tmurua            #+#    #+#             */
-/*   Updated: 2024/11/11 14:56:32 by dlemaire         ###   ########.fr       */
+/*   Updated: 2024/11/11 16:15:34 by dlemaire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,8 @@ typedef enum s_node_type // needs to be renamed e_node_type
 {
 	NODE_COMMAND,
 	NODE_PIPE,
+	NODE_AND,
+	NODE_OR,
 	NODE_BUILTIN, // would delete
 }	t_node_type;
 
