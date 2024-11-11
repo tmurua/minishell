@@ -6,7 +6,7 @@
 /*   By: dlemaire <dlemaire@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 09:08:10 by tmurua            #+#    #+#             */
-/*   Updated: 2024/11/09 21:24:04 by dlemaire         ###   ########.fr       */
+/*   Updated: 2024/11/11 14:56:32 by dlemaire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -159,6 +159,9 @@ int			append_to_buffer(char **buffer, const char *str);
 /* parser.c */
 t_ast_node	*parse_expression(t_token **current_token,
 				int precedence_threshold);
+
+/* interpreter.c */
+void		read_tree(t_ast_node root);
 
 /* signal_handling.c */
 void		setup_prompt_signals(void);
