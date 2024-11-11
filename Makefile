@@ -8,6 +8,7 @@ LIBFT = ./libft/libft.a
 SRC =	main.c \
 		input_handling.c \
 		lexer.c \
+		interpreter.c \
 		lexer_state_handler.c \
 		lexer_utils.c \
 		variable_expansion.c \
