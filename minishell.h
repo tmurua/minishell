@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dlemaire <dlemaire@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 09:08:10 by tmurua            #+#    #+#             */
-/*   Updated: 2024/11/11 16:41:04 by dlemaire         ###   ########.fr       */
+/*   Updated: 2024/11/11 18:30:18 by tmurua           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,15 +62,17 @@
 /* enumerate all possible token types in minishell */
 typedef enum e_token_type
 {
-	INVALID_TOKEN,//	<-- would delete all 4
-	ARGUMENT,
-	BUILTIN_CMD,
-	SYMBOL,
-
-	TOKEN_BI_ECHO,
-	TOKEN_EXEC,
+	TOKEN_INVALID,
+	TOKEN_BUILTIN_CMD,
+	TOKEN_EXTERN_CMD,
 	TOKEN_ARGUMENT,
+	TOKEN_ENV_VARIABLE,
 	TOKEN_PIPE,
+	TOKEN_REDIRECT_IN,
+	TOKEN_REDIRECT_OUT,
+	TOKEN_REDIRECT_APPEND,
+	TOKEN_HEREDOC,
+	TOKEN_FILENAME,
 	TOKEN_AND,
 	TOKEN_OR,
 }	t_token_type;
@@ -106,6 +108,7 @@ typedef struct s_lexer
 	size_t			pos;
 	char			current_char;
 	t_lexer_state	state;
+	int				command_expected;
 }	t_lexer;
 
 
