@@ -6,7 +6,7 @@
 /*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/01 16:42:16 by tmurua            #+#    #+#             */
-/*   Updated: 2024/11/08 15:58:24 by tmurua           ###   ########.fr       */
+/*   Updated: 2024/11/11 20:28:50 by tmurua           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,8 @@ char	*collect_token(t_lexer *lexer)
 }
 
 /*	if whitespace found, end current token; if ' or " found, change STATE;
-	if $ found, handle var expansion; otherwise advance_and_append each char */
+	if $ found, handle var expansion; if special char found, end current token;
+	otherwise advance_and_append each char */
 int	handle_default_state(t_lexer *lexer, char **buffer)
 {
 	if (ft_iswhitespace(lexer->current_char))
@@ -61,6 +62,8 @@ int	handle_default_state(t_lexer *lexer, char **buffer)
 		if (!handle_variable_expansion(lexer, buffer))
 			return (TOKEN_ERROR);
 	}
+	else if (is_special_character(lexer))
+		return (TOKEN_COMPLETE);
 	else
 	{
 		if (!advance_and_append(lexer, buffer))

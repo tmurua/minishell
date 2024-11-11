@@ -6,7 +6,7 @@
 /*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 17:35:59 by dlemaire          #+#    #+#             */
-/*   Updated: 2024/11/11 18:22:33 by tmurua           ###   ########.fr       */
+/*   Updated: 2024/11/11 21:14:48 by tmurua           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,27 +72,20 @@ t_token	*get_next_token(t_lexer *lexer)
 {
 	char			*value;
 	t_token_type	type;
+	t_token			*new_token;
 
 	skip_whitespace(lexer);
 	if (lexer->current_char == '\0')
 		return (NULL);
-	value = collect_token(lexer);
-	if (!value)
-		return (NULL);
-	if (lexer->command_expected == 1)
-	{
-		if (is_builtin_command(value) == 1)
-			type = TOKEN_BUILTIN_CMD;
-		else
-			type = TOKEN_EXTERN_CMD;
-		lexer->command_expected = 0;
-	}
+	if (is_special_character(lexer))
+		type = handle_special_char_token(lexer, &value);
 	else
-		type = TOKEN_ARGUMENT;
-	if (ft_strncmp(value, "|", 2) == 0)
+		type = handle_regular_token(lexer, &value);
+	if (type == TOKEN_INVALID)
 	{
-		type = TOKEN_PIPE;
-		lexer->command_expected = 1;
+		free(value);
+		return (NULL);
 	}
-	return (create_token(type, value));
+	new_token = create_token(type, value);
+	return (new_token);
 }
