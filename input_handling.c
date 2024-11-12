@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   input_handling.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dlemaire <dlemaire@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 16:48:08 by tmurua            #+#    #+#             */
-/*   Updated: 2024/11/11 16:39:54 by dlemaire         ###   ########.fr       */
+/*   Updated: 2024/11/12 20:08:49 by tmurua           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ void	main_input_loop(int ac, char **av, char **envp)
 		printf("you entered: %s\n", input);
 		tokens = run_lexer(input);
 		ast_root_node = parse_expression(&tokens, 0); // create macro (no magic number)
-		read_tree(ast_root_node);
+		read_tree(ast_root_node, envp);
 		//execute_command(tokens, envp);
 		cleanup_input(tokens, input);
 	}

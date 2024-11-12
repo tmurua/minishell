@@ -6,7 +6,7 @@
 /*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 09:08:10 by tmurua            #+#    #+#             */
-/*   Updated: 2024/11/11 21:10:21 by tmurua           ###   ########.fr       */
+/*   Updated: 2024/11/12 20:08:22 by tmurua           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -175,7 +175,9 @@ t_ast_node				*parse_expression(t_token **current_token,
 							int precedence_threshold);
 
 /* interpreter.c */
-void					read_tree(t_ast_node *root);
+void					read_tree(t_ast_node *root, char **envp);
+int						evaluate_and_execute(t_ast_node *node, char **envp);
+void					execute_command_node(t_token *tokens, char **envp);
 
 /* signal_handling.c */
 void					setup_prompt_signals(void);
