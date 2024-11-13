@@ -6,14 +6,14 @@
 /*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/07 10:32:58 by tmurua            #+#    #+#             */
-/*   Updated: 2024/11/07 17:52:36 by tmurua           ###   ########.fr       */
+/*   Updated: 2024/11/13 18:54:15 by tmurua           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 /* token_to_args: convert linked list of tokens into array of args */
-void	execute_command(t_token *tokens, char **envp)
+/*void	execute_command(t_token *tokens, char **env)
 {
 	char	**args;
 
@@ -21,15 +21,15 @@ void	execute_command(t_token *tokens, char **envp)
 	if (!args)
 		return ;
 	if (is_builtin_command(args[0]))
-		execute_builtin(args, envp);
+		execute_builtin(args, env);
 	else
 	{
 		ignore_signal_handlers();
-		execute_external_cmd(args, envp, tokens);
+		execute_external_cmd(args, env, tokens);
 		setup_prompt_signals();
 	}
 	free_arguments(args);
-}
+}*/
 
 /* count_tokens, allocate_args_array, copy_token_values */
 char	**tokens_to_args(t_token *tokens)

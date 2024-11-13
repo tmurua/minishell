@@ -6,7 +6,7 @@
 /*   By: dlemaire <dlemaire@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 15:53:43 by tmurua            #+#    #+#             */
-/*   Updated: 2024/11/15 22:06:09 by dlemaire         ###   ########.fr       */
+/*   Updated: 2024/11/19 16:04:30 by dlemaire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ int	is_builtin_command(const char *word)
 }
 
 /* dispatches and executes the appropriate built-in command */
-int	execute_builtin(char **args, char **envp)
+int	execute_builtin(char **args, char ***env)
 {
 	if (args[0] == NULL)
 		return (-1);
@@ -73,11 +73,11 @@ int	execute_builtin(char **args, char **envp)
 	else if (ft_strncmp(args[0], "pwd", 4) == 0)
 		return (builtin_pwd(args));
 	else if (ft_strncmp(args[0], "env", 4) == 0)
-		return (builtin_env(args, envp));
+		return (builtin_env(args, *env));
 	else if (ft_strncmp(args[0], "export", 7) == 0)
-		return (builtin_export(args));
+		return (builtin_export(args, env));
 	else if (ft_strncmp(args[0], "unset", 6) == 0)
-		return (builtin_unset(args));
+		return (builtin_unset(args, env));
 	else if (ft_strncmp(args[0], "echo", 5) == 0)
 		return (builtin_echo(args));
 	return (-1);

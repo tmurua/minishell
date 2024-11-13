@@ -20,6 +20,8 @@ SRC =	main.c \
 		builtin_commands.c \
 		builtin_commands2.c \
 		builtin_cmd_export.c \
+		builtin_cmd_unset.c \
+		environment_utils.c \
 		external_commands.c
 
 OBJ_DIRECTORY = build

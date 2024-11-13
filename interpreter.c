@@ -6,7 +6,7 @@
 /*   By: dlemaire <dlemaire@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/02 16:26:15 by dlemaire          #+#    #+#             */
-/*   Updated: 2024/11/16 00:07:13 by dlemaire         ###   ########.fr       */
+/*   Updated: 2024/11/19 16:05:52 by dlemaire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,16 +34,16 @@ void	read_tree(t_ast_node *root)
 	}
 }*/
 /* main function to read and execute the parsed AST */
-void	read_tree(t_ast_node *root, char **envp)
+void	read_tree(t_ast_node *root, char ***env)
 {
 	if (root == NULL)
 		return ;
-	evaluate_and_execute(root, envp);
+	evaluate_and_execute(root, env);
 }
 
 /*	helper function to evaluate and execute the AST; handle the execution of
 	different types of AST nodes (commands, Pipes, logical operators) */
-int	evaluate_and_execute(t_ast_node *node, char **envp)
+int	evaluate_and_execute(t_ast_node *node, char ***env)
 {
 	int			left_result;
 	t_command	cmd;
@@ -67,10 +67,10 @@ int	evaluate_and_execute(t_ast_node *node, char **envp)
 	}
 	else if (node->type == NODE_AND || node->type == NODE_OR)
 	{
-		left_result = evaluate_and_execute(node->left, envp);
+		left_result = evaluate_and_execute(node->left, env);
 		if ((node->type == NODE_AND && left_result == 0)
 			|| (node->type == NODE_OR && left_result != 0))
-			evaluate_and_execute(node->right, envp);
+			evaluate_and_execute(node->right, env);
 		return (left_result);
 	}
 	return (-1);
@@ -78,7 +78,7 @@ int	evaluate_and_execute(t_ast_node *node, char **envp)
 
 /*	helper function to execute a command node;convert tokens to
 	args and execute either builtin cmd or external command */
-void	execute_command_node(t_token *tokens, char **envp)
+void	execute_command_node(t_token *tokens, char ***env)
 {
 	char	**args;
 
@@ -86,8 +86,8 @@ void	execute_command_node(t_token *tokens, char **envp)
 	if (args == NULL)
 		return ;
 	if (tokens->type == TOKEN_BUILTIN_CMD)
-		execute_builtin(args, envp);
+		execute_builtin(args, env);
 	else
-		execute_external_cmd(args, envp, tokens);
+		execute_external_cmd(args, *env, tokens);
 	free_arguments(args);
 }

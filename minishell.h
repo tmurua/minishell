@@ -6,7 +6,7 @@
 /*   By: dlemaire <dlemaire@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 09:08:10 by tmurua            #+#    #+#             */
-/*   Updated: 2024/11/16 02:48:17 by dlemaire         ###   ########.fr       */
+/*   Updated: 2024/11/19 16:02:52 by dlemaire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,7 +137,7 @@ typedef struct s_ast_node
 
 /* function prototypes */
 /* input_handling.c */
-void					main_input_loop(int ac, char **av, char **envp);
+void					main_input_loop(int ac, char **av, char **env);
 void					handle_multiple_args(int ac, char **av);
 char					*read_user_input(void);
 void					cleanup_input(t_token *tokens, char *input);
@@ -186,9 +186,9 @@ t_ast_node				*parse_expression(t_token **current_token,
 							int precedence_threshold);
 
 /* interpreter.c */
-void					read_tree(t_ast_node *root, char **envp);
-int						evaluate_and_execute(t_ast_node *node, char **envp);
-void					execute_command_node(t_token *tokens, char **envp);
+void					read_tree(t_ast_node *root, char ***env);
+int						evaluate_and_execute(t_ast_node *node, char ***env);
+void					execute_command_node(t_token *tokens, char ***env);
 
 /* signal_handling.c */
 void					setup_prompt_signals(void);
@@ -199,7 +199,7 @@ void					reset_signal_handlers(void);
 void					ignore_signal_handlers(void);
 
 /* execute_commands.c */
-void					execute_command(t_token *tokens, char **envp);
+void					execute_command(t_token *tokens, char **env);
 char					**tokens_to_args(t_token *tokens);
 char					**allocate_args_array(int count);
 int						copy_token_values(t_token *tokens, char **args);
@@ -210,27 +210,36 @@ int						handle_exit_command(char *input);
 void					print_builtin_error(char *command, char *message);
 int						too_many_arguments(char **args);
 int						is_builtin_command(const char *word);
-int						execute_builtin(char **args, char **envp);
+int						execute_builtin(char **args, char ***env);
 
 /* builtin_commands2.c */
 int						builtin_cd(char **args);
 int						builtin_pwd(char **args);
-int						builtin_env(char **args, char **envp);
+int						builtin_env(char **args, char **env);
 int						builtin_echo(char **args);
 
 /* builtin_cmd_export.c */
-int						builtin_export(char **args);
-int						process_export_argument(const char *arg);
+int						builtin_export(char **args, char ***env);
+int						process_export_argument(const char *arg, char ***env);
 int						is_valid_env_name(const char *name);
-int						set_env_variable(const char *name, const char *value);
-int						builtin_unset(char **args);
-int						process_unset_argument(const char *arg);
+int						set_env_variable(const char *name, const char *value,
+							char ***env);
+int						find_env_index(const char *name, char **env);
+
+/* builtin_cmd_unset.c */
+int						builtin_unset(char **args, char ***env);
+int						process_unset_argument(const char *arg, char ***env);
+int						unset_env_variable(const char *name, char ***env);
+
+/* environment_utils.c */
+char					**duplicate_env(char **envp);
+void					free_env(char **env);
 
 /* external_commands.c */
-void					execute_external_cmd(char **cmd_args, char **envp,
+void					execute_external_cmd(char **cmd_args, char **env,
 							t_token *tokens);
 pid_t					fork_child_process(void);
-void					execute_in_child(char **cmd_and_args, char **envp,
+void					execute_in_child(char **cmd_and_args, char **env,
 							t_token *tokens);
 void					handle_parent_process(pid_t child_pid);
 
