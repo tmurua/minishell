@@ -6,7 +6,7 @@
 /*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 09:08:10 by tmurua            #+#    #+#             */
-/*   Updated: 2024/11/12 20:08:22 by tmurua           ###   ########.fr       */
+/*   Updated: 2024/11/13 14:35:21 by tmurua           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -205,6 +205,15 @@ int						execute_builtin(char **args, char **envp);
 int						builtin_cd(char **args);
 int						builtin_pwd(char **args);
 int						builtin_env(char **args, char **envp);
+int						builtin_echo(char **args);
+
+/* builtin_cmd_export.c */
+int						builtin_export(char **args);
+int						process_export_argument(const char *arg);
+int						is_valid_env_name(const char *name);
+int						set_env_variable(const char *name, const char *value);
+int						builtin_unset(char **args);
+int						process_unset_argument(const char *arg);
 
 /* external_commands.c */
 void					execute_external_cmd(char **cmd_args, char **envp,

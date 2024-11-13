@@ -18,6 +18,7 @@ SRC =	main.c \
 		execute_commands.c \
 		builtin_commands.c \
 		builtin_commands2.c \
+		builtin_cmd_export.c \
 		external_commands.c
 OBJ = $(SRC:.c=.o)
 

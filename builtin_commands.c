@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_commands.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dlemaire <dlemaire@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 15:53:43 by tmurua            #+#    #+#             */
-/*   Updated: 2024/11/11 12:02:51 by dlemaire         ###   ########.fr       */
+/*   Updated: 2024/11/13 14:33:24 by tmurua           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,11 +74,11 @@ int	execute_builtin(char **args, char **envp)
 		return (builtin_pwd(args));
 	else if (ft_strncmp(args[0], "env", 4) == 0)
 		return (builtin_env(args, envp));
-	// else if (ft_strncmp(args[0], "export", 7) == 0)
-	// 	return (builtin_export(args, envp));
-	// else if (ft_strncmp(args[0], "unset", 6) == 0)
-	// 	return (builtin_unset(args));
-	// else if (ft_strncmp(args[0], "echo", 5) == 0)
-	// 	return (builtin_echo(args));
+	else if (ft_strncmp(args[0], "export", 7) == 0)
+		return (builtin_export(args));
+	else if (ft_strncmp(args[0], "unset", 6) == 0)
+		return (builtin_unset(args));
+	else if (ft_strncmp(args[0], "echo", 5) == 0)
+		return (builtin_echo(args));
 	return (-1);
 }

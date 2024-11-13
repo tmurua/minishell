@@ -6,7 +6,7 @@
 /*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/31 13:33:08 by tmurua            #+#    #+#             */
-/*   Updated: 2024/10/31 17:05:35 by tmurua           ###   ########.fr       */
+/*   Updated: 2024/11/13 11:54:10 by tmurua           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,9 +70,7 @@ int	builtin_env(char **args, char **envp)
 	return (0);
 }
 
-/* commented out since it's dependent on variable expansion, which by itself is
-closely related to tokenization process, same applies for export and unset */
-/*int	builtin_echo(char **args)
+int	builtin_echo(char **args)
 {
 	int	i;
 	int	newline;
@@ -95,4 +93,4 @@ closely related to tokenization process, same applies for export and unset */
 		ft_putstr_fd("\n", STDOUT_FILENO);
 	return (0);
 }
-*/
+
