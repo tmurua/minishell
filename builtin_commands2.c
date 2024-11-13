@@ -6,7 +6,7 @@
 /*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/31 13:33:08 by tmurua            #+#    #+#             */
-/*   Updated: 2024/11/13 11:54:10 by tmurua           ###   ########.fr       */
+/*   Updated: 2024/11/13 17:51:51 by tmurua           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,17 +54,17 @@ int	builtin_pwd(char **args)
 	return (0);
 }
 
-/* envp: array of strings representing the environment variables */
-int	builtin_env(char **args, char **envp)
+/* env: array of strings representing the environment variables */
+int	builtin_env(char **args, char **env)
 {
 	int	i;
 
 	if (too_many_arguments(args))
 		return (1);
 	i = 0;
-	while (envp[i] != NULL)
+	while (env[i] != NULL)
 	{
-		ft_putendl_fd(envp[i], STDOUT_FILENO);
+		ft_putendl_fd(env[i], STDOUT_FILENO);
 		i++;
 	}
 	return (0);

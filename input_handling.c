@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   input_handling.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dlemaire <dlemaire@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 16:48:08 by tmurua            #+#    #+#             */
-/*   Updated: 2024/11/13 15:21:15 by dlemaire         ###   ########.fr       */
+/*   Updated: 2024/11/13 17:57:13 by tmurua           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	main_input_loop(int ac, char **av, char **envp)
+void	main_input_loop(int ac, char **av, char **env)
 {
 	char		*input;
 	t_token		*tokens;
@@ -29,7 +29,7 @@ void	main_input_loop(int ac, char **av, char **envp)
 		printf("you entered: %s\n", input);
 		tokens = run_lexer(input);
 		ast_root_node = parse_expression(&tokens, 0); // create macro (no magic number)
-		read_tree(ast_root_node, envp);
+		read_tree(ast_root_node, &env);
 		cleanup_input(tokens, input);
 	}
 }
