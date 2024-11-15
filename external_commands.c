@@ -6,7 +6,7 @@
 /*   By: dlemaire <dlemaire@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/06 08:57:29 by tmurua            #+#    #+#             */
-/*   Updated: 2024/11/13 20:10:32 by dlemaire         ###   ########.fr       */
+/*   Updated: 2024/11/15 01:45:00 by dlemaire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,11 +44,14 @@ pid_t	fork_child_process(void)
 void	execute_in_child(char **cmd_and_args, char **envp, t_token *tokens)
 {
 	reset_signal_handlers();
-	execve(cmd_and_args[0], cmd_and_args, envp);
-	perror("minishell: execve");
-	free_arguments(cmd_and_args);
-	free_tokens(tokens);
-	exit(EXIT_FAILURE);
+	// execve needs the command path to be built
+	if (execve(cmd_and_args[0], cmd_and_args, envp) < 0)
+	{
+		perror("minishell: execve");
+		free_arguments(cmd_and_args);
+		free_tokens(tokens);
+		exit(EXIT_FAILURE);
+	}
 }
 
 
