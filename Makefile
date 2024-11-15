@@ -14,6 +14,7 @@ SRC =	main.c \
 		lexer_utils.c \
 		variable_expansion.c \
 		parser.c \
+		pipe.c \
 		signal_handling.c \
 		execute_commands.c \
 		builtin_commands.c \

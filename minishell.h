@@ -3,12 +3,13 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
+/*   By: dlemaire <dlemaire@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 09:08:10 by tmurua            #+#    #+#             */
-/*   Updated: 2024/11/13 18:57:53 by tmurua           ###   ########.fr       */
+/*   Updated: 2024/11/15 01:51:51 by dlemaire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
@@ -231,5 +232,8 @@ pid_t					fork_child_process(void);
 void					execute_in_child(char **cmd_and_args, char **env,
 							t_token *tokens);
 void					handle_parent_process(pid_t child_pid);
+
+/* pipe.c */
+int						init_pipe(t_ast_node *node, char **envp);
 
 #endif
