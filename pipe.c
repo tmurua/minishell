@@ -1,17 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pipex.c                                            :+:      :+:    :+:   */
+/*   pipe.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: dlemaire <dlemaire@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/14 17:23:19 by dlemaire          #+#    #+#             */
-/*   Updated: 2024/11/15 00:23:24 by dlemaire         ###   ########.fr       */
+/*   Updated: 2024/11/15 01:48:19 by dlemaire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <sys/types.h>
 #include "minishell.h"
+
+
 
 // redirection still needs to be implemented
 int	init_pipe(t_ast_node *node, char **envp)

@@ -6,7 +6,7 @@
 /*   By: dlemaire <dlemaire@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/02 16:26:15 by dlemaire          #+#    #+#             */
-/*   Updated: 2024/11/15 01:48:54 by dlemaire         ###   ########.fr       */
+/*   Updated: 2024/11/15 01:49:17 by dlemaire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ int	evaluate_and_execute(t_ast_node *node, char ***env)
 	{
 		//evaluate_and_execute(node->left, envp);
 		//evaluate_and_execute(node->right, envp);
-		init_pipe(node, envp);
+		init_pipe(node, env);
 		return (0);
 	}
 	else if (node->type == NODE_AND || node->type == NODE_OR)
