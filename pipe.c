@@ -6,7 +6,7 @@
 /*   By: dlemaire <dlemaire@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/14 17:23:19 by dlemaire          #+#    #+#             */
-/*   Updated: 2024/11/16 02:46:36 by dlemaire         ###   ########.fr       */
+/*   Updated: 2024/11/16 18:43:14 by dlemaire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,22 +19,47 @@ char	**create_directories(char *envp[]);
 char	*build_command_path(char *str, char *envp[]);
 int		count_arg_tokens(t_token *tokens);
 void	add_infile_to_cmd(t_command *cmd, char *filename);
+void	add_outfile_to_cmd(t_command *cmd, char *filename);
 
 void	run_program(t_command *cmd)
 {
-	int	pid;
-	int	source;
+	int		pid;
+	int		status;
+	t_files	*infile;
+	t_files	*outfile;
 
+	infile = cmd->infile;
+	while (infile && infile->next)
+		infile = infile->next;
+	outfile = cmd->outfile;
+	while (outfile && outfile->next)
+		outfile = outfile->next;
 	pid = fork();
 	if (pid == 0)
 	{
+		if (infile)
+		{
+			if (dup2(infile->fd, STDIN_FILENO) == -1)
+			{
+				perror("dup2 infile");
+				exit(EXIT_FAILURE);
+			}
+		}
+		if (outfile)
+		{
+			if (dup2(outfile->fd, STDOUT_FILENO) == -1)
+			{
+				perror("dup2 outfile");
+				exit(EXIT_FAILURE);
+			}
+		}
 		if (execve(cmd->path, cmd->args, cmd->envp) == -1)
 		{
 			perror("execve");
 			exit(EXIT_FAILURE);
 		}
 	}
-	waitpid(pid, &source, 0);
+	waitpid(pid, &status, 0);
 }
 
 void	init_command(t_command *cmd, t_token *tokens, char **envp)
@@ -45,6 +70,8 @@ void	init_command(t_command *cmd, t_token *tokens, char **envp)
 	cmd->cmd_name = NULL;
 	cmd->path = NULL;
 	cmd->envp = NULL;
+	cmd->infile = NULL;
+	cmd->outfile = NULL;
 	arg_count = count_arg_tokens(tokens);
 	i = 0;
 	cmd->args = malloc(sizeof(char *) * (arg_count + 1));
@@ -89,12 +116,8 @@ void	init_command(t_command *cmd, t_token *tokens, char **envp)
 		{
 			if (tokens->next->type == TOKEN_FILENAME)
 			{
-				cmd->outfile->fd = open(tokens->next->value, O_WRONLY | O_CREAT | O_TRUNC, 0644);
-				if (cmd->outfile->fd < 0)
-				{
-					perror(tokens->next->value);
-					cmd->outfile->fd = open("/dev/null", O_WRONLY);
-				}
+				add_outfile_to_cmd(cmd, tokens->next->value);
+				tokens = tokens->next;
 			}
 		}
 		tokens = tokens->next;
@@ -221,14 +244,14 @@ void	add_infile_to_cmd(t_command *cmd, char *filename)
 	new_infile = malloc(sizeof(t_files));
 	if (!new_infile)
 		exit(EXIT_FAILURE);
-	new_infile->fd = open(filename, O_RDONLY);
+	new_infile->delim = NULL;
+	new_infile->next = NULL;
+	new_infile->fd = open(filename, O_RDONLY, 0644);
 	if (new_infile->fd < 0)
 	{
 		perror(filename);
 		new_infile->fd = open("/dev/null", O_RDONLY);
 	}
-	new_infile->delim = NULL;
-	new_infile->next = NULL;
 	if (!cmd->infile)
 		cmd->infile = new_infile;
 	else
@@ -252,14 +275,27 @@ void	update_filename_tokens(t_token *tokens)
 
 void	add_outfile_to_cmd(t_command *cmd, char *filename)
 {
-	cmd->outfile = malloc(sizeof(t_files));
-	if (!cmd->outfile)
+	t_files	*new_outfile;
+	t_files	*current;
+
+	new_outfile = malloc(sizeof(t_files));
+	if (!new_outfile)
 		exit(EXIT_FAILURE);
-	cmd->outfile->fd = open(filename, O_WRONLY | O_CREAT | O_TRUNC, 0644);
-	if (cmd->outfile->fd < 0)
+	new_outfile->delim = NULL;
+	new_outfile->next = NULL;
+	new_outfile->fd = open(filename, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+	if (new_outfile->fd < 0)
 	{
 		perror(filename);
-		cmd->outfile->fd = open("/dev/null", O_WRONLY);
+		new_outfile->fd = open("/dev/null", O_WRONLY);
 	}
-	cmd->outfile->next = NULL;
+	if (!cmd->outfile)
+		cmd->outfile = new_outfile;
+	else
+	{
+		current = cmd->outfile;
+		while (current->next)
+			current = current->next;
+		current->next = new_outfile;
+	}
 }
