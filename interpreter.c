@@ -6,7 +6,7 @@
 /*   By: dlemaire <dlemaire@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/02 16:26:15 by dlemaire          #+#    #+#             */
-/*   Updated: 2024/11/15 01:03:48 by dlemaire         ###   ########.fr       */
+/*   Updated: 2024/11/16 00:07:13 by dlemaire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,11 +45,17 @@ void	read_tree(t_ast_node *root, char **envp)
 	different types of AST nodes (commands, Pipes, logical operators) */
 int	evaluate_and_execute(t_ast_node *node, char **envp)
 {
-	int	left_result;
+	int			left_result;
+	t_command	cmd;
 
 	if (node->type == NODE_COMMAND)
 	{
-		execute_command_node(node->tokens, envp);
+		//execute_command_node(node->tokens, envp);
+		init_command(&cmd, node->tokens, envp);
+		if (node->tokens->type == TOKEN_EXTERN_CMD)
+			run_program(&cmd);
+		else if (node->tokens->type == TOKEN_BUILTIN_CMD)
+			execute_builtin(cmd.args, envp);
 		return (0);
 	}
 	else if (node->type == NODE_PIPE)

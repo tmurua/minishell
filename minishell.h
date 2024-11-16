@@ -6,7 +6,7 @@
 /*   By: dlemaire <dlemaire@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 09:08:10 by tmurua            #+#    #+#             */
-/*   Updated: 2024/11/15 00:45:04 by dlemaire         ###   ########.fr       */
+/*   Updated: 2024/11/16 00:07:58 by dlemaire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ typedef enum e_token_type
 	TOKEN_OR,
 }						t_token_type;
 
-typedef enum s_node_type // needs to be renamed e_node_type
+typedef enum e_node_type
 {
 	NODE_COMMAND,
 	NODE_PIPE,
@@ -110,11 +110,22 @@ typedef struct s_lexer
 	int					command_expected;
 }						t_lexer;
 
-typedef struct s_command_node
+typedef struct s_files
 {
+	int					fd;
+	char				*delim;
+	struct s_io			*next;
+}						t_files;
+
+typedef struct s_command
+{
+	t_files				*infile;
+	t_files				*outfile;
 	char				*cmd_name;
+	char				*path;
 	char				**args;
-}						t_command_node;
+	char				**envp;
+}						t_command;
 
 typedef struct s_ast_node
 {
@@ -225,5 +236,8 @@ void					handle_parent_process(pid_t child_pid);
 
 /* pipe.c */
 int						init_pipe(t_ast_node *node, char **envp);
+void					init_command(t_command *cmd, t_token *tokens,
+							char **envp);
+void					run_program(t_command *cmd);
 
 #endif

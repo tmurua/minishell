@@ -21,7 +21,9 @@ SRC =	main.c \
 		builtin_commands2.c \
 		builtin_cmd_export.c \
 		external_commands.c
-OBJ = $(SRC:.c=.o)
+
+OBJ_DIRECTORY = build
+OBJ = $(addprefix $(OBJ_DIRECTORY)/, $(SRC:.c=.o))
 
 all: $(NAME)
 
@@ -31,8 +33,12 @@ $(NAME): $(OBJ)
 	$(CC) $(CFLAGS) -o $(NAME) $(OBJ) $(LIBFT) -lreadline
 	echo "$(NAME) generated"
 
-%.o: %.c
+$(OBJ_DIRECTORY)/%.o: %.c | $(OBJ_DIRECTORY)
 	$(CC) $(CFLAGS) -c $< -o $@
+
+
+$(OBJ_DIRECTORY):
+	mkdir -p $(OBJ_DIRECTORY)
 
 clean:
 	make clean -C ./libft --no-print-directory
@@ -42,6 +48,7 @@ clean:
 fclean: clean
 	make fclean -C ./libft --no-print-directory
 	rm -f $(NAME)
+	rm -rf $(OBJ_DIRECTORY)
 	echo "$(NAME) deleted"
 
 re: fclean all
