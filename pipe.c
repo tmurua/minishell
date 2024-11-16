@@ -6,7 +6,7 @@
 /*   By: dlemaire <dlemaire@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/14 17:23:19 by dlemaire          #+#    #+#             */
-/*   Updated: 2024/11/16 01:07:55 by dlemaire         ###   ########.fr       */
+/*   Updated: 2024/11/16 02:46:36 by dlemaire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ char	*find_executable_path(char *str, char **directories);
 char	**create_directories(char *envp[]);
 char	*build_command_path(char *str, char *envp[]);
 int		count_arg_tokens(t_token *tokens);
+void	add_infile_to_cmd(t_command *cmd, char *filename);
 
 void	run_program(t_command *cmd)
 {
@@ -80,12 +81,8 @@ void	init_command(t_command *cmd, t_token *tokens, char **envp)
 		{
 			if (tokens->next->type == TOKEN_FILENAME)
 			{
-				cmd->infile->fd = open(tokens->next->value, O_RDONLY);
-				if (cmd->infile->fd < 0)
-				{
-					perror(tokens->next->value);
-					cmd->infile->fd = open("/dev/null", O_RDONLY);
-				}
+				add_infile_to_cmd(cmd, tokens->next->value);
+				tokens = tokens->next;
 			}
 		}
 		if (tokens->type == TOKEN_REDIRECT_OUT)
@@ -214,4 +211,55 @@ int	count_arg_tokens(t_token *tokens)
 		tokens = tokens->next;
 	}
 	return (count);
+}
+
+void	add_infile_to_cmd(t_command *cmd, char *filename)
+{
+	t_files	*new_infile;
+	t_files	*current;
+
+	new_infile = malloc(sizeof(t_files));
+	if (!new_infile)
+		exit(EXIT_FAILURE);
+	new_infile->fd = open(filename, O_RDONLY);
+	if (new_infile->fd < 0)
+	{
+		perror(filename);
+		new_infile->fd = open("/dev/null", O_RDONLY);
+	}
+	new_infile->delim = NULL;
+	new_infile->next = NULL;
+	if (!cmd->infile)
+		cmd->infile = new_infile;
+	else
+	{
+		current = cmd->infile;
+		while (current->next)
+			current = current->next;
+		current->next = new_infile;
+	}
+}
+
+void	update_filename_tokens(t_token *tokens)
+{
+	while (tokens)
+	{
+		if (tokens->type == TOKEN_REDIRECT_IN || tokens->type == TOKEN_REDIRECT_OUT)
+			tokens->next->type = TOKEN_FILENAME;
+		tokens = tokens->next;
+	}
+}
+
+void	add_outfile_to_cmd(t_command *cmd, char *filename)
+{
+	cmd->outfile = malloc(sizeof(t_files));
+	if (!cmd->outfile)
+		exit(EXIT_FAILURE);
+	cmd->outfile->fd = open(filename, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+	if (cmd->outfile->fd < 0)
+	{
+		perror(filename);
+		cmd->outfile->fd = open("/dev/null", O_WRONLY);
+	}
+	cmd->outfile->next = NULL;
 }

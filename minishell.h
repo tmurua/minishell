@@ -6,7 +6,7 @@
 /*   By: dlemaire <dlemaire@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 09:08:10 by tmurua            #+#    #+#             */
-/*   Updated: 2024/11/16 00:07:58 by dlemaire         ###   ########.fr       */
+/*   Updated: 2024/11/16 02:48:17 by dlemaire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,7 +114,7 @@ typedef struct s_files
 {
 	int					fd;
 	char				*delim;
-	struct s_io			*next;
+	struct s_files		*next;
 }						t_files;
 
 typedef struct s_command
@@ -239,5 +239,6 @@ int						init_pipe(t_ast_node *node, char **envp);
 void					init_command(t_command *cmd, t_token *tokens,
 							char **envp);
 void					run_program(t_command *cmd);
+void					update_filename_tokens(t_token *tokens);
 
 #endif
