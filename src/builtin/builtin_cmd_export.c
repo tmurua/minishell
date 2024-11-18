@@ -6,11 +6,11 @@
 /*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/13 08:54:22 by tmurua            #+#    #+#             */
-/*   Updated: 2024/11/13 18:58:26 by tmurua           ###   ########.fr       */
+/*   Updated: 2024/11/18 18:39:03 by tmurua           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../../include/minishell.h"
 
 /* handle the export built-in command */
 int	builtin_export(char **args, char ***env)

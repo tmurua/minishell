@@ -6,11 +6,11 @@
 /*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 19:47:34 by tmurua            #+#    #+#             */
-/*   Updated: 2024/11/07 17:18:50 by tmurua           ###   ########.fr       */
+/*   Updated: 2024/11/18 18:39:13 by tmurua           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../../include/minishell.h"
 
 /*	sets up signal handlers for the shell prompt.
 	handles SIGINT (Ctrl+C) and ignores SIGQUIT (Ctrl+\). */

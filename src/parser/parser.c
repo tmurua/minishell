@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dlemaire <dlemaire@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 17:10:48 by dlemaire          #+#    #+#             */
-/*   Updated: 2024/11/11 16:21:40 by dlemaire         ###   ########.fr       */
+/*   Updated: 2024/11/18 18:39:12 by tmurua           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@
 // interior node (vs.leaves) represents an operator. There position dictates
 // the precedence
 
-#include "minishell.h"
+#include "../../include/minishell.h"
 
 void	ft_tkadd_back(t_token **tokens, t_token *new)
 {

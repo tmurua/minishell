@@ -3,20 +3,20 @@
 /*                                                        :::      ::::::::   */
 /*   pipe.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dlemaire <dlemaire@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/14 17:23:19 by dlemaire          #+#    #+#             */
-/*   Updated: 2024/11/15 01:48:19 by dlemaire         ###   ########.fr       */
+/*   Updated: 2024/11/18 18:44:31 by tmurua           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <sys/types.h>
-#include "minishell.h"
+#include "../../include/minishell.h"
 
 
 
 // redirection still needs to be implemented
-int	init_pipe(t_ast_node *node, char **envp)
+int	init_pipe(t_ast_node *node, char ***envp)
 {
 	int		fds[2];
 	pid_t	pids[2];

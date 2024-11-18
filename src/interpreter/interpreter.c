@@ -3,17 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   interpreter.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dlemaire <dlemaire@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/02 16:26:15 by dlemaire          #+#    #+#             */
-/*   Updated: 2024/11/15 01:49:17 by dlemaire         ###   ########.fr       */
+/*   Updated: 2024/11/18 18:39:07 by tmurua           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 // traverses the AST starting from root and following the hierarchy to execute
 // the commands in the correct order
 
-#include "minishell.h"
+#include "../../include/minishell.h"
 
 /*
 void	read_tree(t_ast_node *root)

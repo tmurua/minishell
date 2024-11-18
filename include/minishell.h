@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dlemaire <dlemaire@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 09:08:10 by tmurua            #+#    #+#             */
-/*   Updated: 2024/11/15 01:51:51 by dlemaire         ###   ########.fr       */
+/*   Updated: 2024/11/18 18:43:56 by tmurua           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 # define MINISHELL_H
 
 /* libraries */
-# include "./libft/libft.h"
+# include "../libft/libft.h"
 /* printf, perror */
 # include <stdio.h>
 /* malloc, free, exit, getenv */
@@ -234,6 +234,6 @@ void					execute_in_child(char **cmd_and_args, char **env,
 void					handle_parent_process(pid_t child_pid);
 
 /* pipe.c */
-int						init_pipe(t_ast_node *node, char **envp);
+int						init_pipe(t_ast_node *node, char ***envp);
 
 #endif

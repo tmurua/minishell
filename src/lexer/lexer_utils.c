@@ -6,11 +6,11 @@
 /*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/02 17:02:08 by tmurua            #+#    #+#             */
-/*   Updated: 2024/11/08 13:45:41 by tmurua           ###   ########.fr       */
+/*   Updated: 2024/11/18 18:39:10 by tmurua           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../../include/minishell.h"
 
 /*	join 2 str and free 1st str to prevent mem leaks, used on advance_and_append
 	to expand buffer by appending char to end of buffer str without mem leaks */
