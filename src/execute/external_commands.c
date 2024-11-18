@@ -6,11 +6,11 @@
 /*   By: dlemaire <dlemaire@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/06 08:57:29 by tmurua            #+#    #+#             */
-/*   Updated: 2024/11/19 16:06:56 by dlemaire         ###   ########.fr       */
+/*   Updated: 2024/11/19 16:09:22 by dlemaire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../../include/minishell.h"
 
 /*	fork new child process with fork_child_process(), if forking works execute
 	external command in child process with execute_in_child(), if not run
@@ -45,7 +45,7 @@ void	execute_in_child(char **cmd_and_args, char **env, t_token *tokens)
 {
 	reset_signal_handlers();
 	// execve needs the command path to be built
-	if (execve(cmd_and_args[0], cmd_and_args, envp) < 0)
+	if (execve(cmd_and_args[0], cmd_and_args, env) < 0)
 	{
 		perror("minishell: execve");
 		free_arguments(cmd_and_args);

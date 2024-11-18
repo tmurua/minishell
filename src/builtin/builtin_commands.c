@@ -6,11 +6,11 @@
 /*   By: dlemaire <dlemaire@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 15:53:43 by tmurua            #+#    #+#             */
-/*   Updated: 2024/11/19 16:04:30 by dlemaire         ###   ########.fr       */
+/*   Updated: 2024/11/19 16:09:07 by dlemaire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../../include/minishell.h"
 
 int	handle_exit_command(char *input)
 {

@@ -6,14 +6,14 @@
 /*   By: dlemaire <dlemaire@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/02 16:26:15 by dlemaire          #+#    #+#             */
-/*   Updated: 2024/11/19 16:07:20 by dlemaire         ###   ########.fr       */
+/*   Updated: 2024/11/19 16:09:42 by dlemaire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 // traverses the AST starting from root and following the hierarchy to execute
 // the commands in the correct order
 
-#include "minishell.h"
+#include "../../include/minishell.h"
 
 /*
 void	read_tree(t_ast_node *root)
@@ -45,17 +45,11 @@ void	read_tree(t_ast_node *root, char ***env)
 	different types of AST nodes (commands, Pipes, logical operators) */
 int	evaluate_and_execute(t_ast_node *node, char ***env)
 {
-	int			left_result;
-	t_command	cmd;
+	int	left_result;
 
 	if (node->type == NODE_COMMAND)
 	{
-		//execute_command_node(node->tokens, envp);
-		init_command(&cmd, node->tokens, envp);
-		if (node->tokens->type == TOKEN_EXTERN_CMD)
-			run_program(&cmd);
-		else if (node->tokens->type == TOKEN_BUILTIN_CMD)
-			execute_builtin(cmd.args, envp);
+		execute_command_node(node->tokens, env);
 		return (0);
 	}
 	else if (node->type == NODE_PIPE)

@@ -6,11 +6,11 @@
 /*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/31 13:33:08 by tmurua            #+#    #+#             */
-/*   Updated: 2024/11/13 17:51:51 by tmurua           ###   ########.fr       */
+/*   Updated: 2024/11/18 18:39:06 by tmurua           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../../include/minishell.h"
 
 /* chdir() changes directories via the OS, with 'path' as target path
 'result' checks success, if result != 0, handle input/errors with perror() */

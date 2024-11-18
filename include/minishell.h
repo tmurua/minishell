@@ -6,15 +6,16 @@
 /*   By: dlemaire <dlemaire@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 09:08:10 by tmurua            #+#    #+#             */
-/*   Updated: 2024/11/19 16:02:52 by dlemaire         ###   ########.fr       */
+/*   Updated: 2024/11/19 16:08:49 by dlemaire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
 /* libraries */
-# include "./libft/libft.h"
+# include "../libft/libft.h"
 /* printf, perror */
 # include <stdio.h>
 /* malloc, free, exit, getenv */
@@ -77,7 +78,7 @@ typedef enum e_token_type
 	TOKEN_OR,
 }						t_token_type;
 
-typedef enum e_node_type
+typedef enum s_node_type // needs to be renamed e_node_type
 {
 	NODE_COMMAND,
 	NODE_PIPE,
@@ -110,22 +111,11 @@ typedef struct s_lexer
 	int					command_expected;
 }						t_lexer;
 
-typedef struct s_files
+typedef struct s_command_node
 {
-	int					fd;
-	char				*delim;
-	struct s_files		*next;
-}						t_files;
-
-typedef struct s_command
-{
-	t_files				*infile;
-	t_files				*outfile;
 	char				*cmd_name;
-	char				*path;
 	char				**args;
-	char				**envp;
-}						t_command;
+}						t_command_node;
 
 typedef struct s_ast_node
 {
@@ -244,10 +234,6 @@ void					execute_in_child(char **cmd_and_args, char **env,
 void					handle_parent_process(pid_t child_pid);
 
 /* pipe.c */
-int						init_pipe(t_ast_node *node, char **envp);
-void					init_command(t_command *cmd, t_token *tokens,
-							char **envp);
-void					run_program(t_command *cmd);
-void					update_filename_tokens(t_token *tokens);
+int						init_pipe(t_ast_node *node, char ***envp);
 
 #endif

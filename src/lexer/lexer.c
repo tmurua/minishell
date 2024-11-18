@@ -6,11 +6,11 @@
 /*   By: dlemaire <dlemaire@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 17:35:59 by dlemaire          #+#    #+#             */
-/*   Updated: 2024/11/16 02:45:05 by dlemaire         ###   ########.fr       */
+/*   Updated: 2024/11/19 16:09:48 by dlemaire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../../include/minishell.h"
 
 t_token	*run_lexer(char *str)
 {
@@ -33,7 +33,6 @@ t_token	*run_lexer(char *str)
 		}
 		token_to_list(&tokens, &current_token, new_token);
 	}
-	update_filename_tokens(tokens);
 	return (tokens);
 }
 
@@ -79,10 +78,7 @@ t_token	*get_next_token(t_lexer *lexer)
 	if (lexer->current_char == '\0')
 		return (NULL);
 	if (is_special_character(lexer))
-	{
 		type = handle_special_char_token(lexer, &value);
-
-	}
 	else
 		type = handle_regular_token(lexer, &value);
 	if (type == TOKEN_INVALID)

@@ -1,31 +1,32 @@
-NAME = minishell
+NAME	= minishell
 
-CC = cc
-CFLAGS = -Wall -Wextra -Werror -g
+CC		= cc
+CFLAGS	= -Wall -Wextra -Werror -g -I include
 
-LIBFT = ./libft/libft.a
+LIBFT	= ./libft/libft.a
 
-SRC =	main.c \
-		input_handling.c \
-		lexer.c \
-		lexer_assign_types.c \
-		interpreter.c \
-		lexer_state_handler.c \
-		lexer_utils.c \
-		variable_expansion.c \
-		parser.c \
-		pipe.c \
-		signal_handling.c \
-		execute_commands.c \
-		builtin_commands.c \
-		builtin_commands2.c \
-		builtin_cmd_export.c \
-		builtin_cmd_unset.c \
-		environment_utils.c \
-		external_commands.c
+# Source Files
+SRC		= \
+	./src/main.c \
+	./src/environment/environment_utils.c \
+	./src/input/input_handling.c \
+	./src/lexer/lexer.c \
+	./src/lexer/lexer_assign_types.c \
+	./src/lexer/lexer_state_handler.c \
+	./src/lexer/lexer_utils.c \
+	./src/parser/parser.c \
+	./src/interpreter/interpreter.c \
+	./src/variable/variable_expansion.c \
+	./src/pipe/pipe.c \
+	./src/builtin/builtin_commands.c \
+	./src/builtin/builtin_commands2.c \
+	./src/builtin/builtin_cmd_export.c \
+	./src/builtin/builtin_cmd_unset.c \
+	./src/execute/execute_commands.c \
+	./src/execute/external_commands.c \
+	./src/signal/signal_handling.c
 
-OBJ_DIRECTORY = build
-OBJ = $(addprefix $(OBJ_DIRECTORY)/, $(SRC:.c=.o))
+OBJ		= $(SRC:.c=.o)
 
 all: $(NAME)
 

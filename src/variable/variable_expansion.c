@@ -6,11 +6,11 @@
 /*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/08 11:33:39 by tmurua            #+#    #+#             */
-/*   Updated: 2024/11/08 19:28:02 by tmurua           ###   ########.fr       */
+/*   Updated: 2024/11/18 18:39:14 by tmurua           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../../include/minishell.h"
 
 /*	advance_lexer_char to skip $; collect_variable_name; get_variable_value;
 	if variable doesn't exist, use an empty str, ""; append value str to buffer;
