@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
+/*   By: dlemaire <dlemaire@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 09:08:10 by tmurua            #+#    #+#             */
-/*   Updated: 2024/11/18 18:43:56 by tmurua           ###   ########.fr       */
+/*   Updated: 2024/11/19 16:18:59 by dlemaire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,11 +111,22 @@ typedef struct s_lexer
 	int					command_expected;
 }						t_lexer;
 
-typedef struct s_command_node
+typedef struct s_files
 {
+	int					fd;
+	char				*delim;
+	struct s_files		*next;
+}						t_files;
+
+typedef struct s_command
+{
+	t_files				*infile;
+	t_files				*outfile;
 	char				*cmd_name;
+	char				*path;
 	char				**args;
-}						t_command_node;
+	char				**envp;
+}						t_command;
 
 typedef struct s_ast_node
 {
