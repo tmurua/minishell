@@ -6,7 +6,7 @@
 /*   By: dlemaire <dlemaire@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 09:08:10 by tmurua            #+#    #+#             */
-/*   Updated: 2024/11/19 16:18:59 by dlemaire         ###   ########.fr       */
+/*   Updated: 2024/11/19 16:58:21 by dlemaire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,7 +125,7 @@ typedef struct s_command
 	char				*cmd_name;
 	char				*path;
 	char				**args;
-	char				**envp;
+	char				***env;
 }						t_command;
 
 typedef struct s_ast_node
@@ -245,6 +245,10 @@ void					execute_in_child(char **cmd_and_args, char **env,
 void					handle_parent_process(pid_t child_pid);
 
 /* pipe.c */
-int						init_pipe(t_ast_node *node, char ***envp);
+int						init_pipe(t_ast_node *node, char ***env);
+void					init_command(t_command *cmd, t_token *tokens,
+							char ***env);
+void					run_program(t_command *cmd);
+void					update_filename_tokens(t_token *tokens);
 
 #endif

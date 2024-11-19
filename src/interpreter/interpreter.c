@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   interpreter.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
+/*   By: dlemaire <dlemaire@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/02 16:26:15 by dlemaire          #+#    #+#             */
-/*   Updated: 2024/11/18 18:39:07 by tmurua           ###   ########.fr       */
+/*   Updated: 2024/11/19 16:57:50 by dlemaire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,11 +45,16 @@ void	read_tree(t_ast_node *root, char ***env)
 	different types of AST nodes (commands, Pipes, logical operators) */
 int	evaluate_and_execute(t_ast_node *node, char ***env)
 {
-	int	left_result;
+	int			left_result;
+	t_command	cmd;
 
 	if (node->type == NODE_COMMAND)
 	{
-		execute_command_node(node->tokens, env);
+		init_command(&cmd, node->tokens, env);
+		if (node->tokens->type == TOKEN_EXTERN_CMD)
+			run_program(&cmd);
+		else if (node->tokens->type == TOKEN_BUILTIN_CMD)
+			execute_builtin(cmd.args, env);
 		return (0);
 	}
 	else if (node->type == NODE_PIPE)
@@ -72,16 +77,16 @@ int	evaluate_and_execute(t_ast_node *node, char ***env)
 
 /*	helper function to execute a command node;convert tokens to
 	args and execute either builtin cmd or external command */
-void	execute_command_node(t_token *tokens, char ***env)
-{
-	char	**args;
+// void	execute_command_node(t_token *tokens, char ***env)
+// {
+// 	char	**args;
 
-	args = tokens_to_args(tokens);
-	if (args == NULL)
-		return ;
-	if (tokens->type == TOKEN_BUILTIN_CMD)
-		execute_builtin(args, env);
-	else
-		execute_external_cmd(args, *env, tokens);
-	free_arguments(args);
-}
+// 	args = tokens_to_args(tokens);
+// 	if (args == NULL)
+// 		return ;
+// 	if (tokens->type == TOKEN_BUILTIN_CMD)
+// 		execute_builtin(args, env);
+// 	else
+// 		execute_external_cmd(args, env, tokens);
+// 	free_arguments(args);
+// }
