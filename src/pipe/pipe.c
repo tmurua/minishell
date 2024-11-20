@@ -6,7 +6,7 @@
 /*   By: dlemaire <dlemaire@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/14 17:23:19 by dlemaire          #+#    #+#             */
-/*   Updated: 2024/11/19 16:51:33 by dlemaire         ###   ########.fr       */
+/*   Updated: 2024/11/20 18:39:07 by dlemaire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ char	**create_directories(char ***env);
 char	*build_command_path(char *str, char ***env);
 int		count_arg_tokens(t_token *tokens);
 void	add_infile_to_cmd(t_command *cmd, char *filename);
-void	add_outfile_to_cmd(t_command *cmd, char *filename);
+void	add_outfile_to_cmd(t_command *cmd, char *filename, int append_flag);
 
 void	run_program(t_command *cmd) // better naming
 {
@@ -116,14 +116,24 @@ void	init_command(t_command *cmd, t_token *tokens, char ***env)
 				tokens = tokens->next;
 			}
 		}
+		// heredocs
 		if (tokens->type == TOKEN_REDIRECT_OUT)
 		{
 			if (tokens->next->type == TOKEN_FILENAME)
 			{
-				add_outfile_to_cmd(cmd, tokens->next->value);
+				add_outfile_to_cmd(cmd, tokens->next->value, 0);
 				tokens = tokens->next;
 			}
 		}
+		if (tokens->type == TOKEN_REDIRECT_APPEND)
+		{
+			if (tokens->next->type == TOKEN_FILENAME)
+			{
+				add_outfile_to_cmd(cmd, tokens->next->value, 1);
+				tokens = tokens->next;
+			}
+		}
+		//append
 		tokens = tokens->next;
 	}
 	cmd->args[i] = NULL;
@@ -271,13 +281,15 @@ void	update_filename_tokens(t_token *tokens)
 {
 	while (tokens)
 	{
-		if (tokens->type == TOKEN_REDIRECT_IN || tokens->type == TOKEN_REDIRECT_OUT)
+		if (tokens->type == TOKEN_REDIRECT_IN
+			|| tokens->type == TOKEN_REDIRECT_OUT
+			|| tokens->type == TOKEN_REDIRECT_APPEND)
 			tokens->next->type = TOKEN_FILENAME;
 		tokens = tokens->next;
 	}
 }
 
-void	add_outfile_to_cmd(t_command *cmd, char *filename)
+void	add_outfile_to_cmd(t_command *cmd, char *filename, int append_flag)
 {
 	t_files	*new_outfile;
 	t_files	*current;
@@ -287,7 +299,10 @@ void	add_outfile_to_cmd(t_command *cmd, char *filename)
 		exit(EXIT_FAILURE);
 	new_outfile->delim = NULL;
 	new_outfile->next = NULL;
-	new_outfile->fd = open(filename, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+	if (append_flag)
+		new_outfile->fd = open(filename, O_WRONLY | O_CREAT | O_APPEND, 0644);
+	else
+		new_outfile->fd = open(filename, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 	if (new_outfile->fd < 0)
 	{
 		perror(filename);
