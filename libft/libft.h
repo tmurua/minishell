@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dlemaire <dlemaire@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/16 17:11:17 by tmurua            #+#    #+#             */
-/*   Updated: 2024/10/29 14:33:50 by dlemaire         ###   ########.fr       */
+/*   Updated: 2024/11/20 12:18:46 by tmurua           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,8 @@ int		ft_memcmp(const void *s1, const void *s2, size_t n);
 void	*ft_calloc(size_t count, size_t size);
 
 /* Bonus functions (lists) */
+/*	with addition of garbage_collector fts, t_list serves as storage list for
+	all nodes created for mem alloc & will need to be freed with gc_free_all()*/
 typedef struct s_list
 {
 	void			*content;
@@ -94,5 +96,12 @@ t_list	*ft_lstmap(t_list *lst, void *(*f)(void *), void (*del)(void *));
 /* added for later projects */
 /* Conversion */
 long	ft_atol(const char *str);
+
+/* garbage_collector */
+char	*gc_strjoin(t_list **gc_head, const char *s1, const char *s2);
+char	*gc_strdup(t_list **gc_head, const char *s1);
+void	*gc_calloc(t_list **gc_head, size_t count, size_t size);
+void	gc_add_ptr_to_list(t_list **gc_head, void *new_ptr);
+void	gc_free_all(t_list *gc_head);
 
 #endif

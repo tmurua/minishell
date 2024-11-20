@@ -1,30 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   gc_free_all.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/10/28 11:19:43 by dlemaire          #+#    #+#             */
-/*   Updated: 2024/11/20 10:28:31 by tmurua           ###   ########.fr       */
+/*   Created: 2024/11/20 10:19:38 by tmurua            #+#    #+#             */
+/*   Updated: 2024/11/20 12:16:35 by tmurua           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/minishell.h"
+#include "../libft.h"
 
-int	main(int ac, char *av[], char *envp[])
+/* free all nodes in garbage_collector t_list and all their content */
+void	gc_free_all(t_list *gc_head)
 {
-	char	**env;
-	t_list *garbage_collector_head = NULL;
+	t_list	*gc_current_node;
+	t_list	*gc_next_node;
 
-	setup_prompt_signals();
-	env = duplicate_env(envp);
-	if (!env)
+	gc_current_node = gc_head;
+	while (gc_current_node)
 	{
-		perror("minishell: duplicate_env");
-		return (1);
+		gc_next_node = gc_current_node->next;
+		if (gc_current_node->content)
+			free(gc_current_node->content);
+		free(gc_current_node);
+		gc_current_node = gc_next_node;
 	}
-	main_input_loop(ac, av, env);
-	free_env(env);
-	return (0);
 }

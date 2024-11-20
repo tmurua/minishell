@@ -1,30 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   gc_strdup.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/10/28 11:19:43 by dlemaire          #+#    #+#             */
-/*   Updated: 2024/11/20 10:28:31 by tmurua           ###   ########.fr       */
+/*   Created: 2024/11/20 10:28:48 by tmurua            #+#    #+#             */
+/*   Updated: 2024/11/20 12:16:40 by tmurua           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/minishell.h"
+#include "../libft.h"
 
-int	main(int ac, char *av[], char *envp[])
+/* same as ft_strdup, but adds dup(dest) string to garbage collector t_list */
+char	*gc_strdup(t_list **gc_head, const char *s1)
 {
-	char	**env;
-	t_list *garbage_collector_head = NULL;
+	char	*gc_dest;
+	size_t	len;
 
-	setup_prompt_signals();
-	env = duplicate_env(envp);
-	if (!env)
-	{
-		perror("minishell: duplicate_env");
-		return (1);
-	}
-	main_input_loop(ac, av, env);
-	free_env(env);
-	return (0);
+	len = ft_strlen(s1);
+	gc_dest = gc_calloc(gc_head, len + 1, sizeof(char));
+	if (!gc_dest)
+		return (NULL);
+	ft_strlcpy(gc_dest, s1, len + 1);
+	return (gc_dest);
 }

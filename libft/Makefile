@@ -14,7 +14,14 @@ CFILES =	ft_strlen.c		ft_strlcpy.c	ft_strlcat.c	\
 			ft_itoa.c		ft_print_char.c	ft_print_str.c	\
 			ft_print_int.c	ft_print_unsigned_int.c	ft_print_hex.c \
 			ft_print_pointer.c	ft_printf.c	ft_iswhitespace.c \
-			ft_atol.c       ft_strndup.c
+			ft_atol.c       ft_strndup.c \
+			./garbage_collector/gc_strdup.c \
+			./garbage_collector/gc_strjoin.c \
+			./garbage_collector/gc_calloc.c \
+			./garbage_collector/gc_calloc.c \
+			./garbage_collector/gc_add_ptr_to_list.c \
+			./garbage_collector/gc_free_all.c
+
 
 OBJECTS = $(CFILES:.c=.o)
 
