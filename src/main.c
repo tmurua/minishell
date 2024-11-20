@@ -6,7 +6,7 @@
 /*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 11:19:43 by dlemaire          #+#    #+#             */
-/*   Updated: 2024/11/20 15:24:26 by tmurua           ###   ########.fr       */
+/*   Updated: 2024/11/20 15:49:13 by tmurua           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,16 +14,16 @@
 
 int	main(int ac, char *av[], char *envp[])
 {
-	char	**env;
+	t_minishell	shell;
 
-	setup_prompt_signals();
-	env = duplicate_env(envp);
-	if (!env)
+	shell.env = duplicate_env(envp);
+	if (!shell.env)
 	{
 		perror("minishell: duplicate_env");
 		return (1);
 	}
-	main_input_loop(ac, av, env);
-	free_env(env);
+	setup_prompt_signals();
+	main_input_loop(ac, av, &shell);
+	free_env(shell.env);
 	return (0);
 }

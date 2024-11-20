@@ -6,7 +6,7 @@
 /*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/31 13:33:08 by tmurua            #+#    #+#             */
-/*   Updated: 2024/11/18 18:39:06 by tmurua           ###   ########.fr       */
+/*   Updated: 2024/11/20 17:23:20 by tmurua           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,16 +55,16 @@ int	builtin_pwd(char **args)
 }
 
 /* env: array of strings representing the environment variables */
-int	builtin_env(char **args, char **env)
+int	builtin_env(char **args, t_minishell *shell)
 {
 	int	i;
 
 	if (too_many_arguments(args))
 		return (1);
 	i = 0;
-	while (env[i] != NULL)
+	while (shell->env[i] != NULL)
 	{
-		ft_putendl_fd(env[i], STDOUT_FILENO);
+		ft_putendl_fd(shell->env[i], STDOUT_FILENO);
 		i++;
 	}
 	return (0);

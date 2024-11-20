@@ -6,7 +6,7 @@
 /*   By: dlemaire <dlemaire@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/14 17:23:19 by dlemaire          #+#    #+#             */
-/*   Updated: 2024/11/20 18:39:07 by dlemaire         ###   ########.fr       */
+/*   Updated: 2024/11/20 18:59:39 by dlemaire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,8 @@
 
 // process for single command execution should be placed in a different file
 char	*find_executable_path(char *str, char **directories);
-char	**create_directories(char ***env);
-char	*build_command_path(char *str, char ***env);
+char	**create_directories(t_minishell *shell);
+char	*build_command_path(char *str, t_minishell *shell);
 int		count_arg_tokens(t_token *tokens);
 void	add_infile_to_cmd(t_command *cmd, char *filename);
 void	add_outfile_to_cmd(t_command *cmd, char *filename, int append_flag);
@@ -66,7 +66,7 @@ void	run_program(t_command *cmd) // better naming
 	setup_prompt_signals();
 }
 
-void	init_command(t_command *cmd, t_token *tokens, char ***env)
+void	init_command(t_command *cmd, t_token *tokens, t_minishell *shell)
 {
 	int	arg_count;
 	int	i;
@@ -100,7 +100,7 @@ void	init_command(t_command *cmd, t_token *tokens, char ***env)
 			cmd->args[i] = ft_strdup(tokens->value);
 			if (!cmd->args[i++])
 				exit(EXIT_FAILURE);
-			cmd->path = build_command_path(cmd->cmd_name, env);
+			cmd->path = build_command_path(cmd->cmd_name, shell);
 		}
 		if (tokens->type == TOKEN_ARGUMENT)
 		{
@@ -137,11 +137,10 @@ void	init_command(t_command *cmd, t_token *tokens, char ***env)
 		tokens = tokens->next;
 	}
 	cmd->args[i] = NULL;
-	cmd->env = env;
 }
 
 // redirection still needs to be implemented
-int	init_pipe(t_ast_node *node, char ***env)
+int	init_pipe(t_ast_node *node, t_minishell *shell)
 {
 	int		fds[2];
 	pid_t	pids[2];
@@ -158,7 +157,7 @@ int	init_pipe(t_ast_node *node, char ***env)
 			exit(EXIT_FAILURE);
 		}
 		close(fds[1]);
-		read_tree(node->left, env);
+		read_tree(node->left, shell);
 		exit(EXIT_SUCCESS);
 	}
 	pids[1] = fork();
@@ -171,7 +170,7 @@ int	init_pipe(t_ast_node *node, char ***env)
 			exit(EXIT_FAILURE);
 		}
 		close(fds[0]);
-		read_tree(node->right, env);
+		read_tree(node->right, shell);
 		exit(EXIT_SUCCESS);
 	}
 	close(fds[0]);
@@ -201,17 +200,17 @@ char	*find_executable_path(char *str, char **directories)
 	return (NULL);
 }
 
-char	**create_directories(char ***env)
+char	**create_directories(t_minishell *shell)
 {
 	int		i;
 	char	**directories;
 
 	i = 0;
-	while ((*env)[i])
+	while (shell->env[i])
 	{
-		if (ft_strncmp("PATH=", (*env)[i], 5) == 0)
+		if (ft_strncmp("PATH=", shell->env[i], 5) == 0)
 		{
-			directories = ft_split(ft_strchr((*env)[i], '/'), ':');
+			directories = ft_split(ft_strchr(shell->env[i], '/'), ':');
 			if (!directories)
 				exit(EXIT_FAILURE);
 			return (directories);
@@ -221,14 +220,14 @@ char	**create_directories(char ***env)
 	return (NULL);
 }
 
-char	*build_command_path(char *str, char ***env)
+char	*build_command_path(char *str, t_minishell *shell)
 {
 	char	**directories;
 	char	*result_path;
 
 	if (access(str, X_OK) == 0)
 		return (ft_strdup(str));
-	directories = create_directories(env);
+	directories = create_directories(shell);
 	if (!directories)
 		exit(EXIT_FAILURE);
 	result_path = find_executable_path(str, directories);
