@@ -3,13 +3,12 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dlemaire <dlemaire@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 09:08:10 by tmurua            #+#    #+#             */
-/*   Updated: 2024/11/19 16:58:21 by dlemaire         ###   ########.fr       */
+/*   Updated: 2024/11/20 13:57:14 by tmurua           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
@@ -60,6 +59,17 @@
 # define TOKEN_ERROR -1
 
 /* structures */
+/* context structure to group data together and improve code organization */
+typedef struct s_minishell
+{
+	char				**env;
+	t_list				*garbage_head;
+	// tokens?
+	// lexer?
+	// parser?
+	// ast?
+}						t_minishell;
+
 /* enumerate all possible token types in minishell */
 typedef enum e_token_type
 {
@@ -78,7 +88,7 @@ typedef enum e_token_type
 	TOKEN_OR,
 }						t_token_type;
 
-typedef enum s_node_type // needs to be renamed e_node_type
+typedef enum e_node_type
 {
 	NODE_COMMAND,
 	NODE_PIPE,

@@ -6,7 +6,7 @@
 /*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 11:19:43 by dlemaire          #+#    #+#             */
-/*   Updated: 2024/11/20 10:28:31 by tmurua           ###   ########.fr       */
+/*   Updated: 2024/11/20 13:17:37 by tmurua           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,9 @@
 int	main(int ac, char *av[], char *envp[])
 {
 	char	**env;
-	t_list *garbage_collector_head = NULL;
+	t_list	*gc;
 
+	gc = NULL;
 	setup_prompt_signals();
 	env = duplicate_env(envp);
 	if (!env)

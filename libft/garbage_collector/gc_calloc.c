@@ -6,7 +6,7 @@
 /*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 17:19:38 by tmurua            #+#    #+#             */
-/*   Updated: 2024/11/20 12:16:36 by tmurua           ###   ########.fr       */
+/*   Updated: 2024/11/20 13:48:18 by tmurua           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,6 @@ void	*gc_calloc(t_list **gc_head, size_t count, size_t size)
 		ft_putstr_fd("Error: Failed to allocate memory\n", 2);
 		return (NULL);
 	}
-	gc_add_to_list(gc_head, gc_ptr);
+	gc_add_ptr_to_list(gc_head, gc_ptr);
 	return (gc_ptr);
 }
