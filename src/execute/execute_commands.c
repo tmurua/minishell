@@ -6,14 +6,14 @@
 /*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/07 10:32:58 by tmurua            #+#    #+#             */
-/*   Updated: 2024/11/18 18:39:06 by tmurua           ###   ########.fr       */
+/*   Updated: 2024/11/20 17:16:10 by tmurua           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
 /* token_to_args: convert linked list of tokens into array of args */
-/*void	execute_command(t_token *tokens, char **env)
+/*void	execute_command(t_token *tokens, t_minishell *shell)
 {
 	char	**args;
 

@@ -6,13 +6,13 @@
 /*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 16:48:08 by tmurua            #+#    #+#             */
-/*   Updated: 2024/11/18 18:39:06 by tmurua           ###   ########.fr       */
+/*   Updated: 2024/11/20 16:05:05 by tmurua           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-void	main_input_loop(int ac, char **av, char **env)
+void	main_input_loop(int ac, char **av, t_minishell *shell)
 {
 	char		*input;
 	t_token		*tokens;
@@ -29,7 +29,7 @@ void	main_input_loop(int ac, char **av, char **env)
 		printf("you entered: %s\n", input);
 		tokens = run_lexer(input);
 		ast_root_node = parse_expression(&tokens, 0); // create macro (no magic number)
-		read_tree(ast_root_node, &env);
+		read_tree(ast_root_node, shell);
 		cleanup_input(tokens, input);
 	}
 }
