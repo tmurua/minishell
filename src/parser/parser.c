@@ -6,7 +6,7 @@
 /*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 17:10:48 by dlemaire          #+#    #+#             */
-/*   Updated: 2024/11/18 18:39:12 by tmurua           ###   ########.fr       */
+/*   Updated: 2024/11/20 18:49:23 by tmurua           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,11 +68,16 @@ int	is_statement_delimiter(int type)
 }
 
 t_ast_node	*create_ast_node(t_node_type type, t_ast_node *left,
-	t_ast_node *right)
+		t_ast_node *right, t_minishell *shell)
 {
 	t_ast_node	*new;
 
-	new = malloc(sizeof(t_ast_node));
+	new = gc_calloc(&shell->gc_head, 1, sizeof(t_ast_node));
+	if (!new)
+	{
+		perror("minishell: create_ast_node");
+		exit(EXIT_FAILURE);
+	}
 	new->tokens = NULL;
 	new->type = type;
 	new->left = left;
@@ -80,12 +85,12 @@ t_ast_node	*create_ast_node(t_node_type type, t_ast_node *left,
 	return (new);
 }
 
-t_ast_node	*parse_command(t_token **current_token)
+t_ast_node	*parse_command(t_token **current_token, t_minishell *shell)
 {
 	t_ast_node	*node;
 	t_token		*tmp;
 
-	node = create_ast_node(NODE_COMMAND, NULL, NULL);
+	node = create_ast_node(NODE_COMMAND, NULL, NULL, shell);
 	while (*current_token && !is_statement_delimiter((*current_token)->type))
 	{
 		tmp = *current_token;
@@ -96,14 +101,15 @@ t_ast_node	*parse_command(t_token **current_token)
 	return (node);
 }
 
-t_ast_node	*parse_expression(t_token **current_token, int precedence_threshold)
+t_ast_node	*parse_expression(t_token **current_token, int precedence_threshold,
+		t_minishell *shell)
 {
 	t_ast_node	*left;
 	t_ast_node	*right;
 	int			precedence_lvl;
 	int			delimiter;
 
-	left = parse_command(current_token);
+	left = parse_command(current_token, shell);
 	if (!left)
 		return (NULL);
 	while (*current_token && is_statement_delimiter((*current_token)->type)
@@ -112,15 +118,15 @@ t_ast_node	*parse_expression(t_token **current_token, int precedence_threshold)
 		delimiter = (*current_token)->type;
 		precedence_lvl = get_precedence_lvl(delimiter) + 1;
 		eat_token(current_token);
-		right = parse_expression(current_token, precedence_lvl);
+		right = parse_expression(current_token, precedence_lvl, shell);
 		if (!right)
 			break ;
 		if (delimiter == TOKEN_PIPE)
-			left = create_ast_node(NODE_PIPE, left, right);
+			left = create_ast_node(NODE_PIPE, left, right, shell);
 		else if (delimiter == TOKEN_AND)
-			left = create_ast_node(NODE_AND, left, right);
+			left = create_ast_node(NODE_AND, left, right, shell);
 		else if (delimiter == TOKEN_OR)
-			left = create_ast_node(NODE_OR, left, right);
+			left = create_ast_node(NODE_OR, left, right, shell);
 	}
 	return (left);
 }

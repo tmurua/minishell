@@ -6,7 +6,7 @@
 /*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/07 10:32:58 by tmurua            #+#    #+#             */
-/*   Updated: 2024/11/20 17:16:10 by tmurua           ###   ########.fr       */
+/*   Updated: 2024/11/20 19:04:45 by tmurua           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 {
 	char	**args;
 
-	args = tokens_to_args(tokens);
+	args = tokens_to_args(tokens, shell);
 	if (!args)
 		return ;
 	if (is_builtin_command(args[0]))
@@ -32,16 +32,16 @@
 }*/
 
 /* count_tokens, allocate_args_array, copy_token_values */
-char	**tokens_to_args(t_token *tokens)
+char	**tokens_to_args(t_token *tokens, t_minishell *shell)
 {
 	char	**args;
 	int		token_count;
 
 	token_count = count_tokens(tokens);
-	args = allocate_args_array(token_count);
+	args = allocate_args_array(token_count, shell);
 	if (!args)
 		return (NULL);
-	if (copy_token_values(tokens, args) == -1)
+	if (copy_token_values(tokens, args, shell) == -1)
 	{
 		free_arguments(args);
 		return (NULL);
@@ -50,11 +50,11 @@ char	**tokens_to_args(t_token *tokens)
 }
 
 /* malloc array with count +1 elements & init last to NULL, to mark end of it */
-char	**allocate_args_array(int count)
+char	**allocate_args_array(int count, t_minishell *shell)
 {
 	char	**args;
 
-	args = malloc(sizeof(char *) * (count + 1));
+	args = gc_calloc(&shell->gc_head, count + 1, sizeof(char *));
 	if (!args)
 	{
 		perror("minishell: allocate_args_array");
@@ -65,7 +65,7 @@ char	**allocate_args_array(int count)
 }
 
 /* duplicates each token's value using 'ft_strdup' and stores it in the array */
-int	copy_token_values(t_token *tokens, char **args)
+int	copy_token_values(t_token *tokens, char **args, t_minishell *shell)
 {
 	int		i;
 	t_token	*current;
@@ -74,7 +74,7 @@ int	copy_token_values(t_token *tokens, char **args)
 	current = tokens;
 	while (current)
 	{
-		args[i] = ft_strdup(current->value);
+		args[i] = gc_strdup(&shell->gc_head, current->value);
 		if (!args[i])
 		{
 			perror("minishell: copy_token_values");

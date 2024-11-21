@@ -6,23 +6,11 @@
 /*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/02 17:02:08 by tmurua            #+#    #+#             */
-/*   Updated: 2024/11/18 18:39:10 by tmurua           ###   ########.fr       */
+/*   Updated: 2024/11/20 19:29:21 by tmurua           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
-
-/*	join 2 str and free 1st str to prevent mem leaks, used on advance_and_append
-	to expand buffer by appending char to end of buffer str without mem leaks */
-char	*ft_strjoin_free(char *s1, const char *s2)
-{
-	char	*join;
-
-	join = ft_strjoin(s1, s2);
-	if (s1 != NULL)
-		free(s1);
-	return (join);
-}
 
 int	count_tokens(t_token *tokens)
 {
@@ -40,11 +28,11 @@ int	count_tokens(t_token *tokens)
 }
 
 /* creates new token with specified type and value */
-t_token	*create_token(t_token_type type, char *value)
+t_token	*create_token(t_token_type type, char *value, t_minishell *shell)
 {
 	t_token	*token;
 
-	token = malloc(sizeof(t_token));
+	token = gc_calloc(&shell->gc_head, 1, sizeof(t_token));
 	if (!token)
 	{
 		perror("minishell: create_token");

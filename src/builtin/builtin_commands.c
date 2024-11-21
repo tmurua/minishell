@@ -6,19 +6,20 @@
 /*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 15:53:43 by tmurua            #+#    #+#             */
-/*   Updated: 2024/11/20 17:01:47 by tmurua           ###   ########.fr       */
+/*   Updated: 2024/11/21 13:19:38 by tmurua           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-int	handle_exit_command(char *input)
+int	handle_exit_command(char *input, t_minishell *shell)
 {
 	if (input == NULL || !ft_strncmp(input, "exit", 5))
 	{
 		free(input);
 		rl_clear_history();
 		printf("exit\n");
+		gc_free_all(shell->gc_head);
 		exit (0);
 	}
 	return (0);

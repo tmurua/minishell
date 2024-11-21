@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipe.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dlemaire <dlemaire@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/14 17:23:19 by dlemaire          #+#    #+#             */
-/*   Updated: 2024/11/20 18:59:39 by dlemaire         ###   ########.fr       */
+/*   Updated: 2024/11/21 13:31:58 by tmurua           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,12 @@
 #include "../../include/minishell.h"
 
 // process for single command execution should be placed in a different file
-char	*find_executable_path(char *str, char **directories);
+char	*find_executable_path(char *str, char **directories, t_minishell *shell);
 char	**create_directories(t_minishell *shell);
 char	*build_command_path(char *str, t_minishell *shell);
 int		count_arg_tokens(t_token *tokens);
-void	add_infile_to_cmd(t_command *cmd, char *filename);
-void	add_outfile_to_cmd(t_command *cmd, char *filename, int append_flag);
+void	add_infile_to_cmd(t_command *cmd, char *filename, t_minishell *shell);
+void	add_outfile_to_cmd(t_command *cmd, char *filename, t_minishell *shell);
 
 void	run_program(t_command *cmd) // better naming
 {
@@ -78,33 +78,33 @@ void	init_command(t_command *cmd, t_token *tokens, t_minishell *shell)
 	cmd->outfile = NULL;
 	arg_count = count_arg_tokens(tokens);
 	i = 0;
-	cmd->args = malloc(sizeof(char *) * (arg_count + 1));
+	cmd->args = gc_calloc(&shell->gc_head, arg_count + 1, sizeof(char *));
 	if (!cmd->args)
 		exit(EXIT_FAILURE);
 	while (tokens)
 	{
 		if (tokens->type == TOKEN_BUILTIN_CMD)
 		{
-			cmd->cmd_name = ft_strdup(tokens->value);
+			cmd->cmd_name = gc_strdup(&shell->gc_head, tokens->value);
 			if (!cmd->cmd_name)
 				exit(EXIT_FAILURE);
-			cmd->args[i] = ft_strdup(tokens->value);
+			cmd->args[i] = gc_strdup(&shell->gc_head, tokens->value);
 			if (!cmd->args[i++])
 				exit(EXIT_FAILURE);
 		}
 		if (tokens->type == TOKEN_EXTERN_CMD)
 		{
-			cmd->cmd_name = ft_strdup(tokens->value);
+			cmd->cmd_name = gc_strdup(&shell->gc_head, tokens->value);
 			if (!cmd->cmd_name)
 				exit(EXIT_FAILURE);
-			cmd->args[i] = ft_strdup(tokens->value);
+			cmd->args[i] = gc_strdup(&shell->gc_head, tokens->value);
 			if (!cmd->args[i++])
 				exit(EXIT_FAILURE);
 			cmd->path = build_command_path(cmd->cmd_name, shell);
 		}
 		if (tokens->type == TOKEN_ARGUMENT)
 		{
-			cmd->args[i] = ft_strdup(tokens->value);
+			cmd->args[i] = gc_strdup(&shell->gc_head, tokens->value);
 			if (!cmd->args[i++])
 				exit(EXIT_FAILURE);
 		}
@@ -112,7 +112,7 @@ void	init_command(t_command *cmd, t_token *tokens, t_minishell *shell)
 		{
 			if (tokens->next->type == TOKEN_FILENAME)
 			{
-				add_infile_to_cmd(cmd, tokens->next->value);
+				add_infile_to_cmd(cmd, tokens->next->value, shell);
 				tokens = tokens->next;
 			}
 		}
@@ -121,7 +121,7 @@ void	init_command(t_command *cmd, t_token *tokens, t_minishell *shell)
 		{
 			if (tokens->next->type == TOKEN_FILENAME)
 			{
-				add_outfile_to_cmd(cmd, tokens->next->value, 0);
+				add_outfile_to_cmd(cmd, tokens->next->value, shell, 0);
 				tokens = tokens->next;
 			}
 		}
@@ -180,7 +180,7 @@ int	init_pipe(t_ast_node *node, t_minishell *shell)
 	return (0);
 }
 
-char	*find_executable_path(char *str, char **directories)
+char	*find_executable_path(char *str, char **directories, t_minishell *shell)
 {
 	int		i;
 	char	*full_process;
@@ -189,12 +189,10 @@ char	*find_executable_path(char *str, char **directories)
 	i = 0;
 	while (directories[i])
 	{
-		full_process = ft_strjoin("/", str);
-		full_path = ft_strjoin(directories[i], full_process);
-		free(full_process);
+		full_process = gc_strjoin(&shell->gc_head, "/", str);
+		full_path = gc_strjoin(&shell->gc_head, directories[i], full_process);
 		if (access(full_path, X_OK) == 0)
 			return (full_path);
-		free(full_path);
 		i++;
 	}
 	return (NULL);
@@ -226,11 +224,11 @@ char	*build_command_path(char *str, t_minishell *shell)
 	char	*result_path;
 
 	if (access(str, X_OK) == 0)
-		return (ft_strdup(str));
+		return (gc_strdup(&shell->gc_head, str));
 	directories = create_directories(shell);
 	if (!directories)
 		exit(EXIT_FAILURE);
-	result_path = find_executable_path(str, directories);
+	result_path = find_executable_path(str, directories, shell);
 	free_arguments(directories); // need better naming for function
 	return (result_path);
 }
@@ -249,12 +247,12 @@ int	count_arg_tokens(t_token *tokens)
 	return (count);
 }
 
-void	add_infile_to_cmd(t_command *cmd, char *filename)
+void	add_infile_to_cmd(t_command *cmd, char *filename, t_minishell *shell)
 {
 	t_files	*new_infile;
 	t_files	*current;
 
-	new_infile = malloc(sizeof(t_files));
+	new_infile = gc_calloc(&shell->gc_head, 1, sizeof(t_files));
 	if (!new_infile)
 		exit(EXIT_FAILURE);
 	new_infile->delim = NULL;
@@ -288,12 +286,12 @@ void	update_filename_tokens(t_token *tokens)
 	}
 }
 
-void	add_outfile_to_cmd(t_command *cmd, char *filename, int append_flag)
+void	add_outfile_to_cmd(t_command *cmd, char *filename, t_minishell *shell, int append_flag)
 {
 	t_files	*new_outfile;
 	t_files	*current;
 
-	new_outfile = malloc(sizeof(t_files));
+	new_outfile = gc_calloc(&shell->gc_head, 1, sizeof(t_files));
 	if (!new_outfile)
 		exit(EXIT_FAILURE);
 	new_outfile->delim = NULL;
