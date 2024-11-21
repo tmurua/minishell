@@ -6,29 +6,29 @@
 /*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/01 16:42:16 by tmurua            #+#    #+#             */
-/*   Updated: 2024/11/18 18:39:10 by tmurua           ###   ########.fr       */
+/*   Updated: 2024/11/20 19:16:31 by tmurua           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
 /*	collects the next token from the lexer based on its current state */
-char	*collect_token(t_lexer *lexer)
+char	*collect_token(t_lexer *lexer, t_minishell *shell)
 {
 	char	*buffer;
 	int		status;
 
-	buffer = ft_strdup("");
+	buffer = gc_strdup(&shell->gc_head, "");
 	if (!buffer)
 		return (NULL);
 	while (lexer->current_char != '\0')
 	{
 		if (lexer->state == DEFAULT_STATE)
-			status = handle_default_state(lexer, &buffer);
+			status = handle_default_state(lexer, &buffer, shell);
 		else if (lexer->state == SINGLE_QUOTE_STATE)
-			status = handle_single_quote_state(lexer, &buffer);
+			status = handle_single_quote_state(lexer, &buffer, shell);
 		else if (lexer->state == DOUBLE_QUOTE_STATE)
-			status = handle_double_quote_state(lexer, &buffer);
+			status = handle_double_quote_state(lexer, &buffer, shell);
 		if (status == TOKEN_COMPLETE)
 			break ;
 		else if (status == TOKEN_ERROR)
@@ -43,7 +43,7 @@ char	*collect_token(t_lexer *lexer)
 /*	if whitespace found, end current token; if ' or " found, change STATE;
 	if $ found, handle var expansion; if special char found, end current token;
 	otherwise advance_and_append each char */
-int	handle_default_state(t_lexer *lexer, char **buffer)
+int	handle_default_state(t_lexer *lexer, char **buffer, t_minishell *shell)
 {
 	if (ft_iswhitespace(lexer->current_char))
 		return (TOKEN_COMPLETE);
@@ -59,21 +59,21 @@ int	handle_default_state(t_lexer *lexer, char **buffer)
 	}
 	else if (lexer->current_char == '$')
 	{
-		if (!handle_variable_expansion(lexer, buffer))
+		if (!handle_variable_expansion(lexer, buffer, shell))
 			return (TOKEN_ERROR);
 	}
 	else if (is_special_character(lexer))
 		return (TOKEN_COMPLETE);
 	else
 	{
-		if (!advance_and_append(lexer, buffer))
+		if (!advance_and_append(lexer, buffer, shell))
 			return (TOKEN_ERROR);
 	}
 	return (TOKEN_CONTINUE);
 }
 
 /* if ' found, change to DEFAULT_STATE; advance_and_append all chars */
-int	handle_single_quote_state(t_lexer *lexer, char **buffer)
+int	handle_single_quote_state(t_lexer *lexer, char **buffer, t_minishell *shell)
 {
 	if (lexer->current_char == '\'')
 	{
@@ -82,14 +82,14 @@ int	handle_single_quote_state(t_lexer *lexer, char **buffer)
 	}
 	else
 	{
-		if (!advance_and_append(lexer, buffer))
+		if (!advance_and_append(lexer, buffer, shell))
 			return (TOKEN_ERROR);
 	}
 	return (TOKEN_CONTINUE);
 }
 
 /* if " found, change to DEFAULT_STATE; handle $; or advance_and_append*/
-int	handle_double_quote_state(t_lexer *lexer, char **buffer)
+int	handle_double_quote_state(t_lexer *lexer, char **buffer, t_minishell *shell)
 {
 	if (lexer->current_char == '"')
 	{
@@ -98,12 +98,12 @@ int	handle_double_quote_state(t_lexer *lexer, char **buffer)
 	}
 	else if (lexer->current_char == '$')
 	{
-		if (!handle_variable_expansion(lexer, buffer))
+		if (!handle_variable_expansion(lexer, buffer, shell))
 			return (TOKEN_ERROR);
 	}
 	else
 	{
-		if (!advance_and_append(lexer, buffer))
+		if (!advance_and_append(lexer, buffer, shell))
 			return (TOKEN_ERROR);
 	}
 	return (TOKEN_CONTINUE);
@@ -111,21 +111,15 @@ int	handle_double_quote_state(t_lexer *lexer, char **buffer)
 
 /*	current_char_str: temp str to hold current_char as a null-terminated str
 	join current buffer with current_char_str at the end, move lexer forward */
-int	advance_and_append(t_lexer *lexer, char **buffer)
+int	advance_and_append(t_lexer *lexer, char **buffer, t_minishell *shell)
 {
 	char	current_char_str[2];
-	char	*new_buffer;
 
 	current_char_str[0] = lexer->current_char;
 	current_char_str[1] = '\0';
-	new_buffer = ft_strjoin_free(*buffer, current_char_str);
-	if (!new_buffer)
-	{
-		free(*buffer);
-		*buffer = NULL;
+	*buffer = gc_strjoin(&shell->gc_head, *buffer, current_char_str);
+	if (!*buffer)
 		return (0);
-	}
-	*buffer = new_buffer;
 	advance_lexer_char(lexer);
 	return (1);
 }

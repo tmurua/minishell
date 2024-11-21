@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dlemaire <dlemaire@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 17:35:59 by dlemaire          #+#    #+#             */
-/*   Updated: 2024/11/19 16:28:52 by dlemaire         ###   ########.fr       */
+/*   Updated: 2024/11/20 19:08:19 by tmurua           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-t_token	*run_lexer(char *str)
+t_token	*run_lexer(char *str, t_minishell *shell)
 {
 	t_lexer	lexer;
 	t_token	*tokens;
@@ -25,7 +25,7 @@ t_token	*run_lexer(char *str)
 	while (lexer.current_char != '\0')
 	{
 		skip_whitespace(&lexer);
-		new_token = get_next_token(&lexer);
+		new_token = get_next_token(&lexer, shell);
 		if (!new_token || new_token->type == TOKEN_INVALID)
 		{
 			free_tokens(tokens);
@@ -69,7 +69,7 @@ void	advance_lexer_char(t_lexer *lexer)
 
 /*	after skipping any leading whitespace, collect the next token, determine
 	its type (TOKEN_BUILTIN_CMD,TOKEN_PIPE, etc) and return * to new token */
-t_token	*get_next_token(t_lexer *lexer)
+t_token	*get_next_token(t_lexer *lexer, t_minishell *shell)
 {
 	char			*value;
 	t_token_type	type;
@@ -79,14 +79,14 @@ t_token	*get_next_token(t_lexer *lexer)
 	if (lexer->current_char == '\0')
 		return (NULL);
 	if (is_special_character(lexer))
-		type = handle_special_char_token(lexer, &value);
+		type = handle_special_char_token(lexer, &value, shell);
 	else
-		type = handle_regular_token(lexer, &value);
+		type = handle_regular_token(lexer, &value, shell);
 	if (type == TOKEN_INVALID)
 	{
 		free(value);
 		return (NULL);
 	}
-	new_token = create_token(type, value);
+	new_token = create_token(type, value, shell);
 	return (new_token);
 }

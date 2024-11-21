@@ -6,7 +6,7 @@
 /*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/11 18:06:47 by tmurua            #+#    #+#             */
-/*   Updated: 2024/11/18 18:39:07 by tmurua           ###   ########.fr       */
+/*   Updated: 2024/11/20 19:07:32 by tmurua           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,11 +29,12 @@ int	is_special_character(t_lexer *lexer)
 
 /*	collect special char token, assign its type, update lexer->command_expected;
 	return token type */
-t_token_type	handle_special_char_token(t_lexer *lexer, char **value)
+t_token_type	handle_special_char_token(t_lexer *lexer, char **value,
+		t_minishell *shell)
 {
 	t_token_type	type;
 
-	*value = collect_special_character(lexer);
+	*value = collect_special_character(lexer, shell);
 	if (!*value)
 		return (TOKEN_INVALID);
 	type = get_special_character_token_type(*value);
@@ -45,7 +46,7 @@ t_token_type	handle_special_char_token(t_lexer *lexer, char **value)
 }
 
 /* set *special_char_str with maximum of 2 chars + null terminator */
-char	*collect_special_character(t_lexer *lexer)
+char	*collect_special_character(t_lexer *lexer, t_minishell *shell)
 {
 	int		i;
 	char	special_char_str[3];
@@ -63,7 +64,7 @@ char	*collect_special_character(t_lexer *lexer)
 	}
 	special_char_str[i] = '\0';
 	advance_lexer_char(lexer);
-	return (ft_strdup(special_char_str));
+	return (gc_strdup(&shell->gc_head, special_char_str));
 }
 
 /* single & is not supported */
@@ -91,11 +92,12 @@ t_token_type	get_special_character_token_type(char *value)
 
 /*	collect regular token, assign its type based on whether a cmd is expected,
 	and updates the lexer state; return token type */
-t_token_type	handle_regular_token(t_lexer *lexer, char **value)
+t_token_type	handle_regular_token(t_lexer *lexer, char **value,
+		t_minishell *shell)
 {
 	t_token_type	type;
 
-	*value = collect_token(lexer);
+	*value = collect_token(lexer, shell);
 	if (!*value)
 		return (TOKEN_INVALID);
 	if (lexer->command_expected == 1)

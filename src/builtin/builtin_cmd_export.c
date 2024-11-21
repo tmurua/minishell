@@ -6,7 +6,7 @@
 /*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/13 08:54:22 by tmurua            #+#    #+#             */
-/*   Updated: 2024/11/20 17:39:24 by tmurua           ###   ########.fr       */
+/*   Updated: 2024/11/21 13:02:55 by tmurua           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,33 +73,19 @@ int	set_env_variable(const char *name, const char *value, t_minishell *shell)
 {
 	int		index;
 	char	*new_var;
-	int		len;
 
 	index = find_env_index(name, shell);
-	new_var = ft_strjoin(name, "=");
-	if (!new_var)
-		return (1);
-	new_var = ft_strjoin_free(new_var, value);
+	new_var = create_env_string(name, value, shell);
 	if (!new_var)
 		return (1);
 	if (index != -1)
 	{
-		free(shell->env[index]);
 		shell->env[index] = new_var;
 	}
 	else
 	{
-		len = 0;
-		while ((*shell->env)[len])
-			len++;
-		shell->env = realloc(*shell->env, sizeof(char *) * (len + 2));
-		if (!(*shell->env))
-		{
-			free(new_var);
+		if (add_env_variable(new_var, shell) != 0)
 			return (1);
-		}
-		shell->env[len] = new_var;
-		shell->env[len + 1] = NULL;
 	}
 	return (0);
 }
@@ -120,4 +106,42 @@ int	find_env_index(const char *name, t_minishell *shell)
 		i++;
 	}
 	return (-1);
+}
+
+char	*create_env_string(const char *name, const char *value,
+		t_minishell *shell)
+{
+	char	*env_string;
+
+	env_string = gc_strjoin(&shell->gc_head, name, "=");
+	if (!env_string)
+		return (NULL);
+	env_string = gc_strjoin(&shell->gc_head, env_string, value);
+	if (!env_string)
+		return (NULL);
+	return (env_string);
+}
+
+int	add_env_variable(char *new_var, t_minishell *shell)
+{
+	int		len;
+	int		i;
+	char	**new_env;
+
+	len = 0;
+	while (shell->env[len])
+		len++;
+	new_env = gc_calloc(&shell->gc_head, len + 2, sizeof(char *));
+	if (!new_env)
+		return (1);
+	i = 0;
+	while (i < len)
+	{
+		new_env[i] = shell->env[i];
+		i++;
+	}
+	new_env[len] = new_var;
+	new_env[len + 1] = NULL;
+	shell->env = new_env;
+	return (0);
 }
