@@ -6,7 +6,7 @@
 /*   By: dlemaire <dlemaire@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/14 17:23:19 by dlemaire          #+#    #+#             */
-/*   Updated: 2024/11/21 14:47:24 by dlemaire         ###   ########.fr       */
+/*   Updated: 2024/11/21 14:51:42 by dlemaire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ char	*build_command_path(char *str, t_minishell *shell);
 int		count_arg_tokens(t_token *tokens);
 void	add_infile_to_cmd(t_command *cmd, char *filename, t_minishell *shell);
 void	add_outfile_to_cmd(t_command *cmd, char *filename, t_minishell *shell, int append_flag);
-
+void	init_heredoc(t_command *cmd, char *delimiter);
 
 void	run_program(t_command *cmd) // better naming
 {
@@ -122,7 +122,7 @@ void	init_command(t_command *cmd, t_token *tokens, t_minishell *shell)
 		{
 			if (tokens->next->type == TOKEN_HEREDOC_DELIMITER)
 			{
-				init_heredoc(cmd, tokens->next->value);
+				//init_heredoc(cmd, tokens->next->value);
 				tokens = tokens->next;
 			}
 		}
@@ -332,7 +332,7 @@ int	is_heredoc_delimiter(const char *input, const char *delimiter)
 	size_t	delimiter_len;
 
 	delimiter_len = ft_strlen(delimiter);
-	if (ftstrncmp(input, delimiter, delimiter_len) == 0)
+	if (ft_strncmp(input, delimiter, delimiter_len) == 0)
 	{
 		if (input[delimiter_len] == '\0' || input[delimiter_len] == '\n')
 			return (1);
