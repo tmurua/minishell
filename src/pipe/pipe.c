@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipe.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
+/*   By: dlemaire <dlemaire@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/14 17:23:19 by dlemaire          #+#    #+#             */
-/*   Updated: 2024/11/21 13:38:18 by tmurua           ###   ########.fr       */
+/*   Updated: 2024/11/21 14:47:24 by dlemaire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,7 +118,14 @@ void	init_command(t_command *cmd, t_token *tokens, t_minishell *shell)
 				tokens = tokens->next;
 			}
 		}
-		// heredocs
+		if (tokens->type == TOKEN_HEREDOC)
+		{
+			if (tokens->next->type == TOKEN_HEREDOC_DELIMITER)
+			{
+				init_heredoc(cmd, tokens->next->value);
+				tokens = tokens->next;
+			}
+		}
 		if (tokens->type == TOKEN_REDIRECT_OUT)
 		{
 			if (tokens->next->type == TOKEN_FILENAME)
@@ -135,13 +142,12 @@ void	init_command(t_command *cmd, t_token *tokens, t_minishell *shell)
 				tokens = tokens->next;
 			}
 		}
-		// append
 		tokens = tokens->next;
 	}
 	cmd->args[i] = NULL;
 }
 
-// redirection still needs to be implemented
+// redirection still needs to be implemented in builtins
 int	init_pipe(t_ast_node *node, t_minishell *shell)
 {
 	int		fds[2];
@@ -276,7 +282,7 @@ void	add_infile_to_cmd(t_command *cmd, char *filename, t_minishell *shell)
 	}
 }
 
-void	update_filename_tokens(t_token *tokens)
+void	update_redirect_tokens(t_token *tokens)
 {
 	while (tokens)
 	{
@@ -284,6 +290,8 @@ void	update_filename_tokens(t_token *tokens)
 			|| tokens->type == TOKEN_REDIRECT_OUT
 			|| tokens->type == TOKEN_REDIRECT_APPEND)
 			tokens->next->type = TOKEN_FILENAME;
+		if (tokens->type == TOKEN_HEREDOC)
+			tokens->next->type = TOKEN_HEREDOC_DELIMITER;
 		tokens = tokens->next;
 	}
 }
@@ -316,5 +324,45 @@ void	add_outfile_to_cmd(t_command *cmd, char *filename, t_minishell *shell,
 		while (current->next)
 			current = current->next;
 		current->next = new_outfile;
+	}
+}
+
+int	is_heredoc_delimiter(const char *input, const char *delimiter)
+{
+	size_t	delimiter_len;
+
+	delimiter_len = ft_strlen(delimiter);
+	if (ftstrncmp(input, delimiter, delimiter_len) == 0)
+	{
+		if (input[delimiter_len] == '\0' || input[delimiter_len] == '\n')
+			return (1);
+	}
+	return (0);
+}
+
+void	init_heredoc(t_command *cmd, char *delimiter)
+{
+	t_files	*new_infile;
+	t_files	*current;
+	char	*input;
+
+	new_infile = malloc(sizeof(t_files));
+	if (!new_infile)
+		exit(EXIT_FAILURE);
+	new_infile->delim = delimiter;
+	new_infile->next = NULL;
+	input = NULL;
+	while (!is_heredoc_delimiter(input, delimiter))
+	{
+		input = readline("> ");
+	}
+	if (!cmd->infile)
+		cmd->infile = new_infile;
+	else
+	{
+		current = cmd->infile;
+		while (current->next)
+			current = current->next;
+		current->next = new_infile;
 	}
 }

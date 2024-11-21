@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
+/*   By: dlemaire <dlemaire@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 17:35:59 by dlemaire          #+#    #+#             */
-/*   Updated: 2024/11/20 19:08:19 by tmurua           ###   ########.fr       */
+/*   Updated: 2024/11/21 14:45:11 by dlemaire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ t_token	*run_lexer(char *str, t_minishell *shell)
 		}
 		token_to_list(&tokens, &current_token, new_token);
 	}
-	update_filename_tokens(tokens);
+	update_redirect_tokens(tokens);
 	return (tokens);
 }
 

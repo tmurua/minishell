@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
+/*   By: dlemaire <dlemaire@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 09:08:10 by tmurua            #+#    #+#             */
-/*   Updated: 2024/11/21 13:32:23 by tmurua           ###   ########.fr       */
+/*   Updated: 2024/11/21 14:48:19 by dlemaire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,6 +85,7 @@ typedef enum e_token_type
 	TOKEN_REDIRECT_OUT,
 	TOKEN_REDIRECT_APPEND,
 	TOKEN_HEREDOC,
+	TOKEN_HEREDOC_DELIMITER,
 	TOKEN_FILENAME,
 	TOKEN_AND,
 	TOKEN_OR,
@@ -277,6 +278,6 @@ int						init_pipe(t_ast_node *node, t_minishell *shell);
 void					init_command(t_command *cmd, t_token *tokens,
 							t_minishell *shell);
 void					run_program(t_command *cmd);
-void					update_filename_tokens(t_token *tokens);
+void					update_redirect_tokens(t_token *tokens);
 
 #endif
