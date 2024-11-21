@@ -6,7 +6,7 @@
 /*   By: dlemaire <dlemaire@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 17:35:59 by dlemaire          #+#    #+#             */
-/*   Updated: 2024/11/19 16:28:52 by dlemaire         ###   ########.fr       */
+/*   Updated: 2024/11/20 21:40:39 by dlemaire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ t_token	*run_lexer(char *str)
 		}
 		token_to_list(&tokens, &current_token, new_token);
 	}
-	update_filename_tokens(tokens);
+	update_redirect_tokens(tokens);
 	return (tokens);
 }
 
