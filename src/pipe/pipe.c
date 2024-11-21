@@ -6,27 +6,29 @@
 /*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/14 17:23:19 by dlemaire          #+#    #+#             */
-/*   Updated: 2024/11/21 13:31:58 by tmurua           ###   ########.fr       */
+/*   Updated: 2024/11/21 13:38:18 by tmurua           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <sys/types.h>
 #include "../../include/minishell.h"
+#include <sys/types.h>
 
 // process for single command execution should be placed in a different file
-char	*find_executable_path(char *str, char **directories, t_minishell *shell);
+char	*find_executable_path(char *str, char **directories,
+			t_minishell *shell);
 char	**create_directories(t_minishell *shell);
 char	*build_command_path(char *str, t_minishell *shell);
 int		count_arg_tokens(t_token *tokens);
 void	add_infile_to_cmd(t_command *cmd, char *filename, t_minishell *shell);
-void	add_outfile_to_cmd(t_command *cmd, char *filename, t_minishell *shell);
+void	add_outfile_to_cmd(t_command *cmd, char *filename, t_minishell *shell, int append_flag);
+
 
 void	run_program(t_command *cmd) // better naming
 {
-	int		pid;
-	int		status;
-	t_files	*infile;
-	t_files	*outfile;
+	int pid;
+	int status;
+	t_files *infile;
+	t_files *outfile;
 
 	infile = cmd->infile;
 	while (infile && infile->next)
@@ -129,11 +131,11 @@ void	init_command(t_command *cmd, t_token *tokens, t_minishell *shell)
 		{
 			if (tokens->next->type == TOKEN_FILENAME)
 			{
-				add_outfile_to_cmd(cmd, tokens->next->value, 1);
+				add_outfile_to_cmd(cmd, tokens->next->value, shell, 1);
 				tokens = tokens->next;
 			}
 		}
-		//append
+		// append
 		tokens = tokens->next;
 	}
 	cmd->args[i] = NULL;
@@ -286,7 +288,8 @@ void	update_filename_tokens(t_token *tokens)
 	}
 }
 
-void	add_outfile_to_cmd(t_command *cmd, char *filename, t_minishell *shell, int append_flag)
+void	add_outfile_to_cmd(t_command *cmd, char *filename, t_minishell *shell,
+		int append_flag)
 {
 	t_files	*new_outfile;
 	t_files	*current;
