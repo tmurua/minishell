@@ -6,7 +6,7 @@
 /*   By: dlemaire <dlemaire@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/14 17:23:19 by dlemaire          #+#    #+#             */
-/*   Updated: 2024/11/23 18:12:58 by dlemaire         ###   ########.fr       */
+/*   Updated: 2024/11/23 18:42:45 by dlemaire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,8 @@ char	**create_directories(t_minishell *shell);
 char	*build_command_path(char *str, t_minishell *shell);
 int		count_arg_tokens(t_token *tokens);
 void	add_infile_to_cmd(t_command *cmd, char *filename, t_minishell *shell);
-void	add_outfile_to_cmd(t_command *cmd, char *filename, t_minishell *shell, int append_flag);
+void	add_outfile_to_cmd(t_command *cmd, char *filename, t_minishell *shell,\
+			int append_flag);
 void	init_heredoc(t_command *cmd, char *delimiter);
 
 void	execute_external(t_command *cmd, char **env)

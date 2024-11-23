@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_commands2.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
+/*   By: dlemaire <dlemaire@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/31 13:33:08 by tmurua            #+#    #+#             */
-/*   Updated: 2024/11/20 17:23:20 by tmurua           ###   ########.fr       */
+/*   Updated: 2024/11/23 19:30:39 by dlemaire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,12 +37,12 @@ int	builtin_cd(char **args)
 /*
 getcwd() sets current working directory path into a path_buffer of size PATH_MAX
 then ft_putendl_fd() outputs the current working directory path */
-int	builtin_pwd(char **args)
+int	builtin_pwd(t_command *cmd)
 {
 	char	*current_working_directory;
 	char	path_buffer[PATH_MAX];
 
-	if (too_many_arguments(args))
+	if (too_many_arguments(cmd->args))
 		return (1);
 	current_working_directory = getcwd(path_buffer, PATH_MAX);
 	if (current_working_directory == NULL)
@@ -50,22 +50,32 @@ int	builtin_pwd(char **args)
 		perror("minishell: pwd");
 		return (1);
 	}
-	ft_putendl_fd(current_working_directory, STDOUT_FILENO);
+	if (!cmd->outfile)
+		ft_putendl_fd(current_working_directory, STDOUT_FILENO);
+	else
+		ft_putendl_fd(current_working_directory, cmd->outfile->fd);
 	return (0);
 }
 
 /* env: array of strings representing the environment variables */
-int	builtin_env(char **args, t_minishell *shell)
+int	builtin_env(t_command *cmd, t_minishell *shell)
 {
 	int	i;
 
-	if (too_many_arguments(args))
+	if (too_many_arguments(cmd->args))
 		return (1);
 	i = 0;
-	while (shell->env[i] != NULL)
+	if (!cmd->outfile)
 	{
-		ft_putendl_fd(shell->env[i], STDOUT_FILENO);
-		i++;
+		while (shell->env[i] != NULL)
+		{
+			ft_putendl_fd(shell->env[i], STDOUT_FILENO);
+			i++;
+		}
+	}
+	else
+	{
+		
 	}
 	return (0);
 }

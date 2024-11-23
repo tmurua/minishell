@@ -6,7 +6,7 @@
 /*   By: dlemaire <dlemaire@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/02 16:26:15 by dlemaire          #+#    #+#             */
-/*   Updated: 2024/11/23 18:12:26 by dlemaire         ###   ########.fr       */
+/*   Updated: 2024/11/23 18:45:33 by dlemaire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ int	evaluate_and_execute(t_ast_node *node, t_minishell *shell)
 		if (node->tokens->type == TOKEN_EXTERN_CMD)
 			execute_external(shell->cmd, shell->env);
 		else if (node->tokens->type == TOKEN_BUILTIN_CMD)
-			execute_builtin(cmd.args, shell);
+			execute_builtin(shell);
 		return (0);
 	}
 	else if (node->type == NODE_PIPE)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_commands.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
+/*   By: dlemaire <dlemaire@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 15:53:43 by tmurua            #+#    #+#             */
-/*   Updated: 2024/11/21 13:19:38 by tmurua           ###   ########.fr       */
+/*   Updated: 2024/11/23 19:13:21 by dlemaire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,21 +65,21 @@ int	is_builtin_command(const char *word)
 }
 
 /* dispatches and executes the appropriate built-in command */
-int	execute_builtin(char **args, t_minishell *shell)
+int	execute_builtin(t_minishell *shell)
 {
-	if (args[0] == NULL)
+	if (shell->cmd->args[0] == NULL)
 		return (-1);
-	if (ft_strncmp(args[0], "cd", 3) == 0)
-		return (builtin_cd(args));
-	else if (ft_strncmp(args[0], "pwd", 4) == 0)
-		return (builtin_pwd(args));
-	else if (ft_strncmp(args[0], "env", 4) == 0)
-		return (builtin_env(args, shell));
-	else if (ft_strncmp(args[0], "export", 7) == 0)
-		return (builtin_export(args, shell));
-	else if (ft_strncmp(args[0], "unset", 6) == 0)
-		return (builtin_unset(args, shell));
-	else if (ft_strncmp(args[0], "echo", 5) == 0)
-		return (builtin_echo(args));
+	if (ft_strncmp(shell->cmd->args[0], "cd", 3) == 0)
+		return (builtin_cd(shell->cmd->args));
+	else if (ft_strncmp(shell->cmd->args[0], "pwd", 4) == 0)
+		return (builtin_pwd(shell->cmd));
+	else if (ft_strncmp(shell->cmd->args[0], "env", 4) == 0)
+		return (builtin_env(shell->cmd, shell));
+	else if (ft_strncmp(shell->cmd->args[0], "export", 7) == 0)
+		return (builtin_export(shell->cmd->args, shell));
+	else if (ft_strncmp(shell->cmd->args[0], "unset", 6) == 0)
+		return (builtin_unset(shell->cmd->args, shell));
+	else if (ft_strncmp(shell->cmd->args[0], "echo", 5) == 0)
+		return (builtin_echo(shell->cmd->args));
 	return (-1);
 }

@@ -6,7 +6,7 @@
 /*   By: dlemaire <dlemaire@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 09:08:10 by tmurua            #+#    #+#             */
-/*   Updated: 2024/11/23 18:13:28 by dlemaire         ###   ########.fr       */
+/*   Updated: 2024/11/23 19:13:39 by dlemaire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,7 @@
 # define TOKEN_COMPLETE 1
 # define TOKEN_CONTINUE 0
 # define TOKEN_ERROR -1
+# define MIN_PRECEDENCE_LVL 0
 
 /* structures */
 /* context structure to group data together and improve code organization */
@@ -238,12 +239,12 @@ int						handle_exit_command(char *input, t_minishell *shell);
 void					print_builtin_error(char *command, char *message);
 int						too_many_arguments(char **args);
 int						is_builtin_command(const char *word);
-int						execute_builtin(char **args, t_minishell *shell);
+int						execute_builtin(t_minishell *shell);
 
 /* builtin_commands2.c */
 int						builtin_cd(char **args);
-int						builtin_pwd(char **args);
-int						builtin_env(char **args, t_minishell *shell);
+int						builtin_pwd(t_command *cmd);
+int						builtin_env(t_command *cmd, t_minishell *shell);
 int						builtin_echo(char **args);
 
 /* builtin_cmd_export.c */

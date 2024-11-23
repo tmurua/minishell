@@ -6,7 +6,7 @@
 /*   By: dlemaire <dlemaire@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 16:48:08 by tmurua            #+#    #+#             */
-/*   Updated: 2024/11/23 17:03:52 by dlemaire         ###   ########.fr       */
+/*   Updated: 2024/11/23 18:52:00 by dlemaire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,9 +26,9 @@ void	main_input_loop(int ac, char **av, t_minishell *shell)
 			add_history(input);
 		printf("you entered: %s\n", input);
 		run_lexer(input, shell);
-		shell->ast_root = parse_expression(shell, 0); // create macro (no magic number)
+		shell->ast_root = parse_expression(shell, MIN_PRECEDENCE_LVL);
 		read_tree(shell->ast_root, shell);
-		//cleanup_input(tokens, input);
+		//cleanup_input(shell->tokens, input);
 	}
 }
 
