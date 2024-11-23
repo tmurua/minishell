@@ -6,7 +6,7 @@
 /*   By: dlemaire <dlemaire@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/14 17:23:19 by dlemaire          #+#    #+#             */
-/*   Updated: 2024/11/23 17:55:44 by dlemaire         ###   ########.fr       */
+/*   Updated: 2024/11/23 18:12:58 by dlemaire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ void	execute_external(t_command *cmd, char **env)
 	setup_prompt_signals();
 }
 
-void	init_command(t_command *cmd, t_token *tokens, t_minishell *shell)
+void	init_command(t_command *cmd, t_token *node_tokens, t_minishell *shell)
 {
 	int	arg_count;
 	int	i;
@@ -77,73 +77,74 @@ void	init_command(t_command *cmd, t_token *tokens, t_minishell *shell)
 	cmd->path = NULL;
 	cmd->infile = NULL;
 	cmd->outfile = NULL;
-	arg_count = count_arg_tokens(tokens);
+	arg_count = count_arg_tokens(node_tokens);
 	i = 0;
 	cmd->args = gc_calloc(&shell->gc_head, arg_count + 1, sizeof(char *));
 	if (!cmd->args)
 		exit(EXIT_FAILURE);
-	while (tokens)
+	while (node_tokens)
 	{
-		if (tokens->type == TOKEN_BUILTIN_CMD)
+		if (node_tokens->type == TOKEN_BUILTIN_CMD)
 		{
-			cmd->cmd_name = gc_strdup(&shell->gc_head, tokens->value);
+			cmd->cmd_name = gc_strdup(&shell->gc_head, node_tokens->value);
 			if (!cmd->cmd_name)
 				exit(EXIT_FAILURE);
-			cmd->args[i] = gc_strdup(&shell->gc_head, tokens->value);
+			cmd->args[i] = gc_strdup(&shell->gc_head, node_tokens->value);
 			if (!cmd->args[i++])
 				exit(EXIT_FAILURE);
 		}
-		if (tokens->type == TOKEN_EXTERN_CMD)
+		if (node_tokens->type == TOKEN_EXTERN_CMD)
 		{
-			cmd->cmd_name = gc_strdup(&shell->gc_head, tokens->value);
+			cmd->cmd_name = gc_strdup(&shell->gc_head, node_tokens->value);
 			if (!cmd->cmd_name)
 				exit(EXIT_FAILURE);
-			cmd->args[i] = gc_strdup(&shell->gc_head, tokens->value);
+			cmd->args[i] = gc_strdup(&shell->gc_head, node_tokens->value);
 			if (!cmd->args[i++])
 				exit(EXIT_FAILURE);
 			cmd->path = build_command_path(cmd->cmd_name, shell);
 		}
-		if (tokens->type == TOKEN_ARGUMENT)
+		if (node_tokens->type == TOKEN_ARGUMENT)
 		{
-			cmd->args[i] = gc_strdup(&shell->gc_head, tokens->value);
+			cmd->args[i] = gc_strdup(&shell->gc_head, node_tokens->value);
 			if (!cmd->args[i++])
 				exit(EXIT_FAILURE);
 		}
-		if (tokens->type == TOKEN_REDIRECT_IN)
+		if (node_tokens->type == TOKEN_REDIRECT_IN)
 		{
-			if (tokens->next->type == TOKEN_FILENAME)
+			if (node_tokens->next->type == TOKEN_FILENAME)
 			{
-				add_infile_to_cmd(cmd, tokens->next->value, shell);
-				tokens = tokens->next;
+				add_infile_to_cmd(cmd, node_tokens->next->value, shell);
+				node_tokens = node_tokens->next;
 			}
 		}
-		if (tokens->type == TOKEN_HEREDOC)
+		if (node_tokens->type == TOKEN_HEREDOC)
 		{
-			if (tokens->next->type == TOKEN_HEREDOC_DELIMITER)
+			if (node_tokens->next->type == TOKEN_HEREDOC_DELIMITER)
 			{
 				//init_heredoc(cmd, tokens->next->value);
-				tokens = tokens->next;
+				node_tokens = node_tokens->next;
 			}
 		}
-		if (tokens->type == TOKEN_REDIRECT_OUT)
+		if (node_tokens->type == TOKEN_REDIRECT_OUT)
 		{
-			if (tokens->next->type == TOKEN_FILENAME)
+			if (node_tokens->next->type == TOKEN_FILENAME)
 			{
-				add_outfile_to_cmd(cmd, tokens->next->value, shell, 0);
-				tokens = tokens->next;
+				add_outfile_to_cmd(cmd, node_tokens->next->value, shell, 0);
+				node_tokens = node_tokens->next;
 			}
 		}
-		if (tokens->type == TOKEN_REDIRECT_APPEND)
+		if (node_tokens->type == TOKEN_REDIRECT_APPEND)
 		{
-			if (tokens->next->type == TOKEN_FILENAME)
+			if (node_tokens->next->type == TOKEN_FILENAME)
 			{
-				add_outfile_to_cmd(cmd, tokens->next->value, shell, 1);
-				tokens = tokens->next;
+				add_outfile_to_cmd(cmd, node_tokens->next->value, shell, 1);
+				node_tokens = node_tokens->next;
 			}
 		}
-		tokens = tokens->next;
+		node_tokens = node_tokens->next;
 	}
 	cmd->args[i] = NULL;
+	shell->cmd = cmd;
 }
 
 // redirection still needs to be implemented in builtins
