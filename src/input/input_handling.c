@@ -6,7 +6,7 @@
 /*   By: dlemaire <dlemaire@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 16:48:08 by tmurua            #+#    #+#             */
-/*   Updated: 2024/11/23 16:09:56 by dlemaire         ###   ########.fr       */
+/*   Updated: 2024/11/23 17:03:52 by dlemaire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 void	main_input_loop(int ac, char **av, t_minishell *shell)
 {
 	char		*input;
-	t_ast_node	*ast_root_node;
 
 	handle_multiple_args(ac, av);
 	while (1)
@@ -27,8 +26,8 @@ void	main_input_loop(int ac, char **av, t_minishell *shell)
 			add_history(input);
 		printf("you entered: %s\n", input);
 		run_lexer(input, shell);
-		ast_root_node = parse_expression(shell, 0); // create macro (no magic number)
-		read_tree(ast_root_node, shell);
+		shell->ast_root = parse_expression(shell, 0); // create macro (no magic number)
+		read_tree(shell->ast_root, shell);
 		//cleanup_input(tokens, input);
 	}
 }

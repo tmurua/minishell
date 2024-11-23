@@ -6,7 +6,7 @@
 /*   By: dlemaire <dlemaire@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 17:10:48 by dlemaire          #+#    #+#             */
-/*   Updated: 2024/11/23 16:20:18 by dlemaire         ###   ########.fr       */
+/*   Updated: 2024/11/23 16:59:28 by dlemaire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,16 +85,16 @@ t_ast_node	*create_ast_node(t_node_type type, t_ast_node *left,
 	return (new);
 }
 
-t_ast_node	*parse_command(t_token **current_token, t_minishell *shell)
+t_ast_node	*parse_command(t_minishell *shell)
 {
 	t_ast_node	*node;
 	t_token		*tmp;
 
 	node = create_ast_node(NODE_COMMAND, NULL, NULL, shell);
-	while (*current_token && !is_statement_delimiter((*current_token)->type))
+	while (shell->tokens && !is_statement_delimiter(shell->tokens->type))
 	{
-		tmp = *current_token;
-		*current_token = (*current_token)->next;
+		tmp = shell->tokens;
+		shell->tokens = shell->tokens->next;
 		tmp->next = NULL;
 		ft_tkadd_back(&node->tokens, tmp);
 	}
@@ -108,7 +108,7 @@ t_ast_node	*parse_expression(t_minishell *shell, int precedence_threshold)
 	int			precedence_lvl;
 	int			delimiter;
 
-	left = parse_command(&(shell->tokens), shell);
+	left = parse_command(shell);
 	if (!left)
 		return (NULL);
 	while (shell->tokens && is_statement_delimiter(shell->tokens->type)

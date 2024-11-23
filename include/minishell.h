@@ -6,7 +6,7 @@
 /*   By: dlemaire <dlemaire@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 09:08:10 by tmurua            #+#    #+#             */
-/*   Updated: 2024/11/23 16:12:42 by dlemaire         ###   ########.fr       */
+/*   Updated: 2024/11/23 16:47:58 by dlemaire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,13 +62,14 @@
 /* context structure to group data together and improve code organization */
 
 typedef struct s_token t_token;
+typedef struct s_ast_node t_ast_node;
 
 typedef struct s_minishell
 {
 	char				**env;
 	t_list				*gc_head;
 	t_token				*tokens;
-	// t_ast_node			*ast_root;
+	t_ast_node			*ast_root;
 	// t_lexer_state		state;
 	// int					fd[2];
 	// t_command			*cmd;
