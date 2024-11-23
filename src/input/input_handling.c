@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   input_handling.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
+/*   By: dlemaire <dlemaire@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 16:48:08 by tmurua            #+#    #+#             */
-/*   Updated: 2024/11/21 13:18:39 by tmurua           ###   ########.fr       */
+/*   Updated: 2024/11/23 16:09:56 by dlemaire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 void	main_input_loop(int ac, char **av, t_minishell *shell)
 {
 	char		*input;
-	t_token		*tokens;
 	t_ast_node	*ast_root_node;
 
 	handle_multiple_args(ac, av);
@@ -27,10 +26,10 @@ void	main_input_loop(int ac, char **av, t_minishell *shell)
 		if (*input)
 			add_history(input);
 		printf("you entered: %s\n", input);
-		tokens = run_lexer(input, shell);
-		ast_root_node = parse_expression(&tokens, 0, shell); // create macro (no magic number)
+		run_lexer(input, shell);
+		ast_root_node = parse_expression(shell, 0); // create macro (no magic number)
 		read_tree(ast_root_node, shell);
-		cleanup_input(tokens, input);
+		//cleanup_input(tokens, input);
 	}
 }
 

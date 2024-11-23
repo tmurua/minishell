@@ -6,7 +6,7 @@
 /*   By: dlemaire <dlemaire@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 09:08:10 by tmurua            #+#    #+#             */
-/*   Updated: 2024/11/21 14:48:19 by dlemaire         ###   ########.fr       */
+/*   Updated: 2024/11/23 16:12:42 by dlemaire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,11 +60,14 @@
 
 /* structures */
 /* context structure to group data together and improve code organization */
+
+typedef struct s_token t_token;
+
 typedef struct s_minishell
 {
 	char				**env;
 	t_list				*gc_head;
-	// t_token				*tokens;
+	t_token				*tokens;
 	// t_ast_node			*ast_root;
 	// t_lexer_state		state;
 	// int					fd[2];
@@ -157,7 +160,7 @@ char					*read_user_input(void);
 void					cleanup_input(t_token *tokens, char *input);
 
 /* lexer.c */
-t_token					*run_lexer(char *str, t_minishell *shell);
+void					run_lexer(char *str, t_minishell *shell);
 t_lexer					init_lexer(const char *arg);
 void					skip_whitespace(t_lexer *lexer);
 void					advance_lexer_char(t_lexer *lexer);
@@ -203,8 +206,8 @@ int						append_to_buffer(char **buffer, const char *str,
 							t_minishell *shell);
 
 /* parser.c */
-t_ast_node				*parse_expression(t_token **current_token,
-							int precedence_threshold, t_minishell *shell);
+t_ast_node				*parse_expression(t_minishell *shell,
+							int precedence_threshold);
 
 /* interpreter.c */
 void					read_tree(t_ast_node *root, t_minishell *shell);

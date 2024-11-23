@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
+/*   By: dlemaire <dlemaire@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 17:10:48 by dlemaire          #+#    #+#             */
-/*   Updated: 2024/11/20 18:49:23 by tmurua           ###   ########.fr       */
+/*   Updated: 2024/11/23 16:20:18 by dlemaire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,24 +101,23 @@ t_ast_node	*parse_command(t_token **current_token, t_minishell *shell)
 	return (node);
 }
 
-t_ast_node	*parse_expression(t_token **current_token, int precedence_threshold,
-		t_minishell *shell)
+t_ast_node	*parse_expression(t_minishell *shell, int precedence_threshold)
 {
 	t_ast_node	*left;
 	t_ast_node	*right;
 	int			precedence_lvl;
 	int			delimiter;
 
-	left = parse_command(current_token, shell);
+	left = parse_command(&(shell->tokens), shell);
 	if (!left)
 		return (NULL);
-	while (*current_token && is_statement_delimiter((*current_token)->type)
-		&& get_precedence_lvl((*current_token)->type) >= precedence_threshold)
+	while (shell->tokens && is_statement_delimiter(shell->tokens->type)
+		&& get_precedence_lvl(shell->tokens->type) >= precedence_threshold)
 	{
-		delimiter = (*current_token)->type;
+		delimiter = shell->tokens->type;
 		precedence_lvl = get_precedence_lvl(delimiter) + 1;
-		eat_token(current_token);
-		right = parse_expression(current_token, precedence_lvl, shell);
+		eat_token(&(shell->tokens));
+		right = parse_expression(shell, precedence_lvl);
 		if (!right)
 			break ;
 		if (delimiter == TOKEN_PIPE)

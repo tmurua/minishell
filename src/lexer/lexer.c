@@ -6,21 +6,20 @@
 /*   By: dlemaire <dlemaire@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 17:35:59 by dlemaire          #+#    #+#             */
-/*   Updated: 2024/11/21 14:45:11 by dlemaire         ###   ########.fr       */
+/*   Updated: 2024/11/23 16:12:37 by dlemaire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-t_token	*run_lexer(char *str, t_minishell *shell)
+void	run_lexer(char *str, t_minishell *shell)
 {
 	t_lexer	lexer;
-	t_token	*tokens;
 	t_token	*current_token;
 	t_token	*new_token;
 
 	lexer = init_lexer(str);
-	tokens = NULL;
+	shell->tokens = NULL;
 	current_token = NULL;
 	while (lexer.current_char != '\0')
 	{
@@ -28,13 +27,12 @@ t_token	*run_lexer(char *str, t_minishell *shell)
 		new_token = get_next_token(&lexer, shell);
 		if (!new_token || new_token->type == TOKEN_INVALID)
 		{
-			free_tokens(tokens);
-			return (NULL);
+			free_tokens(shell->tokens);
+			return ;
 		}
-		token_to_list(&tokens, &current_token, new_token);
+		token_to_list(&(shell->tokens), &current_token, new_token);
 	}
-	update_redirect_tokens(tokens);
-	return (tokens);
+	update_redirect_tokens(shell->tokens);
 }
 
 /*	init lexer with input str, set pos, state, and establish cmd is expected */
