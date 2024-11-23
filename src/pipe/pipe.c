@@ -6,7 +6,7 @@
 /*   By: dlemaire <dlemaire@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/14 17:23:19 by dlemaire          #+#    #+#             */
-/*   Updated: 2024/11/21 14:51:42 by dlemaire         ###   ########.fr       */
+/*   Updated: 2024/11/23 17:55:44 by dlemaire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,12 +23,12 @@ void	add_infile_to_cmd(t_command *cmd, char *filename, t_minishell *shell);
 void	add_outfile_to_cmd(t_command *cmd, char *filename, t_minishell *shell, int append_flag);
 void	init_heredoc(t_command *cmd, char *delimiter);
 
-void	run_program(t_command *cmd) // better naming
+void	execute_external(t_command *cmd, char **env)
 {
-	int pid;
-	int status;
-	t_files *infile;
-	t_files *outfile;
+	int		pid;
+	int		status;
+	t_files	*infile;
+	t_files	*outfile;
 
 	infile = cmd->infile;
 	while (infile && infile->next)
@@ -56,7 +56,7 @@ void	run_program(t_command *cmd) // better naming
 				exit(EXIT_FAILURE);
 			}
 		}
-		if (execve(cmd->path, cmd->args, *cmd->env) == -1)
+		if (execve(cmd->path, cmd->args, env) == -1)
 		{
 			perror("execve");
 			exit(EXIT_FAILURE);
@@ -75,7 +75,6 @@ void	init_command(t_command *cmd, t_token *tokens, t_minishell *shell)
 
 	cmd->cmd_name = NULL;
 	cmd->path = NULL;
-	cmd->env = NULL;
 	cmd->infile = NULL;
 	cmd->outfile = NULL;
 	arg_count = count_arg_tokens(tokens);

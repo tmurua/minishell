@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   interpreter.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
+/*   By: dlemaire <dlemaire@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/02 16:26:15 by dlemaire          #+#    #+#             */
-/*   Updated: 2024/11/20 16:34:40 by tmurua           ###   ########.fr       */
+/*   Updated: 2024/11/23 17:52:24 by dlemaire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,15 +34,13 @@ int	evaluate_and_execute(t_ast_node *node, t_minishell *shell)
 	{
 		init_command(&cmd, node->tokens, shell);
 		if (node->tokens->type == TOKEN_EXTERN_CMD)
-			run_program(&cmd);
+			execute_external(&cmd, shell->env);
 		else if (node->tokens->type == TOKEN_BUILTIN_CMD)
 			execute_builtin(cmd.args, shell);
 		return (0);
 	}
 	else if (node->type == NODE_PIPE)
 	{
-		//evaluate_and_execute(node->left, envp);
-		//evaluate_and_execute(node->right, envp);
 		init_pipe(node, shell);
 		return (0);
 	}
@@ -56,19 +54,3 @@ int	evaluate_and_execute(t_ast_node *node, t_minishell *shell)
 	}
 	return (-1);
 }
-
-/*	helper function to execute a command node;convert tokens to
-	args and execute either builtin cmd or external command */
-// void	execute_command_node(t_token *tokens, t_minishell *shell)
-// {
-// 	char	**args;
-
-// 	args = tokens_to_args(tokens);
-// 	if (args == NULL)
-// 		return ;
-// 	if (tokens->type == TOKEN_BUILTIN_CMD)
-// 		execute_builtin(args, shell);
-// 	else
-// 		execute_external_cmd(args, shell, tokens);
-// 	free_arguments(args);
-// }

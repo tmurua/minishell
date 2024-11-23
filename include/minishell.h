@@ -6,7 +6,7 @@
 /*   By: dlemaire <dlemaire@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 09:08:10 by tmurua            #+#    #+#             */
-/*   Updated: 2024/11/23 16:47:58 by dlemaire         ###   ########.fr       */
+/*   Updated: 2024/11/23 17:53:37 by dlemaire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,9 +70,9 @@ typedef struct s_minishell
 	t_list				*gc_head;
 	t_token				*tokens;
 	t_ast_node			*ast_root;
+	// t_command			*cmd;
 	// t_lexer_state		state;
 	// int					fd[2];
-	// t_command			*cmd;
 	// t_token				*cmd_args;
 }						t_minishell;
 
@@ -142,7 +142,6 @@ typedef struct s_command
 	char				*cmd_name;
 	char				*path;
 	char				**args;
-	char				***env;
 }						t_command;
 
 typedef struct s_ast_node
@@ -281,7 +280,7 @@ void					handle_parent_process(pid_t child_pid);
 int						init_pipe(t_ast_node *node, t_minishell *shell);
 void					init_command(t_command *cmd, t_token *tokens,
 							t_minishell *shell);
-void					run_program(t_command *cmd);
+void					execute_external(t_command *cmd, char **env);
 void					update_redirect_tokens(t_token *tokens);
 
 #endif
