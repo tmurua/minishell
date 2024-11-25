@@ -6,7 +6,7 @@
 /*   By: dlemaire <dlemaire@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 17:10:48 by dlemaire          #+#    #+#             */
-/*   Updated: 2024/11/23 16:59:28 by dlemaire         ###   ########.fr       */
+/*   Updated: 2024/11/25 23:13:39 by dlemaire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,6 +93,8 @@ t_ast_node	*parse_command(t_minishell *shell)
 	node = create_ast_node(NODE_COMMAND, NULL, NULL, shell);
 	while (shell->tokens && !is_statement_delimiter(shell->tokens->type))
 	{
+		if (shell->tokens->type == TOKEN_HEREDOC)
+			init_heredoc(shell->tokens);
 		tmp = shell->tokens;
 		shell->tokens = shell->tokens->next;
 		tmp->next = NULL;
