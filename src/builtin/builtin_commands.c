@@ -6,7 +6,7 @@
 /*   By: dlemaire <dlemaire@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 15:53:43 by tmurua            #+#    #+#             */
-/*   Updated: 2024/11/23 19:13:21 by dlemaire         ###   ########.fr       */
+/*   Updated: 2024/11/25 21:04:47 by dlemaire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,6 @@ int	execute_builtin(t_minishell *shell)
 	else if (ft_strncmp(shell->cmd->args[0], "unset", 6) == 0)
 		return (builtin_unset(shell->cmd->args, shell));
 	else if (ft_strncmp(shell->cmd->args[0], "echo", 5) == 0)
-		return (builtin_echo(shell->cmd->args));
+		return (builtin_echo(shell->cmd));
 	return (-1);
 }

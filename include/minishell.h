@@ -6,7 +6,7 @@
 /*   By: dlemaire <dlemaire@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 09:08:10 by tmurua            #+#    #+#             */
-/*   Updated: 2024/11/23 19:13:39 by dlemaire         ###   ########.fr       */
+/*   Updated: 2024/11/25 21:04:58 by dlemaire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -245,7 +245,7 @@ int						execute_builtin(t_minishell *shell);
 int						builtin_cd(char **args);
 int						builtin_pwd(t_command *cmd);
 int						builtin_env(t_command *cmd, t_minishell *shell);
-int						builtin_echo(char **args);
+int						builtin_echo(t_command *cmd);
 
 /* builtin_cmd_export.c */
 int						builtin_export(char **args, t_minishell *shell);
