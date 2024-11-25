@@ -6,7 +6,7 @@
 /*   By: dlemaire <dlemaire@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/31 13:33:08 by tmurua            #+#    #+#             */
-/*   Updated: 2024/11/25 21:07:48 by dlemaire         ###   ########.fr       */
+/*   Updated: 2024/11/25 21:53:17 by dlemaire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,13 +30,13 @@ int	builtin_cd(char **args)
 	path = args[1];
 	if (path == NULL)
 	{
-		print_builtin_error("cd", "expected argument");
+		print_builtin_error("cd", "expected argument"); // should bring back to home
 		return (1);
 	}
 	result = chdir(path);
 	if (result != 0)
 	{
-		perror("minishell: cd");
+		perror("minishell: cd"); // should also include the command
 		return (1);
 	}
 	return (0);
