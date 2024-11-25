@@ -6,7 +6,7 @@
 /*   By: dlemaire <dlemaire@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 09:08:10 by tmurua            #+#    #+#             */
-/*   Updated: 2024/11/25 21:04:58 by dlemaire         ###   ########.fr       */
+/*   Updated: 2024/11/25 23:32:05 by dlemaire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -210,6 +210,9 @@ int						append_to_buffer(char **buffer, const char *str,
 /* parser.c */
 t_ast_node				*parse_expression(t_minishell *shell,
 							int precedence_threshold);
+
+/* heredoc.c */
+void					init_heredoc(t_minishell *shell, t_token *token);
 
 /* interpreter.c */
 void					read_tree(t_ast_node *root, t_minishell *shell);
