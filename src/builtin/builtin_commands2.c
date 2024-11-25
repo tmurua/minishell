@@ -6,7 +6,7 @@
 /*   By: dlemaire <dlemaire@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/31 13:33:08 by tmurua            #+#    #+#             */
-/*   Updated: 2024/11/23 19:30:39 by dlemaire         ###   ########.fr       */
+/*   Updated: 2024/11/25 19:23:12 by dlemaire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,17 +65,13 @@ int	builtin_env(t_command *cmd, t_minishell *shell)
 	if (too_many_arguments(cmd->args))
 		return (1);
 	i = 0;
-	if (!cmd->outfile)
+	while (shell->env[i] != NULL)
 	{
-		while (shell->env[i] != NULL)
-		{
+		if (!cmd->outfile)
 			ft_putendl_fd(shell->env[i], STDOUT_FILENO);
-			i++;
-		}
-	}
-	else
-	{
-		
+		else
+			ft_putendl_fd(shell->env[i], cmd->outfile->fd);
+		i++;
 	}
 	return (0);
 }
