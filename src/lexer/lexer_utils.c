@@ -6,7 +6,7 @@
 /*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/02 17:02:08 by tmurua            #+#    #+#             */
-/*   Updated: 2024/11/26 18:33:58 by tmurua           ###   ########.fr       */
+/*   Updated: 2024/11/26 19:06:44 by tmurua           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ t_token	*create_token(t_token_type type, char *value, t_minishell *shell)
 	if (!token)
 	{
 		perror("minishell: create_token");
+		gc_free_all(shell->gc_head);
 		exit(EXIT_FAILURE);
 	}
 	token->type = type;

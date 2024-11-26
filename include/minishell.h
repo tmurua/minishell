@@ -6,7 +6,7 @@
 /*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 09:08:10 by tmurua            #+#    #+#             */
-/*   Updated: 2024/11/26 18:59:57 by tmurua           ###   ########.fr       */
+/*   Updated: 2024/11/26 19:23:13 by tmurua           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -221,12 +221,12 @@ void					execute_command_node(t_token *tokens,
 							t_minishell *shell);
 
 /* signal_handling.c */
-void					setup_prompt_signals(void);
-void					setup_sigint_handler(void);
+void					setup_prompt_signals(t_minishell *shell);
+void					setup_sigint_handler(t_minishell *shell);
 void					handle_sigint_at_prompt(int sig);
-void					setup_sigquit_handler(void);
-void					reset_signal_handlers(void);
-void					ignore_signal_handlers(void);
+void					setup_sigquit_handler(t_minishell *shell);
+void					reset_signal_handlers(t_minishell *shell);
+void					ignore_signal_handlers(t_minishell *shell);
 
 /* execute_commands.c */
 void					execute_command(t_token *tokens, t_minishell *shell);
@@ -276,13 +276,15 @@ void					execute_external_cmd(char **cmd_args,
 pid_t					fork_child_process(void);
 void					execute_in_child(char **cmd_and_args,
 							t_minishell *shell);
-void					handle_parent_process(pid_t child_pid);
+void					handle_parent_process(pid_t child_pid,
+							t_minishell *shell);
 
 /* pipe.c */
 int						init_pipe(t_ast_node *node, t_minishell *shell);
 void					init_command(t_command *cmd, t_token *tokens,
 							t_minishell *shell);
-void					execute_external(t_command *cmd, char **env);
+void					execute_external(t_command *cmd, char **env,
+							t_minishell *shell);
 void					update_redirect_tokens(t_token *tokens);
 
 #endif

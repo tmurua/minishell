@@ -6,7 +6,7 @@
 /*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/14 17:23:19 by dlemaire          #+#    #+#             */
-/*   Updated: 2024/11/26 18:35:29 by tmurua           ###   ########.fr       */
+/*   Updated: 2024/11/26 19:30:24 by tmurua           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void	add_outfile_to_cmd(t_command *cmd, char *filename, t_minishell *shell,\
 			int append_flag);
 // void	init_heredoc(t_command *cmd, char *delimiter);
 
-void	execute_external(t_command *cmd, char **env)
+void	execute_external(t_command *cmd, char **env, t_minishell *shell)
 {
 	int		pid;
 	int		status;
@@ -40,12 +40,13 @@ void	execute_external(t_command *cmd, char **env)
 	pid = fork();
 	if (pid == 0)
 	{
-		reset_signal_handlers();
+		reset_signal_handlers(shell);
 		if (infile)
 		{
 			if (dup2(infile->fd, STDIN_FILENO) == -1)
 			{
 				perror("dup2 infile");
+				gc_free_all(shell->gc_head);
 				exit(EXIT_FAILURE);
 			}
 		}
@@ -54,19 +55,21 @@ void	execute_external(t_command *cmd, char **env)
 			if (dup2(outfile->fd, STDOUT_FILENO) == -1)
 			{
 				perror("dup2 outfile");
+				gc_free_all(shell->gc_head);
 				exit(EXIT_FAILURE);
 			}
 		}
 		if (execve(cmd->path, cmd->args, env) == -1)
 		{
 			perror("execve");
+			gc_free_all(shell->gc_head);
 			exit(EXIT_FAILURE);
 		}
 	}
-	ignore_signal_handlers();
+	ignore_signal_handlers(shell);
 	if (waitpid(pid, &status, 0) == -1)
 		perror("minishell: waitpid");
-	setup_prompt_signals();
+	setup_prompt_signals(shell);
 }
 
 void	init_command(t_command *cmd, t_token *node_tokens, t_minishell *shell)
@@ -82,33 +85,51 @@ void	init_command(t_command *cmd, t_token *node_tokens, t_minishell *shell)
 	i = 0;
 	cmd->args = gc_calloc(&shell->gc_head, arg_count + 1, sizeof(char *));
 	if (!cmd->args)
+	{
+		gc_free_all(shell->gc_head);
 		exit(EXIT_FAILURE);
+	}
 	while (node_tokens)
 	{
 		if (node_tokens->type == TOKEN_BUILTIN_CMD)
 		{
 			cmd->cmd_name = gc_strdup(&shell->gc_head, node_tokens->value);
 			if (!cmd->cmd_name)
+			{
+				gc_free_all(shell->gc_head);
 				exit(EXIT_FAILURE);
+			}
 			cmd->args[i] = gc_strdup(&shell->gc_head, node_tokens->value);
 			if (!cmd->args[i++])
+			{
+				gc_free_all(shell->gc_head);
 				exit(EXIT_FAILURE);
+			}
 		}
 		if (node_tokens->type == TOKEN_EXTERN_CMD)
 		{
 			cmd->cmd_name = gc_strdup(&shell->gc_head, node_tokens->value);
 			if (!cmd->cmd_name)
+			{
+				gc_free_all(shell->gc_head);
 				exit(EXIT_FAILURE);
+			}
 			cmd->args[i] = gc_strdup(&shell->gc_head, node_tokens->value);
 			if (!cmd->args[i++])
+			{
+				gc_free_all(shell->gc_head);
 				exit(EXIT_FAILURE);
+			}
 			cmd->path = build_command_path(cmd->cmd_name, shell);
 		}
 		if (node_tokens->type == TOKEN_ARGUMENT)
 		{
 			cmd->args[i] = gc_strdup(&shell->gc_head, node_tokens->value);
 			if (!cmd->args[i++])
+			{
+				gc_free_all(shell->gc_head);
 				exit(EXIT_FAILURE);
+			}
 		}
 		if (node_tokens->type == TOKEN_REDIRECT_IN)
 		{
@@ -163,10 +184,12 @@ int	init_pipe(t_ast_node *node, t_minishell *shell)
 		if (dup2(fds[1], STDOUT_FILENO) == -1)
 		{
 			perror("dup2");
+			gc_free_all(shell->gc_head);
 			exit(EXIT_FAILURE);
 		}
 		close(fds[1]);
 		read_tree(node->left, shell);
+		gc_free_all(shell->gc_head);
 		exit(EXIT_SUCCESS);
 	}
 	pids[1] = fork();
@@ -176,10 +199,12 @@ int	init_pipe(t_ast_node *node, t_minishell *shell)
 		if (dup2(fds[0], STDIN_FILENO) == -1)
 		{
 			perror("dup2");
+			gc_free_all(shell->gc_head);
 			exit(EXIT_FAILURE);
 		}
 		close(fds[0]);
 		read_tree(node->right, shell);
+		gc_free_all(shell->gc_head);
 		exit(EXIT_SUCCESS);
 	}
 	close(fds[0]);
@@ -219,7 +244,10 @@ char	**create_directories(t_minishell *shell)
 		{
 			directories = ft_split(ft_strchr(shell->env[i], '/'), ':');
 			if (!directories)
+			{
+				gc_free_all(shell->gc_head);
 				exit(EXIT_FAILURE);
+			}
 			return (directories);
 		}
 		i++;
@@ -236,7 +264,10 @@ char	*build_command_path(char *str, t_minishell *shell)
 		return (gc_strdup(&shell->gc_head, str));
 	directories = create_directories(shell);
 	if (!directories)
+	{
+		gc_free_all(shell->gc_head);
 		exit(EXIT_FAILURE);
+	}
 	result_path = find_executable_path(str, directories, shell);
 	return (result_path);
 }
@@ -262,7 +293,10 @@ void	add_infile_to_cmd(t_command *cmd, char *filename, t_minishell *shell)
 
 	new_infile = gc_calloc(&shell->gc_head, 1, sizeof(t_files));
 	if (!new_infile)
+	{
+		gc_free_all(shell->gc_head);
 		exit(EXIT_FAILURE);
+	}
 	new_infile->delim = NULL;
 	new_infile->next = NULL;
 	new_infile->fd = open(filename, O_RDONLY, 0644);
@@ -304,7 +338,10 @@ void	add_outfile_to_cmd(t_command *cmd, char *filename, t_minishell *shell,
 
 	new_outfile = gc_calloc(&shell->gc_head, 1, sizeof(t_files));
 	if (!new_outfile)
+	{
+		gc_free_all(shell->gc_head);
 		exit(EXIT_FAILURE);
+	}
 	new_outfile->delim = NULL;
 	new_outfile->next = NULL;
 	if (append_flag)

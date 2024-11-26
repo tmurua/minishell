@@ -6,7 +6,7 @@
 /*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 17:10:48 by dlemaire          #+#    #+#             */
-/*   Updated: 2024/11/26 18:41:33 by tmurua           ###   ########.fr       */
+/*   Updated: 2024/11/26 19:08:11 by tmurua           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,7 @@ t_ast_node	*create_ast_node(t_node_type type, t_ast_node *left,
 	if (!new)
 	{
 		perror("minishell: create_ast_node");
+		gc_free_all(shell->gc_head);
 		exit(EXIT_FAILURE);
 	}
 	new->tokens = NULL;

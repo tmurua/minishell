@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   interpreter.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dlemaire <dlemaire@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/02 16:26:15 by dlemaire          #+#    #+#             */
-/*   Updated: 2024/11/23 18:45:33 by dlemaire         ###   ########.fr       */
+/*   Updated: 2024/11/26 19:25:06 by tmurua           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ int	evaluate_and_execute(t_ast_node *node, t_minishell *shell)
 	{
 		init_command(&cmd, node->tokens, shell);
 		if (node->tokens->type == TOKEN_EXTERN_CMD)
-			execute_external(shell->cmd, shell->env);
+			execute_external(shell->cmd, shell->env, shell);
 		else if (node->tokens->type == TOKEN_BUILTIN_CMD)
 			execute_builtin(shell);
 		return (0);

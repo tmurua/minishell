@@ -6,7 +6,7 @@
 /*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/07 10:32:58 by tmurua            #+#    #+#             */
-/*   Updated: 2024/11/26 18:46:20 by tmurua           ###   ########.fr       */
+/*   Updated: 2024/11/26 19:23:45 by tmurua           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,9 +24,9 @@
 		execute_builtin(args, env);
 	else
 	{
-		ignore_signal_handlers();
+		ignore_signal_handlers(shell);
 		execute_external_cmd(args, env);
-		setup_prompt_signals();
+		setup_prompt_signals(shell);
 	}
 }*/
 

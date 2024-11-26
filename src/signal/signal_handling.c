@@ -6,7 +6,7 @@
 /*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 19:47:34 by tmurua            #+#    #+#             */
-/*   Updated: 2024/11/18 18:39:13 by tmurua           ###   ########.fr       */
+/*   Updated: 2024/11/26 19:18:55 by tmurua           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,10 @@
 
 /*	sets up signal handlers for the shell prompt.
 	handles SIGINT (Ctrl+C) and ignores SIGQUIT (Ctrl+\). */
-void	setup_prompt_signals(void)
+void	setup_prompt_signals(t_minishell *shell)
 {
-	setup_sigint_handler();
-	setup_sigquit_handler();
+	setup_sigint_handler(shell);
+	setup_sigquit_handler(shell);
 }
 
 /*	setup SIGINT (Ctrl+C) signal handler for the prompt
@@ -26,7 +26,7 @@ void	setup_prompt_signals(void)
 	when SIGINT received, SA_RESTART flag restarts interrupted system calls
 	sigemptyset() initializes the signal mask to exclude all signals
 	apply the sigaction for SIGINT, if it fails, print an error and exit */
-void	setup_sigint_handler(void)
+void	setup_sigint_handler(t_minishell *shell)
 {
 	struct sigaction	sa;
 
@@ -36,6 +36,7 @@ void	setup_sigint_handler(void)
 	if (sigaction(SIGINT, &sa, NULL) == -1)
 	{
 		perror("minishell: sigaction");
+		gc_free_all(shell->gc_head);
 		exit(EXIT_FAILURE);
 	}
 }
@@ -57,7 +58,7 @@ void	handle_sigint_at_prompt(int sig)
 	when SIGQUIT received, SA_RESTART flag restarts interrupted system calls
 	sigemptyset() initializes the signal mask to exclude all signals
 	apply the sigaction for SIGQUIT, if it fails, print an error and exit */
-void	setup_sigquit_handler(void)
+void	setup_sigquit_handler(t_minishell *shell)
 {
 	struct sigaction	sa;
 
@@ -67,38 +68,43 @@ void	setup_sigquit_handler(void)
 	if (sigaction(SIGQUIT, &sa, NULL) == -1)
 	{
 		perror("minishell: sigaction");
+		gc_free_all(shell->gc_head);
 		exit(EXIT_FAILURE);
 	}
 }
 
 /*	resets signal handlers to their default behavior.
 	used in child processes before executing external commands */
-void	reset_signal_handlers(void)
+void	reset_signal_handlers(t_minishell *shell)
 {
 	if (signal(SIGINT, SIG_DFL) == SIG_ERR)
 	{
 		perror("minishell: signal");
+		gc_free_all(shell->gc_head);
 		exit(EXIT_FAILURE);
 	}
 	if (signal(SIGQUIT, SIG_DFL) == SIG_ERR)
 	{
 		perror("minishell: signal");
+		gc_free_all(shell->gc_head);
 		exit(EXIT_FAILURE);
 	}
 }
 
 /*	ignores SIGINT and SIGQUIT in parent process during command execution,
 	preventing shell from being interrupted by these signals */
-void	ignore_signal_handlers(void)
+void	ignore_signal_handlers(t_minishell *shell)
 {
 	if (signal(SIGINT, SIG_IGN) == SIG_ERR)
 	{
 		perror("minishell: signal");
+		gc_free_all(shell->gc_head);
 		exit(EXIT_FAILURE);
 	}
 	if (signal(SIGQUIT, SIG_IGN) == SIG_ERR)
 	{
 		perror("minishell: signal");
+		gc_free_all(shell->gc_head);
 		exit(EXIT_FAILURE);
 	}
 }
