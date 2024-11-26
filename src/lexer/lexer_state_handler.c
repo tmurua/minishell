@@ -6,7 +6,7 @@
 /*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/01 16:42:16 by tmurua            #+#    #+#             */
-/*   Updated: 2024/11/20 19:16:31 by tmurua           ###   ########.fr       */
+/*   Updated: 2024/11/26 18:38:32 by tmurua           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,10 +32,7 @@ char	*collect_token(t_lexer *lexer, t_minishell *shell)
 		if (status == TOKEN_COMPLETE)
 			break ;
 		else if (status == TOKEN_ERROR)
-		{
-			free(buffer);
 			return (NULL);
-		}
 	}
 	return (buffer);
 }

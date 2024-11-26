@@ -6,7 +6,7 @@
 /*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/02 17:02:08 by tmurua            #+#    #+#             */
-/*   Updated: 2024/11/20 19:29:21 by tmurua           ###   ########.fr       */
+/*   Updated: 2024/11/26 18:33:58 by tmurua           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,22 +42,6 @@ t_token	*create_token(t_token_type type, char *value, t_minishell *shell)
 	token->value = value;
 	token->next = NULL;
 	return (token);
-}
-
-/* free entire linked list of tokens starting from current token */
-void	free_tokens(t_token *tokens)
-{
-	t_token	*current;
-	t_token	*next_token;
-
-	current = tokens;
-	while (current != NULL)
-	{
-		next_token = current->next;
-		free(current->value);
-		free(current);
-		current = next_token;
-	}
 }
 
 /*	adds a new token to the end of the tokens linked list */

@@ -6,7 +6,7 @@
 /*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/06 08:57:29 by tmurua            #+#    #+#             */
-/*   Updated: 2024/11/20 17:44:08 by tmurua           ###   ########.fr       */
+/*   Updated: 2024/11/26 18:45:14 by tmurua           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 /*	fork new child process with fork_child_process(), if forking works execute
 	external command in child process with execute_in_child(), if not run
 	handle_parent_process() so parent process waits for child proces to finish*/
-void	execute_external_cmd(char **cmd_args, t_minishell *shell, t_token *tokens)
+void	execute_external_cmd(char **cmd_args, t_minishell *shell)
 {
 	pid_t	child_pid;
 
@@ -23,7 +23,7 @@ void	execute_external_cmd(char **cmd_args, t_minishell *shell, t_token *tokens)
 	if (child_pid < 0)
 		return ;
 	if (child_pid == 0)
-		execute_in_child(cmd_args, shell, tokens);
+		execute_in_child(cmd_args, shell);
 	else
 		handle_parent_process(child_pid);
 }
@@ -41,15 +41,13 @@ pid_t	fork_child_process(void)
 
 /*	reset signal handlers to default in child process
 	execute external command in child process with excve() */
-void	execute_in_child(char **cmd_and_args, t_minishell *shell, t_token *tokens)
+void	execute_in_child(char **cmd_and_args, t_minishell *shell)
 {
 	reset_signal_handlers();
 	// execve needs the command path to be built
 	if (execve(cmd_and_args[0], cmd_and_args, shell->env) < 0)
 	{
 		perror("minishell: execve");
-		free_arguments(cmd_and_args);
-		free_tokens(tokens);
 		exit(EXIT_FAILURE);
 	}
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipe.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dlemaire <dlemaire@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/14 17:23:19 by dlemaire          #+#    #+#             */
-/*   Updated: 2024/11/26 15:59:29 by dlemaire         ###   ########.fr       */
+/*   Updated: 2024/11/26 18:35:29 by tmurua           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -238,7 +238,6 @@ char	*build_command_path(char *str, t_minishell *shell)
 	if (!directories)
 		exit(EXIT_FAILURE);
 	result_path = find_executable_path(str, directories, shell);
-	free_arguments(directories); // need better naming for function
 	return (result_path);
 }
 

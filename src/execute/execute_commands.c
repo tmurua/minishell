@@ -6,7 +6,7 @@
 /*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/07 10:32:58 by tmurua            #+#    #+#             */
-/*   Updated: 2024/11/20 19:04:45 by tmurua           ###   ########.fr       */
+/*   Updated: 2024/11/26 18:46:20 by tmurua           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,10 +25,9 @@
 	else
 	{
 		ignore_signal_handlers();
-		execute_external_cmd(args, env, tokens);
+		execute_external_cmd(args, env);
 		setup_prompt_signals();
 	}
-	free_arguments(args);
 }*/
 
 /* count_tokens, allocate_args_array, copy_token_values */
@@ -42,10 +41,7 @@ char	**tokens_to_args(t_token *tokens, t_minishell *shell)
 	if (!args)
 		return (NULL);
 	if (copy_token_values(tokens, args, shell) == -1)
-	{
-		free_arguments(args);
 		return (NULL);
-	}
 	return (args);
 }
 
@@ -85,19 +81,3 @@ int	copy_token_values(t_token *tokens, char **args, t_minishell *shell)
 	}
 	return (0);
 }
-
-void	free_arguments(char **args)
-{
-	int	i;
-
-	if (!args)
-		return ;
-	i = 0;
-	while (args[i])
-	{
-		free(args[i]);
-		i++;
-	}
-	free(args);
-}
-

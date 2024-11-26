@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   input_handling.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dlemaire <dlemaire@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 16:48:08 by tmurua            #+#    #+#             */
-/*   Updated: 2024/11/23 18:52:00 by dlemaire         ###   ########.fr       */
+/*   Updated: 2024/11/26 18:35:17 by tmurua           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,6 @@ void	main_input_loop(int ac, char **av, t_minishell *shell)
 		run_lexer(input, shell);
 		shell->ast_root = parse_expression(shell, MIN_PRECEDENCE_LVL);
 		read_tree(shell->ast_root, shell);
-		//cleanup_input(shell->tokens, input);
 	}
 }
 
@@ -47,12 +46,4 @@ char	*read_user_input(void)
 
 	input = readline("minishell$> ");
 	return (input);
-}
-
-void	cleanup_input(t_token *tokens, char *input)
-{
-	if (tokens)
-		free_tokens(tokens);
-	if (input)
-		free(input);
 }

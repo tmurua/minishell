@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dlemaire <dlemaire@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 09:08:10 by tmurua            #+#    #+#             */
-/*   Updated: 2024/11/25 23:32:05 by dlemaire         ###   ########.fr       */
+/*   Updated: 2024/11/26 18:46:58 by tmurua           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -159,7 +159,6 @@ typedef struct s_ast_node
 void					main_input_loop(int ac, char **av, t_minishell *shell);
 void					handle_multiple_args(int ac, char **av);
 char					*read_user_input(void);
-void					cleanup_input(t_token *tokens, char *input);
 
 /* lexer.c */
 void					run_lexer(char *str, t_minishell *shell);
@@ -193,7 +192,6 @@ int						advance_and_append(t_lexer *lexer, char **buffer,
 int						count_tokens(t_token *tokens);
 t_token					*create_token(t_token_type type, char *value,
 							t_minishell *shell);
-void					free_tokens(t_token *tokens);
 void					token_to_list(t_token **tokens, t_token **current,
 							t_token *new);
 
@@ -235,7 +233,6 @@ char					**tokens_to_args(t_token *tokens, t_minishell *shell);
 char					**allocate_args_array(int count, t_minishell *shell);
 int						copy_token_values(t_token *tokens, char **args,
 							t_minishell *shell);
-void					free_arguments(char **args);
 
 /* builtin_commands.c */
 int						handle_exit_command(char *input, t_minishell *shell);
@@ -271,14 +268,13 @@ int						unset_env_variable(const char *name,
 
 /* environment_utils.c */
 char					**duplicate_env(char **envp, t_minishell *shell);
-void					free_env(char **env);
 
 /* external_commands.c */
 void					execute_external_cmd(char **cmd_args,
-							t_minishell *shell, t_token *tokens);
+							t_minishell *shell);
 pid_t					fork_child_process(void);
 void					execute_in_child(char **cmd_and_args,
-							t_minishell *shell, t_token *tokens);
+							t_minishell *shell);
 void					handle_parent_process(pid_t child_pid);
 
 /* pipe.c */

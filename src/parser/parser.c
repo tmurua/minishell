@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dlemaire <dlemaire@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 17:10:48 by dlemaire          #+#    #+#             */
-/*   Updated: 2024/11/25 23:30:39 by dlemaire         ###   ########.fr       */
+/*   Updated: 2024/11/26 18:41:33 by tmurua           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,16 +41,6 @@ void	ft_tkadd_back(t_token **tokens, t_token *new)
 			tmp->next = new;
 		}
 	}
-}
-
-void	eat_token(t_token **current_token)
-{
-	t_token	*tmp;
-
-	tmp = *current_token;
-	*current_token = (*current_token)->next;
-	free(tmp->value);
-	free(tmp);
 }
 
 int	get_precedence_lvl(int type)
@@ -118,7 +108,6 @@ t_ast_node	*parse_expression(t_minishell *shell, int precedence_threshold)
 	{
 		delimiter = shell->tokens->type;
 		precedence_lvl = get_precedence_lvl(delimiter) + 1;
-		eat_token(&(shell->tokens));
 		right = parse_expression(shell, precedence_lvl);
 		if (!right)
 			break ;

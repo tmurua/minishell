@@ -6,7 +6,7 @@
 /*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/13 17:10:19 by tmurua            #+#    #+#             */
-/*   Updated: 2024/11/20 18:16:14 by tmurua           ###   ########.fr       */
+/*   Updated: 2024/11/26 18:38:35 by tmurua           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,17 +35,4 @@ char	**duplicate_env(char **envp, t_minishell *shell)
 	}
 	new_env[i] = NULL;
 	return (new_env);
-}
-
-// Function to free the environment array
-void	free_env(char **env)
-{
-	int	i;
-
-	if (!env)
-		return ;
-	i = 0;
-	while (env[i])
-		free(env[i++]);
-	free(env);
 }

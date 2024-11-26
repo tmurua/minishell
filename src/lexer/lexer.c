@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dlemaire <dlemaire@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 17:35:59 by dlemaire          #+#    #+#             */
-/*   Updated: 2024/11/23 16:12:37 by dlemaire         ###   ########.fr       */
+/*   Updated: 2024/11/26 18:38:20 by tmurua           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,10 +26,7 @@ void	run_lexer(char *str, t_minishell *shell)
 		skip_whitespace(&lexer);
 		new_token = get_next_token(&lexer, shell);
 		if (!new_token || new_token->type == TOKEN_INVALID)
-		{
-			free_tokens(shell->tokens);
 			return ;
-		}
 		token_to_list(&(shell->tokens), &current_token, new_token);
 	}
 	update_redirect_tokens(shell->tokens);
@@ -81,10 +78,7 @@ t_token	*get_next_token(t_lexer *lexer, t_minishell *shell)
 	else
 		type = handle_regular_token(lexer, &value, shell);
 	if (type == TOKEN_INVALID)
-	{
-		free(value);
 		return (NULL);
-	}
 	new_token = create_token(type, value, shell);
 	return (new_token);
 }
