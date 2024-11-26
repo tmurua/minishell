@@ -6,7 +6,7 @@
 /*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 09:08:10 by tmurua            #+#    #+#             */
-/*   Updated: 2024/11/26 18:46:58 by tmurua           ###   ########.fr       */
+/*   Updated: 2024/11/26 18:59:57 by tmurua           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -157,7 +157,8 @@ typedef struct s_ast_node
 /* function prototypes */
 /* input_handling.c */
 void					main_input_loop(int ac, char **av, t_minishell *shell);
-void					handle_multiple_args(int ac, char **av);
+void					handle_multiple_args(int ac, char **av,
+							t_minishell *shell);
 char					*read_user_input(void);
 
 /* lexer.c */

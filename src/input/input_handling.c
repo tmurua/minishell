@@ -6,7 +6,7 @@
 /*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 16:48:08 by tmurua            #+#    #+#             */
-/*   Updated: 2024/11/26 18:35:17 by tmurua           ###   ########.fr       */
+/*   Updated: 2024/11/26 18:58:56 by tmurua           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ void	main_input_loop(int ac, char **av, t_minishell *shell)
 {
 	char		*input;
 
-	handle_multiple_args(ac, av);
+	handle_multiple_args(ac, av, shell);
 	while (1)
 	{
 		input = read_user_input();
@@ -31,11 +31,12 @@ void	main_input_loop(int ac, char **av, t_minishell *shell)
 	}
 }
 
-void	handle_multiple_args(int ac, char **av)
+void	handle_multiple_args(int ac, char **av, t_minishell *shell)
 {
 	if (ac != 1 || av[1])
 	{
 		printf("minishell does not accept arguments\n");
+		gc_free_all(shell->gc_head);
 		exit(0);
 	}
 }

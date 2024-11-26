@@ -6,7 +6,7 @@
 /*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/06 08:57:29 by tmurua            #+#    #+#             */
-/*   Updated: 2024/11/26 18:45:14 by tmurua           ###   ########.fr       */
+/*   Updated: 2024/11/26 19:02:45 by tmurua           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ void	execute_in_child(char **cmd_and_args, t_minishell *shell)
 	if (execve(cmd_and_args[0], cmd_and_args, shell->env) < 0)
 	{
 		perror("minishell: execve");
+		gc_free_all(shell->gc_head);
 		exit(EXIT_FAILURE);
 	}
 }
