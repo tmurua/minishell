@@ -6,7 +6,7 @@
 /*   By: dlemaire <dlemaire@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/14 17:23:19 by dlemaire          #+#    #+#             */
-/*   Updated: 2024/11/23 18:42:45 by dlemaire         ###   ########.fr       */
+/*   Updated: 2024/11/26 15:59:29 by dlemaire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ int		count_arg_tokens(t_token *tokens);
 void	add_infile_to_cmd(t_command *cmd, char *filename, t_minishell *shell);
 void	add_outfile_to_cmd(t_command *cmd, char *filename, t_minishell *shell,\
 			int append_flag);
-void	init_heredoc(t_command *cmd, char *delimiter);
+// void	init_heredoc(t_command *cmd, char *delimiter);
 
 void	execute_external(t_command *cmd, char **env)
 {
@@ -118,14 +118,14 @@ void	init_command(t_command *cmd, t_token *node_tokens, t_minishell *shell)
 				node_tokens = node_tokens->next;
 			}
 		}
-		if (node_tokens->type == TOKEN_HEREDOC)
-		{
-			if (node_tokens->next->type == TOKEN_HEREDOC_DELIMITER)
-			{
-				//init_heredoc(cmd, tokens->next->value);
-				node_tokens = node_tokens->next;
-			}
-		}
+		// if (node_tokens->type == TOKEN_HEREDOC)
+		// {
+		// 	if (node_tokens->next->type == TOKEN_HEREDOC_DELIMITER)
+		// 	{
+		// 		//init_heredoc(cmd, tokens->next->value);
+		// 		node_tokens = node_tokens->next;
+		// 	}
+		// }
 		if (node_tokens->type == TOKEN_REDIRECT_OUT)
 		{
 			if (node_tokens->next->type == TOKEN_FILENAME)
@@ -341,29 +341,29 @@ int	is_heredoc_delimiter(const char *input, const char *delimiter)
 	return (0);
 }
 
-void	init_heredoc(t_command *cmd, char *delimiter)
-{
-	t_files	*new_infile;
-	t_files	*current;
-	char	*input;
+// void	init_heredoc(t_command *cmd, char *delimiter)
+// {
+// 	t_files	*new_infile;
+// 	t_files	*current;
+// 	char	*input;
 
-	new_infile = malloc(sizeof(t_files));
-	if (!new_infile)
-		exit(EXIT_FAILURE);
-	new_infile->delim = delimiter;
-	new_infile->next = NULL;
-	input = NULL;
-	while (!is_heredoc_delimiter(input, delimiter))
-	{
-		input = readline("> ");
-	}
-	if (!cmd->infile)
-		cmd->infile = new_infile;
-	else
-	{
-		current = cmd->infile;
-		while (current->next)
-			current = current->next;
-		current->next = new_infile;
-	}
-}
+// 	new_infile = malloc(sizeof(t_files));
+// 	if (!new_infile)
+// 		exit(EXIT_FAILURE);
+// 	new_infile->delim = delimiter;
+// 	new_infile->next = NULL;
+// 	input = NULL;
+// 	while (!is_heredoc_delimiter(input, delimiter))
+// 	{
+// 		input = readline("> ");
+// 	}
+// 	if (!cmd->infile)
+// 		cmd->infile = new_infile;
+// 	else
+// 	{
+// 		current = cmd->infile;
+// 		while (current->next)
+// 			current = current->next;
+// 		current->next = new_infile;
+// 	}
+// }

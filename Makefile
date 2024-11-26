@@ -15,6 +15,7 @@ SRC		= \
 	./src/lexer/lexer_state_handler.c \
 	./src/lexer/lexer_utils.c \
 	./src/parser/parser.c \
+	./src/parser/heredoc.c \
 	./src/interpreter/interpreter.c \
 	./src/variable/variable_expansion.c \
 	./src/pipe/pipe.c \

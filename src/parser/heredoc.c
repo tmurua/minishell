@@ -6,7 +6,7 @@
 /*   By: dlemaire <dlemaire@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/25 23:18:42 by dlemaire          #+#    #+#             */
-/*   Updated: 2024/11/26 00:00:03 by dlemaire         ###   ########.fr       */
+/*   Updated: 2024/11/26 16:04:13 by dlemaire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void	heredoc_loop(t_token *token, int *pipe)
 	while (1)
 	{
 		buffer = readline("> ");
-		if (!buffer || ft_strncpm(buffer, delimiter, ft_strlen(delimiter) + 1) == 0)
+		if (!buffer || ft_strncmp(buffer, delimiter, ft_strlen(delimiter) + 1) == 0)
 			break ;
 		//expension
 	}
