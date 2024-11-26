@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipe.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
+/*   By: dlemaire <dlemaire@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/14 17:23:19 by dlemaire          #+#    #+#             */
-/*   Updated: 2024/11/26 19:30:24 by tmurua           ###   ########.fr       */
+/*   Updated: 2024/11/26 20:28:49 by dlemaire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,7 @@ void	init_command(t_command *cmd, t_token *node_tokens, t_minishell *shell)
 	cmd->outfile = NULL;
 	arg_count = count_arg_tokens(node_tokens);
 	i = 0;
-	cmd->args = gc_calloc(&shell->gc_head, arg_count + 1, sizeof(char *));
+	cmd->args = gc_calloc(&shell->gc_head, arg_count + 2, sizeof(char *));
 	if (!cmd->args)
 	{
 		gc_free_all(shell->gc_head);
@@ -139,14 +139,6 @@ void	init_command(t_command *cmd, t_token *node_tokens, t_minishell *shell)
 				node_tokens = node_tokens->next;
 			}
 		}
-		// if (node_tokens->type == TOKEN_HEREDOC)
-		// {
-		// 	if (node_tokens->next->type == TOKEN_HEREDOC_DELIMITER)
-		// 	{
-		// 		//init_heredoc(cmd, tokens->next->value);
-		// 		node_tokens = node_tokens->next;
-		// 	}
-		// }
 		if (node_tokens->type == TOKEN_REDIRECT_OUT)
 		{
 			if (node_tokens->next->type == TOKEN_FILENAME)
