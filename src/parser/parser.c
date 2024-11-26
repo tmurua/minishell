@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
+/*   By: dlemaire <dlemaire@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 17:10:48 by dlemaire          #+#    #+#             */
-/*   Updated: 2024/11/26 19:08:11 by tmurua           ###   ########.fr       */
+/*   Updated: 2024/11/26 23:03:10 by dlemaire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,6 +109,7 @@ t_ast_node	*parse_expression(t_minishell *shell, int precedence_threshold)
 	{
 		delimiter = shell->tokens->type;
 		precedence_lvl = get_precedence_lvl(delimiter) + 1;
+		shell->tokens = shell->tokens->next;
 		right = parse_expression(shell, precedence_lvl);
 		if (!right)
 			break ;
