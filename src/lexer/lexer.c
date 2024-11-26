@@ -3,14 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
+/*   By: dlemaire <dlemaire@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 17:35:59 by dlemaire          #+#    #+#             */
-/*   Updated: 2024/11/26 18:38:20 by tmurua           ###   ########.fr       */
+/*   Updated: 2024/11/27 00:19:31 by dlemaire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
+
+void	update_redirect_tokens(t_token *tokens);
 
 void	run_lexer(char *str, t_minishell *shell)
 {
@@ -81,4 +83,18 @@ t_token	*get_next_token(t_lexer *lexer, t_minishell *shell)
 		return (NULL);
 	new_token = create_token(type, value, shell);
 	return (new_token);
+}
+
+void	update_redirect_tokens(t_token *tokens)
+{
+	while (tokens)
+	{
+		if (tokens->type == TOKEN_REDIRECT_IN
+			|| tokens->type == TOKEN_REDIRECT_OUT
+			|| tokens->type == TOKEN_REDIRECT_APPEND)
+			tokens->next->type = TOKEN_FILENAME;
+		if (tokens->type == TOKEN_HEREDOC)
+			tokens->next->type = TOKEN_HEREDOC_DELIMITER;
+		tokens = tokens->next;
+	}
 }

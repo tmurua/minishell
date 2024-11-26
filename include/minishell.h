@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
+/*   By: dlemaire <dlemaire@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 09:08:10 by tmurua            #+#    #+#             */
-/*   Updated: 2024/11/26 19:23:13 by tmurua           ###   ########.fr       */
+/*   Updated: 2024/11/27 00:39:02 by dlemaire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -229,10 +229,26 @@ void					reset_signal_handlers(t_minishell *shell);
 void					ignore_signal_handlers(t_minishell *shell);
 
 /* execute_commands.c */
-void					execute_command(t_token *tokens, t_minishell *shell);
-char					**tokens_to_args(t_token *tokens, t_minishell *shell);
-char					**allocate_args_array(int count, t_minishell *shell);
-int						copy_token_values(t_token *tokens, char **args,
+// void					execute_command(t_token *tokens, t_minishell *shell);
+// char					**tokens_to_args(t_token *tokens, t_minishell *shell);
+// char					**allocate_args_array(int count, t_minishell *shell);
+// int						copy_token_values(t_token *tokens, char **args,
+// 							t_minishell *shell);
+void					init_command(t_command *cmd, t_token *node_tokens,
+							t_minishell *shell);
+
+/* path_builder.c */
+char					*build_command_path(char *str, t_minishell *shell);
+
+/* external_commands.c */
+// void					execute_external_cmd(char **cmd_args,
+// 							t_minishell *shell);
+// pid_t					fork_child_process(void);
+// void					execute_in_child(char **cmd_and_args,
+// 							t_minishell *shell);
+// void					handle_parent_process(pid_t child_pid,
+// 							t_minishell *shell);
+void					execute_external(t_command *cmd, char **env,
 							t_minishell *shell);
 
 /* builtin_commands.c */
@@ -270,21 +286,7 @@ int						unset_env_variable(const char *name,
 /* environment_utils.c */
 char					**duplicate_env(char **envp, t_minishell *shell);
 
-/* external_commands.c */
-void					execute_external_cmd(char **cmd_args,
-							t_minishell *shell);
-pid_t					fork_child_process(void);
-void					execute_in_child(char **cmd_and_args,
-							t_minishell *shell);
-void					handle_parent_process(pid_t child_pid,
-							t_minishell *shell);
-
 /* pipe.c */
 int						init_pipe(t_ast_node *node, t_minishell *shell);
-void					init_command(t_command *cmd, t_token *tokens,
-							t_minishell *shell);
-void					execute_external(t_command *cmd, char **env,
-							t_minishell *shell);
-void					update_redirect_tokens(t_token *tokens);
 
 #endif

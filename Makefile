@@ -25,6 +25,7 @@ SRC		= \
 	./src/builtin/builtin_cmd_unset.c \
 	./src/execute/execute_commands.c \
 	./src/execute/external_commands.c \
+	./src/execute/path_builder.c \
 	./src/signal/signal_handling.c
 
 OBJ		= $(SRC:.c=.o)
