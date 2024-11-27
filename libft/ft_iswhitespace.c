@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_iswhitespace.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dlemaire <dlemaire@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/10/29 14:25:18 by dlemaire          #+#    #+#             */
-/*   Updated: 2024/10/29 14:30:15 by dlemaire         ###   ########.fr       */
+/*   Created: 2024/11/27 13:05:15 by tmurua            #+#    #+#             */
+/*   Updated: 2024/11/27 13:05:19 by tmurua           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,6 @@
 
 int	ft_iswhitespace(char c)
 {
-	return (c == ' ' || c == '\t' || c == '\n' || 
-		c == '\v' || c == '\f' || c == '\r');
+	return (c == ' ' || c == '\t' || c == '\n'
+		|| c == '\v' || c == '\f' || c == '\r');
 }
