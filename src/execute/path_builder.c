@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   path_builder.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dlemaire <dlemaire@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 00:37:05 by dlemaire          #+#    #+#             */
-/*   Updated: 2024/11/27 00:37:58 by dlemaire         ###   ########.fr       */
+/*   Updated: 2024/11/27 12:11:28 by tmurua           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,8 @@ char	**create_directories(t_minishell *shell)
 	{
 		if (ft_strncmp("PATH=", shell->env[i], 5) == 0)
 		{
-			directories = ft_split(ft_strchr(shell->env[i], '/'), ':');
+			directories = gc_split(&shell->gc_head,
+					ft_strchr(shell->env[i], '/'), ':');
 			if (!directories)
 			{
 				gc_free_all(shell->gc_head);
