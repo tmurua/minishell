@@ -1,11 +1,11 @@
 {
-	"name": "Codespace - 42 Setup",  # Display name for your Codespace environment
-	"image": "mcr.microsoft.com/vscode/devcontainers/python:3",  # Base image for the environment, using a pre-configured Python 3 (to use 'pip')
-	"postCreateCommand": "sudo apt-get update && sudo apt-get install -y valgrind && sudo python3 -m pip install --upgrade pip setuptools && sudo python3 -m pip install norminette", # Install 'valgrind' and 'norminette' upon Codespace creation
+	"name": "Codespace - 42 Setup",
+	"image": "mcr.microsoft.com/vscode/devcontainers/python:3",
+	"postCreateCommand": "sudo apt-get update && sudo apt-get install -y valgrind && sudo python3 -m pip install --upgrade pip setuptools && sudo python3 -m pip install norminette",
 	"extensions": [
-		"ms-python.python"  # Install VS Code extension for Python (debugging, etc.)
+		"ms-python.python"
 	],
 	"settings": {
-		"python.pythonPath": "/usr/local/bin/python3"  # Sets 'Python 3' for all Python-related operations (e.g. 'pip' calls)
+		"python.pythonPath": "/usr/local/bin/python3"
 	}
 }
