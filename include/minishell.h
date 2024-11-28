@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dlemaire <dlemaire@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 09:08:10 by tmurua            #+#    #+#             */
-/*   Updated: 2024/11/27 00:39:02 by dlemaire         ###   ########.fr       */
+/*   Updated: 2024/11/28 15:56:13 by tmurua           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,9 +62,10 @@
 /* structures */
 /* context structure to group data together and improve code organization */
 
-typedef struct s_token t_token;
-typedef struct s_ast_node t_ast_node;
-typedef struct s_command t_command;
+typedef struct s_token		t_token;
+typedef struct s_ast_node	t_ast_node;
+typedef struct s_command	t_command;
+typedef struct s_files		t_files;
 
 typedef struct s_minishell
 {
