@@ -80,12 +80,17 @@ t_ast_node	*parse_command(t_minishell *shell)
 {
 	t_ast_node	*node;
 	t_token		*tmp;
+	int			heredoc_flag;
 
+	heredoc_flag = 0;
 	node = create_ast_node(NODE_COMMAND, NULL, NULL, shell);
 	while (shell->tokens && !is_statement_delimiter(shell->tokens->type))
 	{
-		// if (shell->tokens->type == TOKEN_HEREDOC)
-		// 	init_heredoc(shell, shell->tokens);
+		if (shell->tokens->type == TOKEN_HEREDOC)
+		{
+			init_heredoc(shell, shell->tokens, heredoc_flag);
+			heredoc_flag = 1;
+		}
 		tmp = shell->tokens;
 		shell->tokens = shell->tokens->next;
 		tmp->next = NULL;
