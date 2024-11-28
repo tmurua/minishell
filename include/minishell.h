@@ -75,6 +75,7 @@ typedef struct s_minishell
 	t_ast_node			*ast_root;
 	t_command			*cmd;
 	t_files				*heredoc;
+	int					heredoc_count;
 	// t_lexer_state		state;
 	// int					fd[2];
 	// t_token				*cmd_args;
