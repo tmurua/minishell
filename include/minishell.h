@@ -6,7 +6,7 @@
 /*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 09:08:10 by tmurua            #+#    #+#             */
-/*   Updated: 2024/11/29 12:40:08 by tmurua           ###   ########.fr       */
+/*   Updated: 2024/11/29 14:14:16 by tmurua           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,7 @@ typedef struct s_minishell
 	t_ast_node			*ast_root;
 	t_command			*cmd;
 	t_files				*heredoc;
+	int					last_exit_status;
 	// t_lexer_state		state;
 	// int					fd[2];
 	// t_token				*cmd_args;
@@ -243,15 +244,22 @@ void					init_command(t_command *cmd, t_token *node_tokens,
 /* path_builder.c */
 char					*build_command_path(char *str, t_minishell *shell);
 
-/* external_commands.c */
-// void					execute_external_cmd(char **cmd_args,
-// 							t_minishell *shell);
-// pid_t					fork_child_process(void);
-// void					execute_in_child(char **cmd_and_args,
-// 							t_minishell *shell);
-// void					handle_parent_process(pid_t child_pid,
-// 							t_minishell *shell);
+/* execute_external.c */
 void					execute_external(t_command *cmd, char **env,
+							t_minishell *shell);
+void					handle_command_not_found(const char *cmd_name,
+							t_minishell *shell);
+void					fork_and_execute(t_command *cmd, char **env,
+							t_minishell *shell);
+
+/* process_execution.c */
+void					execute_command_child(t_command *cmd, char **env,
+							t_minishell *shell);
+void					handle_parent_process(pid_t pid, t_minishell *shell);
+
+/* process_redirections.c */
+t_files					*get_last_file(t_files *files);
+void					setup_redirections(t_files *infile, t_files *outfile,
 							t_minishell *shell);
 
 /* builtin_handler.c */
