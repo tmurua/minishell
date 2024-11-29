@@ -7,7 +7,7 @@
 - [x] 2. **Command History**:
    - minishell maintains a history of commands entered by the user.
 
-- [ ] 3. **Command Execution**:
+- [x] 3. **Command Execution**:
    - minishell searches for and executes the correct executable based on the `PATH` environment variable or using a relative or absolute path.
    - minishell does not need to handle unclosed quotes or special characters like `\` or `;`.
 
@@ -21,12 +21,12 @@
    - Append Output Redirection (`>>`): Appends output to the end of a file.
    - Heredoc (`<<`): Reads input until a delimiter is found.
 
-- [ ] 6.  **Pipes (`|`)**:
+- [x] 6.  **Pipes (`|`)**:
    - minishell supports pipelines, allowing the output of one command to be the input of another.
 
-- [ ] 7.  **Environment Variable Expansion**:
+- [x] 7.  **Environment Variable Expansion**:
    - [x] minishell expands environment variables prefixed with `$` followed by a sequence of characters into their corresponding values.
-   - [ ] minishell handles $? which should expand to the exit status of the most recently executed foreground pipeline
+   - [x] minishell handles $? which should expand to the exit status of the most recently executed foreground pipeline
 
 - [ ] 8.  **Signal Handling**:
    - minishell handles signals like `Ctrl+C`, `Ctrl+D`, and `Ctrl+\` appropriately, using at most one global variable for signal handling.
@@ -35,8 +35,8 @@
    - [x]  **`Ctrl+\`** (`SIGQUIT`): Does nothing.
 
 - [ ] 9.  **Built-in Commands**:
-   - [x] `echo` with `-n` option: Displays a line of text.
-   - [ ] `cd` with a relative or absolute path: Changes the current working directory.
+   - [ ] `echo` with `-n` option: Displays a line of text.
+   - [x] `cd` with a relative or absolute path: Changes the current working directory.
    - [x] `pwd`: Prints the current working directory.
    - [x] `export`: Sets environment variables.
    - [x] `unset`: Unsets environment variables.

@@ -6,7 +6,7 @@
 /*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/16 17:11:17 by tmurua            #+#    #+#             */
-/*   Updated: 2024/11/27 12:29:55 by tmurua           ###   ########.fr       */
+/*   Updated: 2024/11/29 16:41:25 by tmurua           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,5 +106,6 @@ void	gc_free_all(t_list *gc_head);
 char	*gc_substr(t_list **gc_head, const char *s, unsigned int start,
 			size_t len);
 char	**gc_split(t_list **gc_head, char const *s, char c);
+char	*gc_itoa(t_list **gc_head, int n);
 
 #endif

@@ -22,7 +22,8 @@ CFILES =	ft_strlen.c		ft_strlcpy.c	ft_strlcat.c	\
 			./garbage_collector/gc_add_ptr_to_list.c \
 			./garbage_collector/gc_free_all.c \
 			./garbage_collector/gc_substr.c \
-			./garbage_collector/gc_split.c
+			./garbage_collector/gc_split.c \
+			./garbage_collector/gc_itoa.c
 
 
 OBJECTS = $(CFILES:.c=.o)

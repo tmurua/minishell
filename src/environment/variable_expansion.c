@@ -6,7 +6,7 @@
 /*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/08 11:33:39 by tmurua            #+#    #+#             */
-/*   Updated: 2024/11/29 13:39:46 by tmurua           ###   ########.fr       */
+/*   Updated: 2024/11/29 16:44:13 by tmurua           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,10 +83,9 @@ char	*get_variable_value(const char *var_name, t_minishell *shell)
 
 	if (ft_strncmp(var_name, "?", 2) == 0)
 	{
-		exit_status_str = ft_itoa(shell->last_exit_status);
+		exit_status_str = gc_itoa(&shell->gc_head, shell->last_exit_status);
 		if (!exit_status_str)
 			return ("");
-		gc_add_ptr_to_list(&shell->gc_head, exit_status_str);
 		return (exit_status_str);
 	}
 	i = 0;
