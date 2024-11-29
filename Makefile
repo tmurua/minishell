@@ -19,10 +19,11 @@ SRC		= \
 	./src/parser/heredoc.c \
 	./src/interpreter/interpreter.c \
 	./src/pipe/pipe.c \
-	./src/builtin/builtin_commands.c \
-	./src/builtin/builtin_commands2.c \
-	./src/builtin/builtin_cmd_export.c \
-	./src/builtin/builtin_cmd_unset.c \
+	./src/builtin/builtin_handler.c \
+	./src/builtin/builtin_exit_pwd_env_echo.c \
+	./src/builtin/builtin_cd.c \
+	./src/builtin/builtin_export.c \
+	./src/builtin/builtin_unset.c \
 	./src/execute/execute_commands.c \
 	./src/execute/external_commands.c \
 	./src/execute/path_builder.c \

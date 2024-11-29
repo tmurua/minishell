@@ -1,50 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   builtin_commands2.c                                :+:      :+:    :+:   */
+/*   builtin_exit_pwd_env_echo.c                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dlemaire <dlemaire@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/31 13:33:08 by tmurua            #+#    #+#             */
-/*   Updated: 2024/11/25 21:53:17 by dlemaire         ###   ########.fr       */
+/*   Updated: 2024/11/29 12:37:08 by tmurua           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-int	set_output_fd(t_files *outfile)
+int	handle_exit_command(char *input, t_minishell *shell)
 {
-	if (!outfile)
-		return (STDOUT_FILENO);
-	else
-		return (outfile->fd);
-}
-
-/* chdir() changes directories via the OS, with 'path' as target path
-'result' checks success, if result != 0, handle input/errors with perror() */
-int	builtin_cd(char **args)
-{
-	int		result;
-	char	*path;
-
-	path = args[1];
-	if (path == NULL)
+	if (input == NULL || !ft_strncmp(input, "exit", 5))
 	{
-		print_builtin_error("cd", "expected argument"); // should bring back to home
-		return (1);
-	}
-	result = chdir(path);
-	if (result != 0)
-	{
-		perror("minishell: cd"); // should also include the command
-		return (1);
+		rl_clear_history();
+		printf("exit\n");
+		gc_free_all(shell->gc_head);
+		exit (0);
 	}
 	return (0);
 }
 
 /*
 getcwd() sets current working directory path into a path_buffer of size PATH_MAX
-then ft_putendl_fd() outputs the current working directory path */
+then	ft_putendl_fd(void) outputs the current working directory path */
 int	builtin_pwd(t_command *cmd)
 {
 	char	*current_working_directory;
@@ -64,7 +46,6 @@ int	builtin_pwd(t_command *cmd)
 	return (0);
 }
 
-/* env: array of strings representing the environment variables */
 int	builtin_env(t_command *cmd, t_minishell *shell)
 {
 	int	i;
@@ -107,4 +88,3 @@ int	builtin_echo(t_command *cmd)
 		ft_putstr_fd("\n", output_fd);
 	return (0);
 }
-

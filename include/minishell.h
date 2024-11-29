@@ -6,7 +6,7 @@
 /*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 09:08:10 by tmurua            #+#    #+#             */
-/*   Updated: 2024/11/29 11:17:02 by tmurua           ###   ########.fr       */
+/*   Updated: 2024/11/29 12:40:08 by tmurua           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -204,7 +204,8 @@ int						handle_variable_expansion(t_lexer *lexer, char **buffer,
 char					*collect_variable_name(t_lexer *lexer,
 							t_minishell *shell);
 int						get_variable_name_length(const char *str);
-char					*get_variable_value(const char *var_name, t_minishell *shell);
+char					*get_variable_value(const char *var_name,
+							t_minishell *shell);
 int						append_to_buffer(char **buffer, const char *str,
 							t_minishell *shell);
 
@@ -253,37 +254,45 @@ char					*build_command_path(char *str, t_minishell *shell);
 void					execute_external(t_command *cmd, char **env,
 							t_minishell *shell);
 
-/* builtin_commands.c */
-int						handle_exit_command(char *input, t_minishell *shell);
-void					print_builtin_error(char *command, char *message);
-int						too_many_arguments(char **args);
+/* builtin_handler.c */
 int						is_builtin_command(const char *word);
 int						execute_builtin(t_minishell *shell);
+int						set_output_fd(t_files *outfile);
+void					print_builtin_error(char *command, char *message);
+int						too_many_arguments(char **args);
 
-/* builtin_commands2.c */
-int						builtin_cd(char **args);
+/* builtin_exit_pwd_env_echo.c */
+int						handle_exit_command(char *input, t_minishell *shell);
 int						builtin_pwd(t_command *cmd);
 int						builtin_env(t_command *cmd, t_minishell *shell);
 int						builtin_echo(t_command *cmd);
 
-/* builtin_cmd_export.c */
+/* builtin_cd.c */
+int						builtin_cd(char **args, t_minishell *shell);
+int						get_current_directory(char *cwd);
+int						get_target_path(char **args, t_minishell *shell,
+							char **path);
+int						change_directory(char *path);
+int						update_environment(char *oldpwd, t_minishell *shell);
+
+/* builtin_export.c */
 int						builtin_export(char **args, t_minishell *shell);
 int						process_export_argument(const char *arg,
 							t_minishell *shell);
-int						is_valid_env_name(const char *name);
 int						set_env_variable(const char *name, const char *value,
 							t_minishell *shell);
-int						find_env_index(const char *name, t_minishell *shell);
 char					*create_env_string(const char *name, const char *value,
 							t_minishell *shell);
 int						add_env_variable(char *new_var, t_minishell *shell);
 
-/* builtin_cmd_unset.c */
+/* builtin_unset.c */
 int						builtin_unset(char **args, t_minishell *shell);
 int						process_unset_argument(const char *arg,
 							t_minishell *shell);
+int						is_valid_env_name(const char *name);
 int						unset_env_variable(const char *name,
 							t_minishell *shell);
+int						find_env_index(const char *name, t_minishell *shell);
 
 /* environment_utils.c */
 char					**duplicate_env(char **envp, t_minishell *shell);

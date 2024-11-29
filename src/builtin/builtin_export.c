@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   builtin_cmd_export.c                               :+:      :+:    :+:   */
+/*   builtin_export.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/13 08:54:22 by tmurua            #+#    #+#             */
-/*   Updated: 2024/11/21 13:02:55 by tmurua           ###   ########.fr       */
+/*   Updated: 2024/11/29 12:38:26 by tmurua           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,21 +53,6 @@ int	process_export_argument(const char *arg, t_minishell *shell)
 	return (set_env_variable(arg, value, shell));
 }
 
-/* check if string is valid environment variable name;
-	i.e. name should start with alpha or '_' and contain only alnum or '_' */
-int	is_valid_env_name(const char *name)
-{
-	if (!ft_isalpha(*name) && *name != '_')
-		return (0);
-	while (*name)
-	{
-		if (!ft_isalnum(*name) && *name != '_')
-			return (0);
-		name++;
-	}
-	return (1);
-}
-
 /* set an environment variable */
 int	set_env_variable(const char *name, const char *value, t_minishell *shell)
 {
@@ -79,33 +64,13 @@ int	set_env_variable(const char *name, const char *value, t_minishell *shell)
 	if (!new_var)
 		return (1);
 	if (index != -1)
-	{
 		shell->env[index] = new_var;
-	}
 	else
 	{
 		if (add_env_variable(new_var, shell) != 0)
 			return (1);
 	}
 	return (0);
-}
-
-/* find the index of a variable in the environment array */
-int	find_env_index(const char *name, t_minishell *shell)
-{
-	int		i;
-	char	*var_name;
-
-	i = 0;
-	while (shell->env[i])
-	{
-		var_name = ft_strchr(shell->env[i], '=');
-		if (var_name && ft_strncmp(shell->env[i], name, var_name
-				- shell->env[i]) == 0)
-			return (i);
-		i++;
-	}
-	return (-1);
 }
 
 char	*create_env_string(const char *name, const char *value,
