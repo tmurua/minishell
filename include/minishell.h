@@ -6,7 +6,7 @@
 /*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 09:08:10 by tmurua            #+#    #+#             */
-/*   Updated: 2024/11/29 17:21:17 by tmurua           ###   ########.fr       */
+/*   Updated: 2024/11/29 18:16:00 by tmurua           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -222,7 +222,9 @@ void					init_heredoc(t_minishell *shell, t_token *token);
 void					read_tree(t_ast_node *root, t_minishell *shell);
 int						evaluate_and_execute(t_ast_node *node,
 							t_minishell *shell);
-void					execute_command_node(t_token *tokens,
+int					execute_command_node(t_ast_node *node,
+							t_minishell *shell);
+int						execute_logical_operator_node(t_ast_node *node,
 							t_minishell *shell);
 
 /* prompt_signals.c */
