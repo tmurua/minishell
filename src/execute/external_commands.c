@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   external_commands.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dlemaire <dlemaire@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/06 08:57:29 by tmurua            #+#    #+#             */
-/*   Updated: 2024/11/27 00:27:09 by dlemaire         ###   ########.fr       */
+/*   Updated: 2024/11/29 10:28:31 by tmurua           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,11 @@ void	execute_external(t_command *cmd, char **env, t_minishell *shell)
 	t_files	*infile;
 	t_files	*outfile;
 
+	if (!cmd->path)
+	{
+		fprintf(stderr, "Command '%s' not found\n", cmd->cmd_name);
+		return ;
+	}
 	infile = cmd->infile;
 	while (infile && infile->next)
 		infile = infile->next;
@@ -60,7 +65,6 @@ void	execute_external(t_command *cmd, char **env, t_minishell *shell)
 	setup_prompt_signals(shell);
 }
 
-
 /*	fork new child process with fork_child_process(), if forking works execute
 	external command in child process with execute_in_child(), if not run
 	handle_parent_process() so parent process waits for child proces to finish*/
@@ -101,7 +105,6 @@ void	execute_external(t_command *cmd, char **env, t_minishell *shell)
 // 		exit(EXIT_FAILURE);
 // 	}
 // }
-
 
 /*	ignore_signal_handlers to prevent shell interruptions while waiting
 	wait for child process to finish, and after is finished
