@@ -6,7 +6,7 @@
 /*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/13 18:37:10 by tmurua            #+#    #+#             */
-/*   Updated: 2024/11/26 18:38:25 by tmurua           ###   ########.fr       */
+/*   Updated: 2024/11/29 10:45:33 by tmurua           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,14 +53,10 @@ int	unset_env_variable(const char *name, t_minishell *shell)
 	if (index == -1)
 		return (0);
 	i = index;
-	while (shell->env[i + 1])
+	while (shell->env[i])
 	{
 		shell->env[i] = shell->env[i + 1];
 		i++;
 	}
-	shell->env[i] = NULL;
-	shell->env = realloc(*shell->env, sizeof(char *) * (i + 1));
-	if (!(*shell->env))
-		return (1);
 	return (0);
 }
