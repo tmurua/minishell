@@ -16,6 +16,8 @@ int		count_arg_tokens(t_token *tokens);
 void	add_infile_to_cmd(t_command *cmd, char *filename, t_minishell *shell);
 void	add_outfile_to_cmd(t_command *cmd, char *filename, t_minishell *shell,
 			int append_flag);
+void	add_heredoc_to_cmd(t_command *cmd, char *delimiter, t_minishell *shell);
+int		get_last_heredoc_fd(t_files *heredocs);
 
 void	init_command(t_command *cmd, t_token *node_tokens, t_minishell *shell)
 {
@@ -26,6 +28,7 @@ void	init_command(t_command *cmd, t_token *node_tokens, t_minishell *shell)
 	cmd->path = NULL;
 	cmd->infile = NULL;
 	cmd->outfile = NULL;
+	cmd->has_heredoc = 0;
 	arg_count = count_arg_tokens(node_tokens);
 	i = 0;
 	cmd->args = gc_calloc(&shell->gc_head, arg_count + 2, sizeof(char *));
@@ -84,6 +87,14 @@ void	init_command(t_command *cmd, t_token *node_tokens, t_minishell *shell)
 				node_tokens = node_tokens->next;
 			}
 		}
+		if (node_tokens->type == TOKEN_HEREDOC)
+		{
+			if (node_tokens->next->type == TOKEN_HEREDOC_DELIMITER)
+			{
+				add_heredoc_to_cmd(cmd, node_tokens->next->value, shell);
+				node_tokens = node_tokens->next;
+			}
+		}
 		if (node_tokens->type == TOKEN_REDIRECT_OUT)
 		{
 			if (node_tokens->next->type == TOKEN_FILENAME)
@@ -118,6 +129,38 @@ int	count_arg_tokens(t_token *tokens)
 		tokens = tokens->next;
 	}
 	return (count);
+}
+
+void	add_heredoc_to_cmd(t_command *cmd, char *delimiter, t_minishell *shell)
+{
+	t_files	*new_infile;
+	t_files	*current;
+
+	cmd->has_heredoc = 1;
+	new_infile = gc_calloc(&shell->gc_head, 1, sizeof(t_files));
+	if (!new_infile)
+	{
+		gc_free_all(shell->gc_head);
+		exit(EXIT_FAILURE);
+	}
+	new_infile->delim = ft_strdup(delimiter); // need to use the gc function
+	new_infile->next = NULL;
+	new_infile->fd = get_last_heredoc_fd((t_files*)(shell->heredocs->content));
+	if (new_infile->fd < 0)
+	{
+		perror("heredoc");
+		new_infile->fd = open("/dev/null", O_RDONLY);
+	}
+	if (!cmd->infile)
+		cmd->infile = new_infile;
+	else
+	{
+		current = cmd->infile;
+		while (current->next)
+			current = current->next;
+		current->next = new_infile;
+	}
+	// clear heredocs list?? with ft_lstclear()??
 }
 
 void	add_infile_to_cmd(t_command *cmd, char *filename, t_minishell *shell)
@@ -182,6 +225,18 @@ void	add_outfile_to_cmd(t_command *cmd, char *filename, t_minishell *shell,
 			current = current->next;
 		current->next = new_outfile;
 	}
+}
+
+int	get_last_heredoc_fd(t_files *heredocs)
+{
+	t_files *current;
+
+	if (!heredocs)
+		return (-1);
+	current = heredocs;
+	while (current->next)
+		current = current->next;
+	return (current->fd);
 }
 
 /* token_to_args: convert linked list of tokens into array of args */

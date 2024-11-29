@@ -37,6 +37,8 @@ void	execute_external(t_command *cmd, char **env, t_minishell *shell)
 				gc_free_all(shell->gc_head);
 				exit(EXIT_FAILURE);
 			}
+			if (cmd->has_heredoc)
+				close_heredoc_list(shell);
 		}
 		if (outfile)
 		{

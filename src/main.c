@@ -17,6 +17,7 @@ int	main(int ac, char *av[], char *envp[])
 	t_minishell	shell;
 
 	shell.gc_head = NULL;
+	shell.heredocs = NULL;
 	shell.env = duplicate_env(envp, &shell);
 	if (!shell.env)
 	{

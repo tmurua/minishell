@@ -32,11 +32,14 @@ OBJ		= $(SRC:.c=.o)
 
 all: $(NAME)
 
-$(NAME): $(OBJ)
-	make -C ./libft --no-print-directory
-	echo "libft compiled"
+$(NAME): $(OBJ) $(LIBFT)
 	$(CC) $(CFLAGS) -o $(NAME) $(OBJ) $(LIBFT) -lreadline
 	echo "$(NAME) generated"
+
+$(LIBFT):
+	make -C ./libft --no-print-directory
+	make bonus -C ./libft --no-print-directory
+	echo "libft compiled"
 
 %.o: %.c
 	$(CC) $(CFLAGS) -c $< -o $@
