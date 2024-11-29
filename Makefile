@@ -29,7 +29,8 @@ SRC		= \
 	./src/execute/process_execution.c \
 	./src/execute/process_redirections.c \
 	./src/execute/path_builder.c \
-	./src/signal/signal_handling.c
+	./src/signals/prompt_signals.c \
+	./src/signals/child_signals.c
 
 OBJ		= $(SRC:.c=.o)
 

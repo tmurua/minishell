@@ -6,7 +6,7 @@
 /*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 13:56:17 by tmurua            #+#    #+#             */
-/*   Updated: 2024/11/29 14:41:59 by tmurua           ###   ########.fr       */
+/*   Updated: 2024/11/29 17:07:31 by tmurua           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ void	handle_parent_process(pid_t pid, t_minishell *shell)
 	if (waitpid(pid, &status, 0) == -1)
 	{
 		perror("minishell: waitpid");
-		shell->last_exit_status = 1; // Waitpid failed
+		shell->last_exit_status = 1;
 	}
 	else
 	{
@@ -51,7 +51,7 @@ void	handle_parent_process(pid_t pid, t_minishell *shell)
 		else if (WIFSIGNALED(status))
 			shell->last_exit_status = 128 + WTERMSIG(status);
 		else
-			shell->last_exit_status = 1; // Unknown failure
+			shell->last_exit_status = 1;
 	}
 	setup_prompt_signals(shell);
 }

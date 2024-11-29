@@ -6,7 +6,7 @@
 /*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 09:08:10 by tmurua            #+#    #+#             */
-/*   Updated: 2024/11/29 14:14:16 by tmurua           ###   ########.fr       */
+/*   Updated: 2024/11/29 17:21:17 by tmurua           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -198,6 +198,7 @@ t_token					*create_token(t_token_type type, char *value,
 							t_minishell *shell);
 void					token_to_list(t_token **tokens, t_token **current,
 							t_token *new);
+void					update_redirect_tokens(t_token *tokens);
 
 /* variable_expansion.c */
 int						handle_variable_expansion(t_lexer *lexer, char **buffer,
@@ -224,11 +225,13 @@ int						evaluate_and_execute(t_ast_node *node,
 void					execute_command_node(t_token *tokens,
 							t_minishell *shell);
 
-/* signal_handling.c */
+/* prompt_signals.c */
 void					setup_prompt_signals(t_minishell *shell);
 void					setup_sigint_handler(t_minishell *shell);
 void					handle_sigint_at_prompt(int sig);
 void					setup_sigquit_handler(t_minishell *shell);
+
+/* child_signals.c */
 void					reset_signal_handlers(t_minishell *shell);
 void					ignore_signal_handlers(t_minishell *shell);
 

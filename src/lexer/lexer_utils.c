@@ -6,7 +6,7 @@
 /*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/02 17:02:08 by tmurua            #+#    #+#             */
-/*   Updated: 2024/11/26 19:06:44 by tmurua           ###   ########.fr       */
+/*   Updated: 2024/11/29 17:20:37 by tmurua           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,4 +53,18 @@ void	token_to_list(t_token **tokens, t_token **current, t_token *new)
 	else
 		(*current)->next = new;
 	*current = new;
+}
+
+void	update_redirect_tokens(t_token *tokens)
+{
+	while (tokens)
+	{
+		if (tokens->type == TOKEN_REDIRECT_IN
+			|| tokens->type == TOKEN_REDIRECT_OUT
+			|| tokens->type == TOKEN_REDIRECT_APPEND)
+			tokens->next->type = TOKEN_FILENAME;
+		if (tokens->type == TOKEN_HEREDOC)
+			tokens->next->type = TOKEN_HEREDOC_DELIMITER;
+		tokens = tokens->next;
+	}
 }
