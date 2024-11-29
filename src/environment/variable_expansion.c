@@ -6,7 +6,7 @@
 /*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/08 11:33:39 by tmurua            #+#    #+#             */
-/*   Updated: 2024/11/26 18:40:12 by tmurua           ###   ########.fr       */
+/*   Updated: 2024/11/29 11:15:54 by tmurua           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ int	handle_variable_expansion(t_lexer *lexer, char **buffer, t_minishell *shell)
 	var_name = collect_variable_name(lexer, shell);
 	if (!var_name)
 		return (0);
-	var_value = get_variable_value(var_name);
+	var_value = get_variable_value(var_name, shell);
 	if (!var_value)
 		var_value = "";
 	status = append_to_buffer(buffer, var_value, shell);
@@ -67,16 +67,22 @@ int	get_variable_name_length(const char *str)
 	return (length);
 }
 
-/* getenv return: value of env var based on its NAME; if nonexistent return ""*/
-char	*get_variable_value(const char *var_name)
+/* return pointer to VALUE part based on NAME; if nonexistent return "" */
+char	*get_variable_value(const char *var_name, t_minishell *shell)
 {
-	char	*var_value;
+	int		i;
+	size_t	len;
 
-	var_value = getenv(var_name);
-	if (var_value)
-		return (var_value);
-	else
-		return ("");
+	i = 0;
+	len = ft_strlen(var_name);
+	while (shell->env[i] != NULL)
+	{
+		if (ft_strncmp(shell->env[i], var_name, len) == 0
+			&& shell->env[i][len] == '=')
+			return (shell->env[i] + len + 1);
+		i++;
+	}
+	return ("");
 }
 
 /*	join new str to existing buffer; free old buffer; update to new;

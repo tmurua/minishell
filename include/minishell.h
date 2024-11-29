@@ -6,7 +6,7 @@
 /*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 09:08:10 by tmurua            #+#    #+#             */
-/*   Updated: 2024/11/28 15:56:13 by tmurua           ###   ########.fr       */
+/*   Updated: 2024/11/29 11:17:02 by tmurua           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -204,7 +204,7 @@ int						handle_variable_expansion(t_lexer *lexer, char **buffer,
 char					*collect_variable_name(t_lexer *lexer,
 							t_minishell *shell);
 int						get_variable_name_length(const char *str);
-char					*get_variable_value(const char *var_name);
+char					*get_variable_value(const char *var_name, t_minishell *shell);
 int						append_to_buffer(char **buffer, const char *str,
 							t_minishell *shell);
 

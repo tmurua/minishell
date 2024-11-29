@@ -6,14 +6,12 @@
 /*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/13 17:10:19 by tmurua            #+#    #+#             */
-/*   Updated: 2024/11/26 18:38:35 by tmurua           ###   ########.fr       */
+/*   Updated: 2024/11/29 10:56:36 by tmurua           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-// Function to duplicate the environment array
-// Function to duplicate the environment array
 char	**duplicate_env(char **envp, t_minishell *shell)
 {
 	char	**new_env;

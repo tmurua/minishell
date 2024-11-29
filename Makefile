@@ -9,6 +9,7 @@ LIBFT	= ./libft/libft.a
 SRC		= \
 	./src/main.c \
 	./src/environment/environment_utils.c \
+	./src/environment/variable_expansion.c \
 	./src/input/input_handling.c \
 	./src/lexer/lexer.c \
 	./src/lexer/lexer_assign_types.c \
@@ -17,7 +18,6 @@ SRC		= \
 	./src/parser/parser.c \
 	./src/parser/heredoc.c \
 	./src/interpreter/interpreter.c \
-	./src/variable/variable_expansion.c \
 	./src/pipe/pipe.c \
 	./src/builtin/builtin_commands.c \
 	./src/builtin/builtin_commands2.c \
