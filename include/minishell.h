@@ -6,7 +6,7 @@
 /*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 09:08:10 by tmurua            #+#    #+#             */
-/*   Updated: 2024/11/29 18:16:00 by tmurua           ###   ########.fr       */
+/*   Updated: 2024/11/29 21:16:25 by tmurua           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,7 @@
 # include <errno.h>
 /* PATH_MAX */
 # include <limits.h>
+
 /* macros*/
 # define TOKEN_COMPLETE 1
 # define TOKEN_CONTINUE 0
@@ -60,22 +61,21 @@
 # define MIN_PRECEDENCE_LVL 0
 
 /* structures */
-/* context structure to group data together and improve code organization */
-
 typedef struct s_token		t_token;
 typedef struct s_ast_node	t_ast_node;
 typedef struct s_command	t_command;
 typedef struct s_files		t_files;
 
+/* context structure to group data together and improve code organization */
 typedef struct s_minishell
 {
 	char				**env;
+	int					last_exit_status;
 	t_list				*gc_head;
 	t_token				*tokens;
 	t_ast_node			*ast_root;
 	t_command			*cmd;
 	t_files				*heredoc;
-	int					last_exit_status;
 	// t_lexer_state		state;
 	// int					fd[2];
 	// t_token				*cmd_args;
@@ -222,7 +222,7 @@ void					init_heredoc(t_minishell *shell, t_token *token);
 void					read_tree(t_ast_node *root, t_minishell *shell);
 int						evaluate_and_execute(t_ast_node *node,
 							t_minishell *shell);
-int					execute_command_node(t_ast_node *node,
+int						execute_command_node(t_ast_node *node,
 							t_minishell *shell);
 int						execute_logical_operator_node(t_ast_node *node,
 							t_minishell *shell);
@@ -238,13 +238,35 @@ void					reset_signal_handlers(t_minishell *shell);
 void					ignore_signal_handlers(t_minishell *shell);
 
 /* execute_commands.c */
-// void					execute_command(t_token *tokens, t_minishell *shell);
-// char					**tokens_to_args(t_token *tokens, t_minishell *shell);
-// char					**allocate_args_array(int count, t_minishell *shell);
-// int						copy_token_values(t_token *tokens, char **args,
-// 							t_minishell *shell);
 void					init_command(t_command *cmd, t_token *node_tokens,
 							t_minishell *shell);
+void					initialize_command_struct(t_command *cmd);
+int						count_arg_tokens(t_token *tokens);
+int						process_argument(t_command *cmd, t_token *token,
+							t_minishell *shell, int i);
+t_token					*process_token(t_command *cmd, t_token *token,
+							t_minishell *shell, int *i);
+
+/* process_command_tokens.c */
+int						process_builtin_cmd(t_command *cmd, t_token *token,
+							t_minishell *shell, int i);
+int						process_extern_cmd(t_command *cmd, t_token *token,
+							t_minishell *shell, int i);
+t_token					*process_redirect_in(t_command *cmd, t_token *token,
+							t_minishell *shell);
+t_token					*process_redirect_out(t_command *cmd, t_token *token,
+							t_minishell *shell);
+t_token					*process_redirect_append(t_command *cmd, t_token *token,
+							t_minishell *shell);
+
+/* command_files.c */
+t_files					*create_new_file_node(t_minishell *shell);
+void					append_file_node(t_files **file_list,
+							t_files *new_file);
+void					add_infile_to_cmd(t_command *cmd, char *filename,
+							t_minishell *shell);
+void					add_outfile_to_cmd(t_command *cmd, char *filename,
+							t_minishell *shell, int append_flag);
 
 /* path_builder.c */
 char					*build_command_path(char *str, t_minishell *shell);

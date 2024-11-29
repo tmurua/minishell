@@ -25,6 +25,8 @@ SRC		= \
 	./src/builtin/builtin_export.c \
 	./src/builtin/builtin_unset.c \
 	./src/execute/execute_commands.c \
+	./src/execute/process_command_tokens.c \
+	./src/execute/command_files.c \
 	./src/execute/execute_external.c \
 	./src/execute/process_execution.c \
 	./src/execute/process_redirections.c \
