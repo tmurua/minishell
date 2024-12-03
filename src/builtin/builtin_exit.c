@@ -6,16 +6,16 @@
 /*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 16:09:18 by tmurua            #+#    #+#             */
-/*   Updated: 2024/12/03 16:50:39 by tmurua           ###   ########.fr       */
+/*   Updated: 2024/12/03 17:49:35 by tmurua           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../include/minishell.h"
+#include "minishell.h"
 
-int handle_exit_command(char *input, t_minishell *shell)
+/* main function to handle exit command */
+int	handle_exit_command(char *input, t_minishell *shell)
 {
 	char	**args;
-	int		arg_count;
 	int		exit_status;
 
 	if (ft_strncmp(input, "exit", 4) != 0)
@@ -23,36 +23,48 @@ int handle_exit_command(char *input, t_minishell *shell)
 	args = gc_split(&shell->gc_head, input, ' ');
 	if (!args)
 		return (0);
-	arg_count = 0;
-	while (args[arg_count])
-		arg_count++;
 	printf("exit\n");
-	if (arg_count == 1)
-		exit_status = shell->last_exit_status;
-	else if (arg_count == 2)
-	{
-		if (is_numeric_argument(args[1]))
-			exit_status = ft_atoi(args[1]) % 256;
-		else
-		{
-			ft_putstr_fd("minishell: exit: ", 2);
-			ft_putstr_fd(args[1], 2);
-			ft_putstr_fd(": numeric argument required\n", 2);
-			exit_status = 2;
-		}
-	}
-	else
-	{
-		ft_putstr_fd("minishell: exit: too many arguments\n", 2);
-		return (1);
-	}
+	exit_status = handle_exit_with_arguments(args, shell);
 	rl_clear_history();
 	gc_free_all(shell->gc_head);
 	exit(exit_status);
 	return (0);
 }
 
-// Helper function to check if a string represents a numeric argument
+/* handle exit command with arguments */
+int	handle_exit_with_arguments(char **args, t_minishell *shell)
+{
+	int	arg_count;
+
+	arg_count = 0;
+	while (args[arg_count])
+		arg_count++;
+	if (arg_count == 1)
+		return (shell->last_exit_status);
+	else if (arg_count == 2)
+		return (handle_numeric_argument(args[1]));
+	else
+	{
+		ft_putstr_fd("minishell: exit: too many arguments\n", 2);
+		return (1);
+	}
+}
+
+/* handle numeric argument for exit */
+int	handle_numeric_argument(char *arg)
+{
+	if (is_numeric_argument(arg))
+		return (ft_atoi(arg) % 256);
+	else
+	{
+		ft_putstr_fd("minishell: exit: ", 2);
+		ft_putstr_fd(arg, 2);
+		ft_putstr_fd(": numeric argument required\n", 2);
+		return (2);
+	}
+}
+
+/* check if a string represents a numeric argument */
 int	is_numeric_argument(const char *arg)
 {
 	int	i;

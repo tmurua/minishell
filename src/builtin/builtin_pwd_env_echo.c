@@ -1,28 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   builtin_exit_pwd_env_echo.c                        :+:      :+:    :+:   */
+/*   builtin_pwd_env_echo.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/31 13:33:08 by tmurua            #+#    #+#             */
-/*   Updated: 2024/12/03 16:14:28 by tmurua           ###   ########.fr       */
+/*   Updated: 2024/12/03 17:27:25 by tmurua           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
-
-// int	handle_exit_command(char *input, t_minishell *shell)
-// {
-// 	if (input == NULL || !ft_strncmp(input, "exit", 5))
-// 	{
-// 		rl_clear_history();
-// 		printf("exit\n");
-// 		gc_free_all(shell->gc_head);
-// 		exit (0);
-// 	}
-// 	return (0);
-// }
 
 /*
 getcwd() sets current working directory path into a path_buffer of size PATH_MAX
