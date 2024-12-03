@@ -6,7 +6,7 @@
 /*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 13:56:17 by tmurua            #+#    #+#             */
-/*   Updated: 2024/11/29 17:07:31 by tmurua           ###   ########.fr       */
+/*   Updated: 2024/12/03 18:36:09 by tmurua           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,7 @@
 
 /*	reset signal handlers, setup redirections, exec cmd in child process.
 	if execve fails, print an error, free garbage, and exit with status 126 */
-void	execute_command_child(t_command *cmd, char **env,
-		t_minishell *shell)
+void	execute_command_child(t_command *cmd, char **env, t_minishell *shell)
 {
 	t_files	*infile;
 	t_files	*outfile;
@@ -49,7 +48,13 @@ void	handle_parent_process(pid_t pid, t_minishell *shell)
 		if (WIFEXITED(status))
 			shell->last_exit_status = WEXITSTATUS(status);
 		else if (WIFSIGNALED(status))
+		{
 			shell->last_exit_status = 128 + WTERMSIG(status);
+			if (WTERMSIG(status) == SIGINT)
+				write(STDOUT_FILENO, "\n", 1);
+			else if (WTERMSIG(status) == SIGQUIT)
+				ft_putstr_fd("Quit: 3\n", STDERR_FILENO);
+		}
 		else
 			shell->last_exit_status = 1;
 	}
