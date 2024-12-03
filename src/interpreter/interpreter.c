@@ -6,7 +6,7 @@
 /*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/02 16:26:15 by dlemaire          #+#    #+#             */
-/*   Updated: 2024/11/29 18:12:38 by tmurua           ###   ########.fr       */
+/*   Updated: 2024/12/03 15:52:37 by tmurua           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,10 +50,10 @@ int	execute_command_node(t_ast_node *node, t_minishell *shell)
 	t_command	cmd;
 
 	init_command(&cmd, node->tokens, shell);
-	if (node->tokens->type == TOKEN_EXTERN_CMD)
-		execute_external(shell->cmd, shell->env, shell);
-	else if (node->tokens->type == TOKEN_BUILTIN_CMD)
-		execute_builtin(shell);
+	if (node->tokens && node->tokens->type == TOKEN_EXTERN_CMD)
+		execute_external(&cmd, shell->env, shell);
+	else if (node->tokens && node->tokens->type == TOKEN_BUILTIN_CMD)
+		execute_builtin(&cmd, shell);
 	return (0);
 }
 
@@ -64,8 +64,8 @@ int	execute_logical_operator_node(t_ast_node *node, t_minishell *shell)
 	int	left_result;
 
 	left_result = evaluate_and_execute(node->left, shell);
-	if ((node->type == NODE_AND && left_result == 0)
-		|| (node->type == NODE_OR && left_result != 0))
+	if ((node->type == NODE_AND && left_result == 0) || (node->type == NODE_OR
+			&& left_result != 0))
 	{
 		evaluate_and_execute(node->right, shell);
 	}

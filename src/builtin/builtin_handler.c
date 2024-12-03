@@ -6,7 +6,7 @@
 /*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 15:53:43 by tmurua            #+#    #+#             */
-/*   Updated: 2024/11/29 13:29:19 by tmurua           ###   ########.fr       */
+/*   Updated: 2024/12/03 15:52:56 by tmurua           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,25 +31,25 @@ int	is_builtin_command(const char *word)
 	return (0);
 }
 
-int	execute_builtin(t_minishell *shell)
+int	execute_builtin(t_command *cmd, t_minishell *shell)
 {
 	int	status;
 
 	status = -1;
-	if (shell->cmd->args[0] == NULL)
+	if (cmd->args[0] == NULL)
 		return (-1);
-	if (ft_strncmp(shell->cmd->args[0], "cd", 3) == 0)
-		status = builtin_cd(shell->cmd->args, shell);
-	else if (ft_strncmp(shell->cmd->args[0], "pwd", 4) == 0)
-		status = builtin_pwd(shell->cmd);
-	else if (ft_strncmp(shell->cmd->args[0], "env", 4) == 0)
-		status = builtin_env(shell->cmd, shell);
-	else if (ft_strncmp(shell->cmd->args[0], "export", 7) == 0)
-		status = builtin_export(shell->cmd->args, shell);
-	else if (ft_strncmp(shell->cmd->args[0], "unset", 6) == 0)
-		status = builtin_unset(shell->cmd->args, shell);
-	else if (ft_strncmp(shell->cmd->args[0], "echo", 5) == 0)
-		status = builtin_echo(shell->cmd);
+	if (ft_strncmp(cmd->args[0], "cd", 3) == 0)
+		status = builtin_cd(cmd->args, shell);
+	else if (ft_strncmp(cmd->args[0], "pwd", 4) == 0)
+		status = builtin_pwd(cmd);
+	else if (ft_strncmp(cmd->args[0], "env", 4) == 0)
+		status = builtin_env(cmd, shell);
+	else if (ft_strncmp(cmd->args[0], "export", 7) == 0)
+		status = builtin_export(cmd->args, shell);
+	else if (ft_strncmp(cmd->args[0], "unset", 6) == 0)
+		status = builtin_unset(cmd->args, shell);
+	else if (ft_strncmp(cmd->args[0], "echo", 5) == 0)
+		status = builtin_echo(cmd);
 	else
 		return (-1);
 	shell->last_exit_status = status;
