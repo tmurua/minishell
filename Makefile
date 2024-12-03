@@ -21,6 +21,7 @@ SRC		= \
 	./src/pipe/pipe.c \
 	./src/builtin/builtin_handler.c \
 	./src/builtin/builtin_exit_pwd_env_echo.c \
+	./src/builtin/builtin_exit.c \
 	./src/builtin/builtin_cd.c \
 	./src/builtin/builtin_export.c \
 	./src/builtin/builtin_unset.c \
