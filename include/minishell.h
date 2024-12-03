@@ -137,6 +137,7 @@ typedef struct s_files
 {
 	int					fd;
 	char				*delim;
+	int					heredoc_quote;
 	struct s_files		*next;
 }						t_files;
 
@@ -218,6 +219,9 @@ t_ast_node				*parse_expression(t_minishell *shell,
 void					init_heredoc(t_minishell *shell, t_token *token,
 							int heredoc_flag);
 void					close_heredoc_list(t_minishell *shell);
+
+/* heredoc2.c */
+void					heredoc_scan(char *input, t_minishell *shell);
 
 /* interpreter.c */
 void					read_tree(t_ast_node *root, t_minishell *shell);

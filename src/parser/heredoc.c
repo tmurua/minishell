@@ -15,8 +15,10 @@
 void	add_heredoc(t_minishell *shell, int fd, char *delimiter, int flag);
 void	add_heredoc_list(t_minishell *shell);
 int		is_heredoc_delimiter(const char *input, const char *delimiter);
-void	heredoc_loop(t_token *token, int *pipe);
+void	heredoc_loop(t_minishell *shell, t_token *token, int *pipe);
 void	expand_heredoc_or_not(char	*str, int fd);
+void	expend_in_heredoc(char *str, int *index);
+void	catch_heredoc_input(t_minishell *shell, char *str, int fd);
 
 void	init_heredoc(t_minishell *shell, t_token *token, int heredoc_flag)
 {
@@ -26,16 +28,17 @@ void	init_heredoc(t_minishell *shell, t_token *token, int heredoc_flag)
 
 	if (pipe(fd) < 0)
 		return ;
-	add_heredoc(shell, fd[0], token->next->value, heredoc_flag);
+	//add_heredoc(shell, fd[0], token->next->value, heredoc_flag); // find_heredoc (??)
+	update_next_heredoc_fd(shell->heredocs, fd[0], token->next->value);
 	pid = fork();
 	if (pid == 0)
-		heredoc_loop(token, fd);
+		heredoc_loop(shell, token, fd);
 	if (waitpid(pid, &status, 0) == -1)
 		perror("minishell: waitpid");
 	close(fd[1]);
 }
 
-void	heredoc_loop(t_token *token, int *pipe)
+void	heredoc_loop(t_minishell *shell, t_token *token, int *pipe)
 {
 	char	*buffer;
 	char	*delimiter;
@@ -48,7 +51,7 @@ void	heredoc_loop(t_token *token, int *pipe)
 		buffer = readline("> ");
 		if (!buffer || is_heredoc_delimiter(buffer, delimiter))
 			break ;
-		expand_heredoc_or_not(buffer, pipe[1]);
+		catch_heredoc_input(shell, buffer, pipe[1]);
 	}
 	close(pipe[1]);
 	//close_heredoc
@@ -85,18 +88,36 @@ void	add_heredoc_list(t_minishell *shell)
 	ft_lstadd_back(&shell->heredocs, new_heredoc_list);
 }
 
-void	expand_heredoc_or_not(char	*str, int fd)
+void	catch_heredoc_input(t_minishell *shell, char *str, int fd)
 {
 	int	i;
 
+	(void) shell;
 	i = 0;
 	while (str[i])
 	{
 		ft_putchar_fd(str[i], fd);
+		// if (str[i] == '$')
+		// 	expend_in_heredoc(shell, str + i, fd, &i);
+		// else
+		// 	ft_putchar_fd(str[i], fd);
 		i++;
 	}
 	ft_putchar_fd('\n', fd);
 }
+
+// void	expend_in_heredoc(t_minishell *shell, char *str, int fd, int *index)
+// {
+// 	int		length;
+// 	char	save;
+
+// 	length = 1;
+// 	while (str[length] && str[length] != '$' && str[length] != ' ')
+// 		length++;
+// 	save = str[length];
+// 	str[length] = 0;
+	
+// }
 
 void	add_heredoc(t_minishell *shell, int fd, char *delimiter, int flag)
 {
@@ -111,7 +132,10 @@ void	add_heredoc(t_minishell *shell, int fd, char *delimiter, int flag)
 		gc_free_all(shell->gc_head);
 		exit(EXIT_FAILURE);
 	}
-	new_heredoc->delim = ft_strdup(delimiter);
+	while (shell->heredocs)
+		if (shell->heredocs->fd == -1)
+
+	new_heredoc->delim = gc_strdup(&shell->gc_head, delimiter);
 	new_heredoc->fd = fd;
 	new_heredoc->next = NULL;
 	if (!shell->heredocs->content)
@@ -147,6 +171,54 @@ void	close_heredoc_list(t_minishell *shell)
 	shell->heredocs = shell->heredocs->next;
 	last->next = old_head;
 	old_head->next = NULL;
+}
+
+void	post_add_heredoc(t_minishell *shell)
+{
+	t_files	*new_heredoc;
+	t_files	*current_heredoc;
+
+	new_heredoc = gc_calloc(&shell->gc_head, 1, sizeof(t_files));
+	if (!new_heredoc)
+	{
+		gc_free_all(shell->gc_head);
+		exit(EXIT_FAILURE);
+	}
+	new_heredoc->next = NULL;
+	if (!shell->heredocs->content)
+		shell->heredocs->content = new_heredoc;
+	else
+	{
+		current_heredoc = shell->heredocs->content;
+		while (current_heredoc->next)
+			current_heredoc = current_heredoc->next;
+		current_heredoc->next = new_heredoc;
+	}
+}
+
+void update_next_heredoc_fd(t_list *heredoc_list, int new_fd, char *delimiter)
+{
+    t_list *outer;
+    t_files *inner;
+
+    if (!heredoc_list)
+        return;
+    outer = heredoc_list;
+    while (outer)
+	{
+        inner = (t_files *)outer->content;
+        while (inner)
+		{
+            if (inner->fd == -1)
+			{
+                inner->fd = new_fd;
+				inner->delimiter = delimiter;
+                return ;
+            }
+            inner = inner->next;
+        }
+        outer = outer->next;
+    }
 }
 
 ////////
