@@ -6,7 +6,7 @@
 /*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 16:48:08 by tmurua            #+#    #+#             */
-/*   Updated: 2024/11/26 18:58:56 by tmurua           ###   ########.fr       */
+/*   Updated: 2024/12/03 16:58:28 by tmurua           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,13 @@ void	main_input_loop(int ac, char **av, t_minishell *shell)
 	while (1)
 	{
 		input = read_user_input();
+		if (input == NULL)
+		{
+			printf("exit\n");
+			rl_clear_history();
+			gc_free_all(shell->gc_head);
+			exit(shell->last_exit_status);
+		}
 		if (handle_exit_command(input, shell))
 			continue ;
 		if (*input)

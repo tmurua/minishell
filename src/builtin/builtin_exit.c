@@ -6,7 +6,7 @@
 /*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 16:09:18 by tmurua            #+#    #+#             */
-/*   Updated: 2024/12/03 16:15:09 by tmurua           ###   ########.fr       */
+/*   Updated: 2024/12/03 16:50:39 by tmurua           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ int handle_exit_command(char *input, t_minishell *shell)
 	int		arg_count;
 	int		exit_status;
 
-	if (input == NULL || ft_strncmp(input, "exit", 4) != 0)
+	if (ft_strncmp(input, "exit", 4) != 0)
 		return (0);
 	args = gc_split(&shell->gc_head, input, ' ');
 	if (!args)
