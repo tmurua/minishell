@@ -17,6 +17,7 @@ SRC		= \
 	./src/lexer/lexer_utils.c \
 	./src/parser/parser.c \
 	./src/parser/heredoc.c \
+	./src/parser/heredoc2.c \
 	./src/interpreter/interpreter.c \
 	./src/pipe/pipe.c \
 	./src/builtin/builtin_handler.c \
@@ -39,11 +40,14 @@ OBJ		= $(SRC:.c=.o)
 
 all: $(NAME)
 
-$(NAME): $(OBJ)
-	make -C ./libft --no-print-directory
-	echo "libft compiled"
+$(NAME): $(OBJ) $(LIBFT)
 	$(CC) $(CFLAGS) -o $(NAME) $(OBJ) $(LIBFT) -lreadline
 	echo "$(NAME) generated"
+
+$(LIBFT):
+	make -C ./libft --no-print-directory
+	make bonus -C ./libft --no-print-directory
+	echo "libft compiled"
 
 %.o: %.c
 	$(CC) $(CFLAGS) -c $< -o $@

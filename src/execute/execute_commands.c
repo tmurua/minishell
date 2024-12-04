@@ -19,6 +19,7 @@ void	init_command(t_command *cmd, t_token *node_tokens, t_minishell *shell)
 	int	i;
 
 	initialize_command_struct(cmd);
+	cmd->has_heredoc = 0;
 	arg_count = count_arg_tokens(node_tokens);
 	i = 0;
 	cmd->args = gc_calloc(&shell->gc_head, arg_count + 2, sizeof(char *));
@@ -55,6 +56,70 @@ int	count_arg_tokens(t_token *tokens)
 	return (count);
 }
 
+void	add_heredoc_to_cmd(t_command *cmd, char *delimiter, t_minishell *shell)
+{
+	t_files	*new_infile;
+	t_files	*current;
+
+	cmd->has_heredoc = 1;
+	new_infile = gc_calloc(&shell->gc_head, 1, sizeof(t_files));
+	if (!new_infile)
+	{
+		gc_free_all(shell->gc_head);
+		exit(EXIT_FAILURE);
+	}
+	new_infile->delim = ft_strdup(delimiter); // need to use the gc function
+	new_infile->next = NULL;
+	new_infile->fd = get_last_heredoc_fd((t_files*)(shell->heredocs->content));
+	if (new_infile->fd < 0)
+	{
+		perror("heredoc");
+		new_infile->fd = open("/dev/null", O_RDONLY);
+	}
+	if (!cmd->infile)
+		cmd->infile = new_infile;
+	else
+	{
+		current = cmd->infile;
+		while (current->next)
+			current = current->next;
+		current->next = new_infile;
+	}
+	// clear heredocs list?? with ft_lstclear()??
+}
+
+void	add_heredoc_to_cmd(t_command *cmd, char *delimiter, t_minishell *shell)
+{
+	t_files	*new_infile;
+	t_files	*current;
+
+	cmd->has_heredoc = 1;
+	new_infile = gc_calloc(&shell->gc_head, 1, sizeof(t_files));
+	if (!new_infile)
+	{
+		gc_free_all(shell->gc_head);
+		exit(EXIT_FAILURE);
+	}
+	new_infile->delim = ft_strdup(delimiter); // need to use the gc function
+	new_infile->next = NULL;
+	new_infile->fd = get_last_heredoc_fd((t_files*)(shell->heredocs->content));
+	if (new_infile->fd < 0)
+	{
+		perror("heredoc");
+		new_infile->fd = open("/dev/null", O_RDONLY);
+	}
+	if (!cmd->infile)
+		cmd->infile = new_infile;
+	else
+	{
+		current = cmd->infile;
+		while (current->next)
+			current = current->next;
+		current->next = new_infile;
+	}
+	// clear heredocs list?? with ft_lstclear()??
+}
+
 int	process_argument(t_command *cmd, t_token *token, t_minishell *shell, int i)
 {
 	cmd->args[i] = gc_strdup(&shell->gc_head, token->value);
@@ -89,6 +154,14 @@ t_token	*process_token(t_command *cmd, t_token *token, t_minishell *shell,
 	}
 	else if (token->type == TOKEN_REDIRECT_IN)
 		token = process_redirect_in(cmd, token, shell);
+	else if (node_tokens->type == TOKEN_HEREDOC)
+	{
+		if (node_tokens->next->type == TOKEN_HEREDOC_DELIMITER)
+		{
+			add_heredoc_to_cmd(cmd, node_tokens->next->value, shell);
+			node_tokens = node_tokens->next;
+		}
+	}
 	else if (token->type == TOKEN_REDIRECT_OUT)
 		token = process_redirect_out(cmd, token, shell);
 	else if (token->type == TOKEN_REDIRECT_APPEND)

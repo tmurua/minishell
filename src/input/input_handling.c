@@ -32,6 +32,7 @@ void	main_input_loop(int ac, char **av, t_minishell *shell)
 		if (*input)
 			add_history(input);
 		printf("you entered: %s\n", input);
+		heredoc_scan(input, shell);
 		run_lexer(input, shell);
 		shell->ast_root = parse_expression(shell, MIN_PRECEDENCE_LVL);
 		read_tree(shell->ast_root, shell);
