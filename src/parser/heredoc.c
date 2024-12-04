@@ -12,15 +12,15 @@
 
 #include "../../include/minishell.h"
 
-void	add_heredoc(t_minishell *shell, int fd, char *delimiter, int flag);
-void	add_heredoc_list(t_minishell *shell);
-int		is_heredoc_delimiter(const char *input, const char *delimiter);
 void	heredoc_loop(t_minishell *shell, t_token *token, int *pipe);
-void	expand_heredoc_or_not(char	*str, int fd);
-void	expend_in_heredoc(char *str, int *index);
+int		is_heredoc_delimiter(const char *input, const char *delimiter);
 void	catch_heredoc_input(t_minishell *shell, char *str, int fd);
+t_files	*save_heredoc_fd(t_list *heredoc_list, int new_fd);
+char	*get_env_variable(const char *var_name, char **env);
+int		expend_in_heredoc(t_minishell *shell, char *str, int fd);
 
-void	init_heredoc(t_minishell *shell, t_token *token, int heredoc_flag)
+
+void	init_heredoc(t_minishell *shell, t_token *token)
 {
 	int		fd[2];
 	pid_t	pid;
@@ -28,8 +28,6 @@ void	init_heredoc(t_minishell *shell, t_token *token, int heredoc_flag)
 
 	if (pipe(fd) < 0)
 		return ;
-	//add_heredoc(shell, fd[0], token->next->value, heredoc_flag); // find_heredoc (??)
-	update_next_heredoc_fd(shell->heredocs, fd[0], token->next->value);
 	pid = fork();
 	if (pid == 0)
 		heredoc_loop(shell, token, fd);
@@ -59,7 +57,6 @@ void	heredoc_loop(t_minishell *shell, t_token *token, int *pipe)
 	exit(0);
 }
 
-
 int	is_heredoc_delimiter(const char *input, const char *delimiter)
 {
 	size_t	delimiter_len;
@@ -73,80 +70,86 @@ int	is_heredoc_delimiter(const char *input, const char *delimiter)
 	return (0);
 }
 
-void	add_heredoc_list(t_minishell *shell)
-{
-	t_list	*new_heredoc_list;
-
-	new_heredoc_list = gc_calloc(&shell->gc_head, 1, sizeof(t_list));
-	if (!new_heredoc_list)
-	{
-		gc_free_all(shell->gc_head);
-		exit(EXIT_FAILURE);
-	}
-	new_heredoc_list->content = NULL;
-	new_heredoc_list->next = NULL;
-	ft_lstadd_back(&shell->heredocs, new_heredoc_list);
-}
-
 void	catch_heredoc_input(t_minishell *shell, char *str, int fd)
 {
-	int	i;
+	int		i;
+	t_files	*heredoc;
 
-	(void) shell;
+	heredoc = save_heredoc_fd(shell->heredocs, fd);
 	i = 0;
 	while (str[i])
 	{
-		ft_putchar_fd(str[i], fd);
-		// if (str[i] == '$')
-		// 	expend_in_heredoc(shell, str + i, fd, &i);
-		// else
-		// 	ft_putchar_fd(str[i], fd);
-		i++;
+		if (str[i] == '$' && !heredoc->heredoc_quote)
+			i += expend_in_heredoc(shell, str + i, fd);
+		else
+		{
+		 	ft_putchar_fd(str[i], fd);
+			i++;
+		}
 	}
-	ft_putchar_fd('\n', fd);
+	ft_putchar_fd('\n', fd); // unnecessary? 
 }
 
-// void	expend_in_heredoc(t_minishell *shell, char *str, int fd, int *index)
-// {
-// 	int		length;
-// 	char	save;
-
-// 	length = 1;
-// 	while (str[length] && str[length] != '$' && str[length] != ' ')
-// 		length++;
-// 	save = str[length];
-// 	str[length] = 0;
-	
-// }
-
-void	add_heredoc(t_minishell *shell, int fd, char *delimiter, int flag)
+t_files	*save_heredoc_fd(t_list *heredoc_list, int new_fd)
 {
-	t_files	*new_heredoc;
-	t_files	*current_heredoc;
+    t_list *outer;
+    t_files *inner;
 
-	if (!flag)
-		add_heredoc_list(shell);
-	new_heredoc = gc_calloc(&shell->gc_head, 1, sizeof(t_files));
-	if (!new_heredoc)
+    if (!heredoc_list)
+        return (NULL);
+    outer = heredoc_list;
+    while (outer)
 	{
-		gc_free_all(shell->gc_head);
-		exit(EXIT_FAILURE);
-	}
-	while (shell->heredocs)
-		if (shell->heredocs->fd == -1)
+        inner = (t_files *)outer->content;
+        while (inner)
+		{
+            if (inner->fd == -1)
+			{
+                inner->fd = new_fd;
+                return (inner);
+            }
+            inner = inner->next;
+        }
+        outer = outer->next;
+    }
+	return (NULL);
+}
 
-	new_heredoc->delim = gc_strdup(&shell->gc_head, delimiter);
-	new_heredoc->fd = fd;
-	new_heredoc->next = NULL;
-	if (!shell->heredocs->content)
-		shell->heredocs->content = new_heredoc;
-	else
-	{
-		current_heredoc = shell->heredocs->content;
-		while (current_heredoc->next)
-			current_heredoc = current_heredoc->next;
-		current_heredoc->next = new_heredoc;
-	}
+char	*get_env_variable(const char *var_name, char **env)
+{
+	size_t	name_len;
+    char	*current_var;
+
+    if (!var_name || !env)
+        return (NULL);
+    name_len = ft_strlen(var_name);
+    while (*env)
+    {
+        current_var = *env;
+        if (ft_strncmp(current_var, var_name, name_len) == 0
+				&& current_var[name_len] == '=')
+            return (current_var + name_len + 1);
+        env++;
+    }
+    return (NULL);
+}
+
+int	expend_in_heredoc(t_minishell *shell, char *str, int fd)
+{
+	int		length;
+	char	save;
+	char	*expanded_var;
+
+	length = 1;
+	while (str[length] && str[length] != '$' && !ft_iswhitespace(str[length]))
+		length++;
+	save = str[length];
+	str[length] = '\0';
+	expanded_var = get_env_variable(str + 1, shell->env);
+	if (expanded_var)
+		ft_putstr_fd(expanded_var, fd);
+	str[length] = save;
+	return (length);
 }
 
 void	close_heredoc_list(t_minishell *shell)
@@ -158,7 +161,6 @@ void	close_heredoc_list(t_minishell *shell)
 
 	if (!shell->heredocs || !shell->heredocs->content)
 		return ;
-	//new_infile->fd = ((t_files*)(shell->heredocs->content))->fd;
 	tmp = (t_files*)(shell->heredocs->content);
 	while (tmp)
 	{
@@ -173,79 +175,3 @@ void	close_heredoc_list(t_minishell *shell)
 	old_head->next = NULL;
 }
 
-void	post_add_heredoc(t_minishell *shell)
-{
-	t_files	*new_heredoc;
-	t_files	*current_heredoc;
-
-	new_heredoc = gc_calloc(&shell->gc_head, 1, sizeof(t_files));
-	if (!new_heredoc)
-	{
-		gc_free_all(shell->gc_head);
-		exit(EXIT_FAILURE);
-	}
-	new_heredoc->next = NULL;
-	if (!shell->heredocs->content)
-		shell->heredocs->content = new_heredoc;
-	else
-	{
-		current_heredoc = shell->heredocs->content;
-		while (current_heredoc->next)
-			current_heredoc = current_heredoc->next;
-		current_heredoc->next = new_heredoc;
-	}
-}
-
-void update_next_heredoc_fd(t_list *heredoc_list, int new_fd, char *delimiter)
-{
-    t_list *outer;
-    t_files *inner;
-
-    if (!heredoc_list)
-        return;
-    outer = heredoc_list;
-    while (outer)
-	{
-        inner = (t_files *)outer->content;
-        while (inner)
-		{
-            if (inner->fd == -1)
-			{
-                inner->fd = new_fd;
-				inner->delimiter = delimiter;
-                return ;
-            }
-            inner = inner->next;
-        }
-        outer = outer->next;
-    }
-}
-
-////////
-
-// void	init_heredoc(t_command *cmd, char *delimiter)
-// {
-// 	t_files	*new_infile;
-// 	t_files	*current;
-// 	char	*input;
-
-// 	new_infile = malloc(sizeof(t_files));
-// 	if (!new_infile)
-// 		exit(EXIT_FAILURE);
-// 	new_infile->delim = delimiter;
-// 	new_infile->next = NULL;
-// 	input = NULL;
-// 	while (!is_heredoc_delimiter(input, delimiter))
-// 	{
-// 		input = readline("> ");
-// 	}
-// 	if (!cmd->infile)
-// 		cmd->infile = new_infile;
-// 	else
-// 	{
-// 		current = cmd->infile;
-// 		while (current->next)
-// 			current = current->next;
-// 		current->next = new_infile;
-// 	}
-// }

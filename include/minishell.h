@@ -75,7 +75,7 @@ typedef struct s_minishell
 	t_ast_node			*ast_root;
 	t_command			*cmd;
 	t_list				*heredocs;
-	int					heredoc_flag;
+	// int					heredoc_flag;
 	// t_lexer_state		state;
 	// int					fd[2];
 	// t_token				*cmd_args;
@@ -216,8 +216,7 @@ t_ast_node				*parse_expression(t_minishell *shell,
 							int precedence_threshold);
 
 /* heredoc.c */
-void					init_heredoc(t_minishell *shell, t_token *token,
-							int heredoc_flag);
+void					init_heredoc(t_minishell *shell, t_token *token);
 void					close_heredoc_list(t_minishell *shell);
 
 /* heredoc2.c */
