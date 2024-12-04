@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_commands.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
+/*   By: dlemaire <dlemaire@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/07 10:32:58 by tmurua            #+#    #+#             */
-/*   Updated: 2024/11/29 20:53:21 by tmurua           ###   ########.fr       */
+/*   Updated: 2024/12/04 02:14:32 by dlemaire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ void	add_heredoc_to_cmd(t_command *cmd, char *delimiter, t_minishell *shell)
 		gc_free_all(shell->gc_head);
 		exit(EXIT_FAILURE);
 	}
-	new_infile->delim = ft_strdup(delimiter); // need to use the gc function
+	new_infile->delim = gc_strdup(&shell->gc_head, delimiter);
 	new_infile->next = NULL;
 	new_infile->fd = get_last_heredoc_fd((t_files*)(shell->heredocs->content));
 	if (new_infile->fd < 0)
@@ -88,37 +88,6 @@ void	add_heredoc_to_cmd(t_command *cmd, char *delimiter, t_minishell *shell)
 	// clear heredocs list?? with ft_lstclear()??
 }
 
-void	add_heredoc_to_cmd(t_command *cmd, char *delimiter, t_minishell *shell)
-{
-	t_files	*new_infile;
-	t_files	*current;
-
-	cmd->has_heredoc = 1;
-	new_infile = gc_calloc(&shell->gc_head, 1, sizeof(t_files));
-	if (!new_infile)
-	{
-		gc_free_all(shell->gc_head);
-		exit(EXIT_FAILURE);
-	}
-	new_infile->delim = ft_strdup(delimiter); // need to use the gc function
-	new_infile->next = NULL;
-	new_infile->fd = get_last_heredoc_fd((t_files*)(shell->heredocs->content));
-	if (new_infile->fd < 0)
-	{
-		perror("heredoc");
-		new_infile->fd = open("/dev/null", O_RDONLY);
-	}
-	if (!cmd->infile)
-		cmd->infile = new_infile;
-	else
-	{
-		current = cmd->infile;
-		while (current->next)
-			current = current->next;
-		current->next = new_infile;
-	}
-	// clear heredocs list?? with ft_lstclear()??
-}
 
 int	process_argument(t_command *cmd, t_token *token, t_minishell *shell, int i)
 {
@@ -154,12 +123,12 @@ t_token	*process_token(t_command *cmd, t_token *token, t_minishell *shell,
 	}
 	else if (token->type == TOKEN_REDIRECT_IN)
 		token = process_redirect_in(cmd, token, shell);
-	else if (node_tokens->type == TOKEN_HEREDOC)
+	else if (token->type == TOKEN_HEREDOC)
 	{
-		if (node_tokens->next->type == TOKEN_HEREDOC_DELIMITER)
+		if (token->next->type == TOKEN_HEREDOC_DELIMITER)
 		{
-			add_heredoc_to_cmd(cmd, node_tokens->next->value, shell);
-			node_tokens = node_tokens->next;
+			add_heredoc_to_cmd(cmd, token->next->value, shell);
+			token = token->next;
 		}
 	}
 	else if (token->type == TOKEN_REDIRECT_OUT)
@@ -169,4 +138,16 @@ t_token	*process_token(t_command *cmd, t_token *token, t_minishell *shell,
 	else
 		token = token->next;
 	return (token);
+}
+
+int	get_last_heredoc_fd(t_files *heredocs)
+{
+	t_files	*current;
+
+	if (!heredocs)
+		return (-1);
+	current = heredocs;
+	while (current->next)
+		current = current->next;
+	return (current->fd);
 }
