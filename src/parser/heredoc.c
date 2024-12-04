@@ -12,9 +12,9 @@
 
 #include "../../include/minishell.h"
 
-void	heredoc_loop(t_minishell *shell, t_token *token, int *pipe);
+void	heredoc_loop(t_minishell *shell, t_token *token, int *pipe, t_files	*heredoc);
 int		is_heredoc_delimiter(const char *input, const char *delimiter);
-void	catch_heredoc_input(t_minishell *shell, char *str, int fd);
+void	catch_heredoc_input(t_minishell *shell, char *str, int fd, t_files *heredoc);
 t_files	*save_heredoc_fd(t_list *heredoc_list, int new_fd);
 char	*get_env_variable(const char *var_name, char **env);
 int		expend_in_heredoc(t_minishell *shell, char *str, int fd);
@@ -25,18 +25,21 @@ void	init_heredoc(t_minishell *shell, t_token *token)
 	int		fd[2];
 	pid_t	pid;
 	int		status;
+	t_files	*heredoc;
 
 	if (pipe(fd) < 0)
 		return ;
 	pid = fork();
+	heredoc = save_heredoc_fd(shell->heredocs, fd[0]);
 	if (pid == 0)
-		heredoc_loop(shell, token, fd);
+		heredoc_loop(shell, token, fd, heredoc);
 	if (waitpid(pid, &status, 0) == -1)
 		perror("minishell: waitpid");
+	
 	close(fd[1]);
 }
 
-void	heredoc_loop(t_minishell *shell, t_token *token, int *pipe)
+void	heredoc_loop(t_minishell *shell, t_token *token, int *pipe, t_files	*heredoc)
 {
 	char	*buffer;
 	char	*delimiter;
@@ -49,7 +52,7 @@ void	heredoc_loop(t_minishell *shell, t_token *token, int *pipe)
 		buffer = readline("> ");
 		if (!buffer || is_heredoc_delimiter(buffer, delimiter))
 			break ;
-		catch_heredoc_input(shell, buffer, pipe[1]);
+		catch_heredoc_input(shell, buffer, pipe[1], heredoc);
 	}
 	close(pipe[1]);
 	//close_heredoc
@@ -70,12 +73,10 @@ int	is_heredoc_delimiter(const char *input, const char *delimiter)
 	return (0);
 }
 
-void	catch_heredoc_input(t_minishell *shell, char *str, int fd)
+void	catch_heredoc_input(t_minishell *shell, char *str, int fd, t_files *heredoc)
 {
 	int		i;
-	t_files	*heredoc;
 
-	heredoc = save_heredoc_fd(shell->heredocs, fd);
 	i = 0;
 	while (str[i])
 	{
