@@ -6,15 +6,17 @@
 /*   By: dlemaire <dlemaire@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/25 23:18:42 by dlemaire          #+#    #+#             */
-/*   Updated: 2024/11/27 00:21:01 by dlemaire         ###   ########.fr       */
+/*   Updated: 2024/12/04 18:54:16 by dlemaire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-void	heredoc_loop(t_minishell *shell, t_token *token, int *pipe, t_files	*heredoc);
+void	heredoc_loop(t_minishell *shell, t_token *token, int *pipe,
+			t_files	*heredoc);
 int		is_heredoc_delimiter(const char *input, const char *delimiter);
-void	catch_heredoc_input(t_minishell *shell, char *str, int fd, t_files *heredoc);
+void	catch_heredoc_input(t_minishell *shell, char *str, int fd,
+			t_files *heredoc);
 t_files	*save_heredoc_fd(t_list *heredoc_list, int new_fd);
 char	*get_env_variable(const char *var_name, char **env);
 int		expend_in_heredoc(t_minishell *shell, char *str, int fd);
@@ -35,11 +37,11 @@ void	init_heredoc(t_minishell *shell, t_token *token)
 		heredoc_loop(shell, token, fd, heredoc);
 	if (waitpid(pid, &status, 0) == -1)
 		perror("minishell: waitpid");
-	
 	close(fd[1]);
 }
 
-void	heredoc_loop(t_minishell *shell, t_token *token, int *pipe, t_files	*heredoc)
+void	heredoc_loop(t_minishell *shell, t_token *token, int *pipe,
+			t_files	*heredoc)
 {
 	char	*buffer;
 	char	*delimiter;
@@ -55,7 +57,7 @@ void	heredoc_loop(t_minishell *shell, t_token *token, int *pipe, t_files	*heredo
 		catch_heredoc_input(shell, buffer, pipe[1], heredoc);
 	}
 	close(pipe[1]);
-	//close_heredoc
+	//close_heredoc (??)
 	rl_clear_history();
 	exit(0);
 }
@@ -73,7 +75,8 @@ int	is_heredoc_delimiter(const char *input, const char *delimiter)
 	return (0);
 }
 
-void	catch_heredoc_input(t_minishell *shell, char *str, int fd, t_files *heredoc)
+void	catch_heredoc_input(t_minishell *shell, char *str, int fd,
+			t_files *heredoc)
 {
 	int		i;
 
@@ -84,7 +87,7 @@ void	catch_heredoc_input(t_minishell *shell, char *str, int fd, t_files *heredoc
 			i += expend_in_heredoc(shell, str + i, fd);
 		else
 		{
-		 	ft_putchar_fd(str[i], fd);
+			ft_putchar_fd(str[i], fd);
 			i++;
 		}
 	}
@@ -93,46 +96,46 @@ void	catch_heredoc_input(t_minishell *shell, char *str, int fd, t_files *heredoc
 
 t_files	*save_heredoc_fd(t_list *heredoc_list, int new_fd)
 {
-    t_list *outer;
-    t_files *inner;
+	t_list	*outer;
+	t_files	*inner;
 
-    if (!heredoc_list)
-        return (NULL);
-    outer = heredoc_list;
-    while (outer)
+	if (!heredoc_list)
+		return (NULL);
+	outer = heredoc_list;
+	while (outer)
 	{
-        inner = (t_files *)outer->content;
-        while (inner)
+		inner = (t_files *)outer->content;
+		while (inner)
 		{
-            if (inner->fd == -1)
+			if (inner->fd == -1)
 			{
-                inner->fd = new_fd;
-                return (inner);
-            }
-            inner = inner->next;
-        }
-        outer = outer->next;
-    }
+				inner->fd = new_fd;
+				return (inner);
+			}
+			inner = inner->next;
+		}
+		outer = outer->next;
+	}
 	return (NULL);
 }
 
 char	*get_env_variable(const char *var_name, char **env)
 {
 	size_t	name_len;
-    char	*current_var;
+	char	*current_var;
 
-    if (!var_name || !env)
-        return (NULL);
-    name_len = ft_strlen(var_name);
-    while (*env)
-    {
-        current_var = *env;
-        if (ft_strncmp(current_var, var_name, name_len) == 0
-				&& current_var[name_len] == '=')
-            return (current_var + name_len + 1);
-        env++;
-    }
-    return (NULL);
+	if (!var_name || !env)
+		return (NULL);
+	name_len = ft_strlen(var_name);
+	while (*env)
+	{
+		current_var = *env;
+		if (ft_strncmp(current_var, var_name, name_len) == 0
+			&& current_var[name_len] == '=')
+			return (current_var + name_len + 1);
+		env++;
+	}
+	return (NULL);
 }
 
 int	expend_in_heredoc(t_minishell *shell, char *str, int fd)
@@ -162,7 +165,7 @@ void	close_heredoc_list(t_minishell *shell)
 
 	if (!shell->heredocs || !shell->heredocs->content)
 		return ;
-	tmp = (t_files*)(shell->heredocs->content);
+	tmp = (t_files *)(shell->heredocs->content);
 	while (tmp)
 	{
 		buf = tmp->next;
