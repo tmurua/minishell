@@ -6,7 +6,7 @@
 /*   By: dlemaire <dlemaire@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 09:08:10 by tmurua            #+#    #+#             */
-/*   Updated: 2024/12/04 02:12:01 by dlemaire         ###   ########.fr       */
+/*   Updated: 2024/12/05 01:31:36 by dlemaire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -221,6 +221,7 @@ t_ast_node				*parse_expression(t_minishell *shell,
 /* heredoc.c */
 void					init_heredoc(t_minishell *shell, t_token *token);
 void					close_heredoc_list(t_minishell *shell);
+void					close_all_heredocs(t_minishell *shell);
 
 /* heredoc2.c */
 void					heredoc_scan(char *input, t_minishell *shell);

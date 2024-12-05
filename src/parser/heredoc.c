@@ -6,7 +6,7 @@
 /*   By: dlemaire <dlemaire@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/25 23:18:42 by dlemaire          #+#    #+#             */
-/*   Updated: 2024/12/04 18:54:16 by dlemaire         ###   ########.fr       */
+/*   Updated: 2024/12/05 01:12:20 by dlemaire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,13 +31,30 @@ void	init_heredoc(t_minishell *shell, t_token *token)
 
 	if (pipe(fd) < 0)
 		return ;
-	pid = fork();
+	setup_sigquit_handler(shell);
+	setup_sigint_handler(shell);
 	heredoc = save_heredoc_fd(shell->heredocs, fd[0]);
+	pid = fork();
 	if (pid == 0)
+	{
+		reset_signal_handlers(shell);
 		heredoc_loop(shell, token, fd, heredoc);
-	if (waitpid(pid, &status, 0) == -1)
-		perror("minishell: waitpid");
-	close(fd[1]);
+	}
+	else if (pid > 0)
+	{
+		ignore_signal_handlers(shell);
+		if (waitpid(pid, &status, 0) == -1)
+			perror("minishell: waitpid");
+		if (WIFSIGNALED(status) && WTERMSIG(status) == SIGINT)
+		{
+			write(STDOUT_FILENO, "\n", 1);
+			close_all_heredocs(shell);
+		}
+		setup_prompt_signals(shell);
+		close(fd[1]);
+	}
+	else
+		perror("minishell: fork");
 }
 
 void	heredoc_loop(t_minishell *shell, t_token *token, int *pipe,
@@ -52,12 +69,12 @@ void	heredoc_loop(t_minishell *shell, t_token *token, int *pipe,
 	while (1)
 	{
 		buffer = readline("> ");
-		if (!buffer || is_heredoc_delimiter(buffer, delimiter))
+		if (is_heredoc_delimiter(buffer, delimiter))
 			break ;
 		catch_heredoc_input(shell, buffer, pipe[1], heredoc);
 	}
 	close(pipe[1]);
-	//close_heredoc (??)
+	//close_all_heredocs(shell);
 	rl_clear_history();
 	exit(0);
 }
@@ -179,3 +196,25 @@ void	close_heredoc_list(t_minishell *shell)
 	old_head->next = NULL;
 }
 
+void	close_all_heredocs(t_minishell *shell)
+{
+	t_list	*outer_node;
+	t_files	*inner_node;
+
+	outer_node = shell->heredocs;
+	while (outer_node)
+	{
+		inner_node = (t_files *)outer_node->content;
+		while (inner_node)
+		{
+			if (inner_node->fd != -1)
+			{
+				if (close(inner_node->fd) == -1) 
+					perror("minishell: close heredoc fd");
+				inner_node->fd = -1;
+			}
+			inner_node = inner_node->next;
+		}
+		outer_node = outer_node->next;
+	}
+}

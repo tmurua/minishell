@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   child_signals.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
+/*   By: dlemaire <dlemaire@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 17:15:52 by tmurua            #+#    #+#             */
-/*   Updated: 2024/12/03 18:31:37 by tmurua           ###   ########.fr       */
+/*   Updated: 2024/12/04 23:11:29 by dlemaire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,3 +47,5 @@ void	ignore_signal_handlers(t_minishell *shell)
 		exit(EXIT_FAILURE);
 	}
 }
+
+

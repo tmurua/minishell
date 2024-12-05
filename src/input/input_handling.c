@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   input_handling.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
+/*   By: dlemaire <dlemaire@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 16:48:08 by tmurua            #+#    #+#             */
-/*   Updated: 2024/12/03 16:58:28 by tmurua           ###   ########.fr       */
+/*   Updated: 2024/12/05 01:30:19 by dlemaire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,6 @@ void	main_input_loop(int ac, char **av, t_minishell *shell)
 			continue ;
 		if (*input)
 			add_history(input);
-		printf("you entered: %s\n", input);
 		heredoc_scan(input, shell);
 		run_lexer(input, shell);
 		shell->ast_root = parse_expression(shell, MIN_PRECEDENCE_LVL);
