@@ -3,56 +3,94 @@
 /*                                                        :::      ::::::::   */
 /*   pipe.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dlemaire <dlemaire@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/14 17:23:19 by dlemaire          #+#    #+#             */
-/*   Updated: 2024/11/27 00:21:51 by dlemaire         ###   ########.fr       */
+/*   Updated: 2024/12/05 16:49:31 by tmurua           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
-#include <sys/types.h>
 
+#define READ_END 0
+#define WRITE_END 1
+
+/* initialize pipe between two commands represented by AST nodes */
 int	init_pipe(t_ast_node *node, t_minishell *shell)
 {
 	int		fds[2];
 	pid_t	pids[2];
-	int		status[2];
+	int		status;
 
-	pipe(fds);
-	pids[0] = fork();
-	if (pids[0] == 0)
+	if (pipe(fds) == -1)
 	{
-		close(fds[0]);
-		if (dup2(fds[1], STDOUT_FILENO) == -1)
-		{
-			perror("dup2");
-			gc_free_all(shell->gc_head);
-			exit(EXIT_FAILURE);
-		}
-		close(fds[1]);
-		read_tree(node->left, shell);
-		gc_free_all(shell->gc_head);
-		exit(EXIT_SUCCESS);
+		perror("pipe");
+		return (-1);
 	}
-	pids[1] = fork();
-	if (pids[1] == 0)
-	{
-		close(fds[1]);
-		if (dup2(fds[0], STDIN_FILENO) == -1)
-		{
-			perror("dup2");
-			gc_free_all(shell->gc_head);
-			exit(EXIT_FAILURE);
-		}
-		close(fds[0]);
-		read_tree(node->right, shell);
-		gc_free_all(shell->gc_head);
-		exit(EXIT_SUCCESS);
-	}
-	close(fds[0]);
-	close(fds[1]);
-	waitpid(pids[0], &status[0], 0);
-	waitpid(pids[1], &status[1], 0);
+	pids[0] = fork_left_child(fds, node->left, shell);
+	pids[1] = fork_right_child(fds, node->right, shell);
+	close(fds[READ_END]);
+	close(fds[WRITE_END]);
+	waitpid(pids[0], &status, 0);
+	waitpid(pids[1], &status, 0);
 	return (0);
+}
+
+/*fork left child process, setup writing to pipe; return pid of forked process*/
+pid_t	fork_left_child(int fds[], t_ast_node *node, t_minishell *shell)
+{
+	pid_t	pid;
+
+	pid = fork();
+	if (pid == -1)
+	{
+		perror("fork");
+		gc_free_all(shell->gc_head);
+		exit(EXIT_FAILURE);
+	}
+	else if (pid == 0)
+	{
+		close(fds[READ_END]);
+		if (dup2(fds[WRITE_END], STDOUT_FILENO) == -1)
+		{
+			perror("dup2");
+			gc_free_all(shell->gc_head);
+			exit(EXIT_FAILURE);
+		}
+		close(fds[WRITE_END]);
+		read_tree(node, shell);
+		gc_free_all(shell->gc_head);
+		exit(EXIT_SUCCESS);
+	}
+	return (pid);
+}
+
+/*	fork right child process, setup reading from pipe;
+	return pid of the forked child process */
+pid_t	fork_right_child(int fds[], t_ast_node *node, t_minishell *shell)
+{
+	pid_t	pid;
+
+	pid = fork();
+	if (pid == -1)
+	{
+		perror("fork");
+		gc_free_all(shell->gc_head);
+		exit(EXIT_FAILURE);
+	}
+	else if (pid == 0)
+	{
+		close(fds[WRITE_END]);
+		if (dup2(fds[READ_END], STDIN_FILENO) == -1)
+		{
+			perror("dup2");
+			gc_free_all(shell->gc_head);
+			exit(EXIT_FAILURE);
+		}
+		close(fds[READ_END]);
+		read_tree(node, shell);
+		gc_free_all(shell->gc_head);
+		exit(EXIT_SUCCESS);
+	}
+	return (pid);
 }
