@@ -6,7 +6,7 @@
 /*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 00:37:05 by dlemaire          #+#    #+#             */
-/*   Updated: 2024/11/27 12:11:28 by tmurua           ###   ########.fr       */
+/*   Updated: 2024/12/05 17:35:13 by tmurua           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,10 +25,7 @@ char	*build_command_path(char *str, t_minishell *shell)
 		return (gc_strdup(&shell->gc_head, str));
 	directories = create_directories(shell);
 	if (!directories)
-	{
-		gc_free_all(shell->gc_head);
-		exit(EXIT_FAILURE);
-	}
+		return (NULL);
 	result_path = find_executable_path(str, directories, shell);
 	return (result_path);
 }
