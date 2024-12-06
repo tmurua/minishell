@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
+/*   By: dlemaire <dlemaire@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 17:10:48 by dlemaire          #+#    #+#             */
-/*   Updated: 2024/11/28 16:04:31 by tmurua           ###   ########.fr       */
+/*   Updated: 2024/12/06 16:18:52 by dlemaire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,10 +81,11 @@ t_ast_node	*parse_command(t_minishell *shell)
 	t_ast_node	*node;
 	t_token		*tmp;
 
+	shell->sigint_heredocs = 0;
 	node = create_ast_node(NODE_COMMAND, NULL, NULL, shell);
 	while (shell->tokens && !is_statement_delimiter(shell->tokens->type))
 	{
-		if (shell->tokens->type == TOKEN_HEREDOC)
+		if (shell->tokens->type == TOKEN_HEREDOC && !shell->sigint_heredocs)
 			init_heredoc(shell, shell->tokens);
 		tmp = shell->tokens;
 		shell->tokens = shell->tokens->next;

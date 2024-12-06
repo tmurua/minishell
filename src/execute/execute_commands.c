@@ -6,7 +6,7 @@
 /*   By: dlemaire <dlemaire@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/07 10:32:58 by tmurua            #+#    #+#             */
-/*   Updated: 2024/12/05 01:28:41 by dlemaire         ###   ########.fr       */
+/*   Updated: 2024/12/06 16:44:27 by dlemaire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ void	add_heredoc_to_cmd(t_command *cmd, char *delimiter, t_minishell *shell)
 	}
 	new_infile->delim = gc_strdup(&shell->gc_head, delimiter);
 	new_infile->next = NULL;
-	new_infile->fd = get_last_heredoc_fd((t_files*)(shell->heredocs->content));
+	new_infile->fd = get_last_heredoc_fd((t_files *)(shell->heredocs->content));
 	if (new_infile->fd < 0)
 		new_infile->fd = open("/dev/null", O_RDONLY);
 	if (!cmd->infile)

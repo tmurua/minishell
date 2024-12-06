@@ -6,7 +6,7 @@
 /*   By: dlemaire <dlemaire@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/25 23:18:42 by dlemaire          #+#    #+#             */
-/*   Updated: 2024/12/05 01:12:20 by dlemaire         ###   ########.fr       */
+/*   Updated: 2024/12/06 16:20:01 by dlemaire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@ void	init_heredoc(t_minishell *shell, t_token *token)
 			perror("minishell: waitpid");
 		if (WIFSIGNALED(status) && WTERMSIG(status) == SIGINT)
 		{
+			shell->sigint_heredocs = 1;
 			write(STDOUT_FILENO, "\n", 1);
 			close_all_heredocs(shell);
 		}
