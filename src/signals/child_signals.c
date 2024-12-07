@@ -47,5 +47,3 @@ void	ignore_signal_handlers(t_minishell *shell)
 		exit(EXIT_FAILURE);
 	}
 }
-
-

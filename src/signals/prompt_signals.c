@@ -41,15 +41,11 @@ void	setup_sigint_handler(t_minishell *shell)
 	}
 }
 
-/*	signal handler for SIGINT (Ctrl+C) at prompt
-	writes \n, clear current line, goes to next line, and redisplays prompt */
+/*	signal handler for SIGINT (Ctrl+C) at prompt */
 void	handle_sigint_at_prompt(int sig)
 {
 	(void)sig;
 	write(STDOUT_FILENO, "\n", 1);
-	rl_replace_line("", 0);
-	rl_on_new_line();
-	rl_redisplay();
 }
 
 /*	setup SIGQUIT (Ctrl+\) signal handler to ignore it at the prompt
