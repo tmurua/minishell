@@ -6,7 +6,7 @@
 /*   By: dlemaire <dlemaire@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 16:48:08 by tmurua            #+#    #+#             */
-/*   Updated: 2024/12/06 17:28:22 by dlemaire         ###   ########.fr       */
+/*   Updated: 2024/12/08 22:44:26 by dlemaire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@ void	main_input_loop(int ac, char **av, t_minishell *shell)
 	handle_multiple_args(ac, av, shell);
 	while (1)
 	{
-		//printf("shell->sigint_heredocs: %d\n", shell->sigint_heredocs);
 		input = read_user_input();
 		if (input == NULL)
 		{
