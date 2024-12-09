@@ -6,7 +6,7 @@
 /*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 00:37:05 by dlemaire          #+#    #+#             */
-/*   Updated: 2024/12/05 17:35:13 by tmurua           ###   ########.fr       */
+/*   Updated: 2024/12/09 19:52:00 by tmurua           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ char	*build_command_path(char *str, t_minishell *shell)
 char	**create_directories(t_minishell *shell)
 {
 	int		i;
+	char	*path_value;
 	char	**directories;
 
 	i = 0;
@@ -40,6 +41,9 @@ char	**create_directories(t_minishell *shell)
 	{
 		if (ft_strncmp("PATH=", shell->env[i], 5) == 0)
 		{
+			path_value = ft_strchr(shell->env[i], '/');
+			if (!path_value)
+				return (NULL);
 			directories = gc_split(&shell->gc_head,
 					ft_strchr(shell->env[i], '/'), ':');
 			if (!directories)
