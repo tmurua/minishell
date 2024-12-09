@@ -16,8 +16,12 @@ SRC		= \
 	./src/lexer/lexer_state_handler.c \
 	./src/lexer/lexer_utils.c \
 	./src/parser/parser.c \
-	./src/parser/heredoc.c \
-	./src/parser/heredoc2.c \
+	./src/parser/parser_utils.c \
+	./src/parser/heredoc_init.c \
+	./src/parser/heredoc_loop.c \
+	./src/parser/heredoc_cleanup.c \
+	./src/parser/heredoc_handler.c \
+	./src/parser/heredoc_creation.c \
 	./src/interpreter/interpreter.c \
 	./src/pipe/pipe.c \
 	./src/builtin/builtin_handler.c \
@@ -26,7 +30,8 @@ SRC		= \
 	./src/builtin/builtin_cd.c \
 	./src/builtin/builtin_export.c \
 	./src/builtin/builtin_unset.c \
-	./src/execute/execute_commands.c \
+	./src/execute/command_init.c \
+	./src/execute/command_heredoc.c \
 	./src/execute/process_command_tokens.c \
 	./src/execute/command_files.c \
 	./src/execute/execute_external.c \

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dlemaire <dlemaire@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 17:10:48 by dlemaire          #+#    #+#             */
-/*   Updated: 2024/12/06 16:18:52 by dlemaire         ###   ########.fr       */
+/*   Updated: 2024/12/09 10:14:23 by tmurua           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,76 +24,6 @@
 // the precedence
 
 #include "../../include/minishell.h"
-
-void	ft_tkadd_back(t_token **tokens, t_token *new)
-{
-	t_token	*tmp;
-
-	if (tokens)
-	{
-		tmp = *tokens;
-		if (*tokens == NULL)
-			*tokens = new;
-		else
-		{
-			while (tmp->next)
-				tmp = tmp->next;
-			tmp->next = new;
-		}
-	}
-}
-
-int	get_precedence_lvl(int type)
-{
-	if (type == TOKEN_OR || type == TOKEN_AND)
-		return (0);
-	return (1);
-}
-
-int	is_statement_delimiter(int type)
-{
-	if (type == TOKEN_OR || type == TOKEN_AND || type == TOKEN_PIPE)
-		return (1);
-	return (0);
-}
-
-t_ast_node	*create_ast_node(t_node_type type, t_ast_node *left,
-		t_ast_node *right, t_minishell *shell)
-{
-	t_ast_node	*new;
-
-	new = gc_calloc(&shell->gc_head, 1, sizeof(t_ast_node));
-	if (!new)
-	{
-		perror("minishell: create_ast_node");
-		gc_free_all(shell->gc_head);
-		exit(EXIT_FAILURE);
-	}
-	new->tokens = NULL;
-	new->type = type;
-	new->left = left;
-	new->right = right;
-	return (new);
-}
-
-t_ast_node	*parse_command(t_minishell *shell)
-{
-	t_ast_node	*node;
-	t_token		*tmp;
-
-	shell->sigint_heredocs = 0;
-	node = create_ast_node(NODE_COMMAND, NULL, NULL, shell);
-	while (shell->tokens && !is_statement_delimiter(shell->tokens->type))
-	{
-		if (shell->tokens->type == TOKEN_HEREDOC && !shell->sigint_heredocs)
-			init_heredoc(shell, shell->tokens);
-		tmp = shell->tokens;
-		shell->tokens = shell->tokens->next;
-		tmp->next = NULL;
-		ft_tkadd_back(&node->tokens, tmp);
-	}
-	return (node);
-}
 
 t_ast_node	*parse_expression(t_minishell *shell, int precedence_threshold)
 {
@@ -122,4 +52,42 @@ t_ast_node	*parse_expression(t_minishell *shell, int precedence_threshold)
 			left = create_ast_node(NODE_OR, left, right, shell);
 	}
 	return (left);
+}
+
+t_ast_node	*parse_command(t_minishell *shell)
+{
+	t_ast_node	*node;
+	t_token		*tmp;
+
+	shell->sigint_heredocs = 0;
+	node = create_ast_node(NODE_COMMAND, NULL, NULL, shell);
+	while (shell->tokens && !is_statement_delimiter(shell->tokens->type))
+	{
+		if (shell->tokens->type == TOKEN_HEREDOC && !shell->sigint_heredocs)
+			init_heredoc(shell, shell->tokens);
+		tmp = shell->tokens;
+		shell->tokens = shell->tokens->next;
+		tmp->next = NULL;
+		ft_tkadd_back(&node->tokens, tmp);
+	}
+	return (node);
+}
+
+t_ast_node	*create_ast_node(t_node_type type, t_ast_node *left,
+		t_ast_node *right, t_minishell *shell)
+{
+	t_ast_node	*new;
+
+	new = gc_calloc(&shell->gc_head, 1, sizeof(t_ast_node));
+	if (!new)
+	{
+		perror("minishell: create_ast_node");
+		gc_free_all(shell->gc_head);
+		exit(EXIT_FAILURE);
+	}
+	new->tokens = NULL;
+	new->type = type;
+	new->left = left;
+	new->right = right;
+	return (new);
 }

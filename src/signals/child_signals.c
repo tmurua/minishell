@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   child_signals.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dlemaire <dlemaire@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 17:15:52 by tmurua            #+#    #+#             */
-/*   Updated: 2024/12/08 22:38:26 by dlemaire         ###   ########.fr       */
+/*   Updated: 2024/12/09 10:17:58 by tmurua           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 	used in child processes before executing external commands */
 void	reset_signal_handlers(t_minishell *shell)
 {
-	struct sigaction sa;
+	struct sigaction	sa;
 
 	sigemptyset(&sa.sa_mask);
 	sa.sa_handler = SIG_DFL;
@@ -50,13 +50,11 @@ void	reset_signal_handlers(t_minishell *shell)
 // 	}
 // }
 
-
-
 /*	ignores SIGINT and SIGQUIT in parent process during command execution,
 	preventing shell from being interrupted by these signals */
 void	ignore_signal_handlers(t_minishell *shell)
 {
-	struct sigaction sa;
+	struct sigaction	sa;
 
 	sigemptyset(&sa.sa_mask);
 	sa.sa_handler = SIG_IGN;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dlemaire <dlemaire@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 09:08:10 by tmurua            #+#    #+#             */
-/*   Updated: 2024/12/06 16:15:09 by dlemaire         ###   ########.fr       */
+/*   Updated: 2024/12/09 12:56:04 by tmurua           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,12 +19,10 @@
 # include <stdio.h>
 /* malloc, free, exit, getenv */
 # include <stdlib.h>
-/* readline, rl_clear_history, rl_on_new_line, rl_replace_line, rl_redisplay */
+/* readline, rl_clear_history, rl_on_new_line */
 # include <readline/readline.h>
 /* add_history */
 # include <readline/history.h>
-/* strerror */
-# include <string.h>
 /*	read, write, access, close, unlink,
 	fork, execve, getpid, getppid,
 	isatty, ttyname, ttyslot
@@ -69,18 +67,14 @@ typedef struct s_files		t_files;
 /* context structure to group data together and improve code organization */
 typedef struct s_minishell
 {
-	char				**env;
-	int					last_exit_status;
-	t_list				*gc_head;
-	t_token				*tokens;
-	t_ast_node			*ast_root;
-	t_command			*cmd;
-	t_list				*heredocs;
-	int					sigint_heredocs;
-	// int					heredoc_flag;
-	// t_lexer_state		state;
-	// int					fd[2];
-	// t_token				*cmd_args;
+	char					**env;
+	int						last_exit_status;
+	t_list					*gc_head;
+	t_token					*tokens;
+	t_ast_node				*ast_root;
+	t_command				*cmd;
+	t_list					*heredocs;
+	int						sigint_heredocs;
 }							t_minishell;
 
 /* enumerate all possible token types in minishell */
@@ -108,7 +102,6 @@ typedef enum e_node_type
 	NODE_PIPE,
 	NODE_AND,
 	NODE_OR,
-	NODE_BUILTIN, // would delete
 }							t_node_type;
 
 typedef struct s_token
@@ -137,21 +130,21 @@ typedef struct s_lexer
 
 typedef struct s_files
 {
-	int					fd;
-	char				*delim;
-	int					heredoc_quote;
-	struct s_files		*next;
-}						t_files;
+	int						fd;
+	char					*delim;
+	int						heredoc_quote;
+	struct s_files			*next;
+}							t_files;
 
 typedef struct s_command
 {
-	t_files				*infile;
-	t_files				*outfile;
-	char				*cmd_name;
-	char				*path;
-	char				**args;
-	int					has_heredoc;
-}						t_command;
+	t_files					*infile;
+	t_files					*outfile;
+	char					*cmd_name;
+	char					*path;
+	char					**args;
+	int						has_heredoc;
+}							t_command;
 
 typedef struct s_ast_node
 {
@@ -219,14 +212,57 @@ int							append_to_buffer(char **buffer, const char *str,
 /* parser.c */
 t_ast_node					*parse_expression(t_minishell *shell,
 								int precedence_threshold);
+t_ast_node					*parse_command(t_minishell *shell);
+t_ast_node					*create_ast_node(t_node_type type, t_ast_node *left,
+								t_ast_node *right, t_minishell *shell);
 
-/* heredoc.c */
-void					init_heredoc(t_minishell *shell, t_token *token);
-void					close_heredoc_list(t_minishell *shell);
-void					close_all_heredocs(t_minishell *shell);
+/* parser_utils.c */
+int							is_statement_delimiter(int type);
+int							get_precedence_lvl(int type);
+void						ft_tkadd_back(t_token **tokens, t_token *new);
 
-/* heredoc2.c */
-void					heredoc_scan(char *input, t_minishell *shell);
+/* heredoc_init.c */
+void						init_heredoc(t_minishell *shell, t_token *token);
+int							create_heredoc_pipe(int fd[2]);
+void						fork_heredoc_child(t_minishell *shell,
+								t_token *token, int fd[2], t_files *heredoc);
+void						handle_heredoc_parent(pid_t pid, t_minishell *shell,
+								int fd[2]);
+t_files						*save_heredoc_fd(t_list *heredoc_list, int new_fd);
+
+/* heredoc_loop.c */
+void						heredoc_loop(t_minishell *shell, t_token *token,
+								int *pipe, t_files *heredoc);
+int							is_heredoc_delimiter(const char *input,
+								const char *delimiter);
+void						catch_heredoc_input(t_minishell *shell, char *str,
+								int fd, t_files *heredoc);
+int							expend_in_heredoc(t_minishell *shell, char *str,
+								int fd);
+char						*get_env_variable(const char *var_name, char **env);
+
+/* heredoc_cleanup.c */
+void						close_heredoc_list(t_minishell *shell);
+void						close_all_heredocs(t_minishell *shell);
+
+/* heredoc_handler.c */
+void						handle_heredoc_token_in_input(char **input,
+								t_minishell *shell, t_list **outer_list,
+								t_list **current_list);
+void						handle_pipe_token(char **input,
+								t_list **current_list);
+void						heredoc_scan(char *input, t_minishell *shell);
+char						*get_delimiter(char *input, t_minishell *shell);
+int							is_quoted_delimiter(char *delimiter);
+
+/* heredoc_creation.c */
+t_files						*create_heredoc_file(char *delimiter, int is_quoted,
+								t_minishell *shell);
+t_list						*create_heredoc_list(t_minishell *shell);
+void						add_heredoc_to_list(t_files **head,
+								t_files *new_file);
+void						add_list_to_outer_list(t_list **head,
+								t_list *new_list);
 
 /* interpreter.c */
 void						read_tree(t_ast_node *root, t_minishell *shell);
@@ -247,16 +283,22 @@ void						setup_sigquit_handler(t_minishell *shell);
 void						reset_signal_handlers(t_minishell *shell);
 void						ignore_signal_handlers(t_minishell *shell);
 
-/* execute_commands.c */
-void					init_command(t_command *cmd, t_token *node_tokens,
-							t_minishell *shell);
-void					initialize_command_struct(t_command *cmd);
-int						count_arg_tokens(t_token *tokens);
-int						process_argument(t_command *cmd, t_token *token,
-							t_minishell *shell, int i);
-t_token					*process_token(t_command *cmd, t_token *token,
-							t_minishell *shell, int *i);
-int						get_last_heredoc_fd(t_files *heredocs);
+/* command_init.c */
+void						init_command(t_command *cmd, t_token *node_tokens,
+								t_minishell *shell);
+void						initialize_command_struct(t_command *cmd);
+int							count_arg_tokens(t_token *tokens);
+t_token						*process_token(t_command *cmd, t_token *token,
+								t_minishell *shell, int *i);
+int							process_argument(t_command *cmd, t_token *token,
+								t_minishell *shell, int i);
+
+/* command_heredoc.c */
+t_token						*handle_heredoc_token(t_command *cmd,
+								t_token *token, t_minishell *shell);
+void						add_heredoc_to_cmd(t_command *cmd, char *delimiter,
+								t_minishell *shell);
+int							get_last_heredoc_fd(t_files *heredocs);
 
 /* process_command_tokens.c */
 int							process_builtin_cmd(t_command *cmd, t_token *token,
