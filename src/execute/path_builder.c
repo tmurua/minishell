@@ -6,7 +6,7 @@
 /*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 00:37:05 by dlemaire          #+#    #+#             */
-/*   Updated: 2024/12/10 19:38:19 by tmurua           ###   ########.fr       */
+/*   Updated: 2024/12/10 20:08:25 by tmurua           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ char	**create_directories(t_minishell *shell);
 char	*find_executable_path(char *str, char **directories,
 			t_minishell *shell);
 
+/* build full executable path for a command by searching PATH directories */
 char	*build_command_path(char *str, t_minishell *shell)
 {
 	char	**directories;
@@ -30,6 +31,9 @@ char	*build_command_path(char *str, t_minishell *shell)
 	return (result_path);
 }
 
+/*	split PATH environment variable into an array of directories.
+	search for "PATH=" prefix in the environment variables
+ 	and split string at each ':' char after the prefix to extract */
 char	**create_directories(t_minishell *shell)
 {
 	int		i;
@@ -58,6 +62,7 @@ char	**create_directories(t_minishell *shell)
 	return (NULL);
 }
 
+/* search directories for the executable command and return its full path. */
 char	*find_executable_path(char *str, char **directories, t_minishell *shell)
 {
 	int		i;

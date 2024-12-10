@@ -6,7 +6,7 @@
 /*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 09:08:10 by tmurua            #+#    #+#             */
-/*   Updated: 2024/12/09 12:56:04 by tmurua           ###   ########.fr       */
+/*   Updated: 2024/12/10 21:16:11 by tmurua           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -360,7 +360,10 @@ int							handle_exit_command(char *input,
 								t_minishell *shell);
 int							handle_exit_with_arguments(char **args,
 								t_minishell *shell);
-int							handle_numeric_argument(char *arg);
+int							handle_numeric_argument(char *arg,
+								t_minishell *shell);
+char						*remove_surrounding_quotes(char *arg,
+								t_minishell *shell);
 int							is_numeric_argument(const char *arg);
 
 /* builtin_cd.c */
