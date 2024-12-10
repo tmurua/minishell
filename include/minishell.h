@@ -6,7 +6,7 @@
 /*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 09:08:10 by tmurua            #+#    #+#             */
-/*   Updated: 2024/12/10 21:21:11 by tmurua           ###   ########.fr       */
+/*   Updated: 2024/12/10 21:52:59 by tmurua           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -350,10 +350,16 @@ int							set_output_fd(t_files *outfile);
 void						print_builtin_error(char *command, char *message);
 int							too_many_arguments(char **args);
 
-/* builtin_pwd_env_echo.c */
+/* builtin_pwd_env.c */
 int							builtin_pwd(t_command *cmd);
 int							builtin_env(t_command *cmd, t_minishell *shell);
+
+/* builtin_pwd_env.c */
 int							builtin_echo(t_command *cmd);
+void						parse_echo_flags(char **args, int *i, int *newline);
+int							is_all_n_flag(char *arg);
+void						print_arguments(char **args, int i, int newline,
+								int output_fd);
 
 /* builtin_exit.c */
 int							handle_exit_command(char *input,
