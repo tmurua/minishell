@@ -6,7 +6,7 @@
 /*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 15:53:43 by tmurua            #+#    #+#             */
-/*   Updated: 2024/12/03 15:52:56 by tmurua           ###   ########.fr       */
+/*   Updated: 2024/12/10 23:03:50 by tmurua           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,11 +74,11 @@ void	print_builtin_error(char *command, char *message)
 	ft_putstr_fd("\n", STDERR_FILENO);
 }
 
-int	too_many_arguments(char **args)
+int	handle_exit_if_requested(char *input, t_minishell *shell)
 {
-	if (args[1] != NULL)
+	if (handle_exit_command(input, shell))
 	{
-		ft_putstr_fd("pwd: too many arguments\n", STDERR_FILENO);
+		free(input);
 		return (1);
 	}
 	return (0);

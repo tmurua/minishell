@@ -6,7 +6,7 @@
 /*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 09:08:10 by tmurua            #+#    #+#             */
-/*   Updated: 2024/12/10 21:52:59 by tmurua           ###   ########.fr       */
+/*   Updated: 2024/12/10 23:56:01 by tmurua           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -161,13 +161,25 @@ void						main_input_loop(int ac, char **av,
 void						handle_multiple_args(int ac, char **av,
 								t_minishell *shell);
 char						*read_user_input(void);
+int							handle_empty_input(char *input);
+void						process_valid_input(char *input,
+								t_minishell *shell);
 
-/* lexer.c */
+/* lexer_main.c */
 void						run_lexer(char *str, t_minishell *shell);
+void						initialize_lexer_and_tokens(char *str,
+								t_lexer *lexer, t_minishell *shell,
+								t_token **current_token);
 t_lexer						init_lexer(const char *arg);
-void						skip_whitespace(t_lexer *lexer);
-void						advance_lexer_char(t_lexer *lexer);
+int							process_lexer_tokens(t_lexer *lexer,
+								t_minishell *shell, t_token **current_token);
+int							handle_unclosed_quotes(t_lexer *lexer,
+								t_minishell *shell);
+
+/* lexer_token.c */
 t_token						*get_next_token(t_lexer *lexer, t_minishell *shell);
+t_token						*create_token(t_token_type type, char *value,
+								t_minishell *shell);
 
 /* lexer_assign_types.c */
 int							is_special_character(t_lexer *lexer);
@@ -192,11 +204,11 @@ int							advance_and_append(t_lexer *lexer, char **buffer,
 
 /* lexer_utils.c */
 int							count_tokens(t_token *tokens);
-t_token						*create_token(t_token_type type, char *value,
-								t_minishell *shell);
 void						token_to_list(t_token **tokens, t_token **current,
 								t_token *new);
 void						update_redirect_tokens(t_token *tokens);
+void						skip_whitespace(t_lexer *lexer);
+void						advance_lexer_char(t_lexer *lexer);
 
 /* variable_expansion.c */
 int							handle_variable_expansion(t_lexer *lexer,
@@ -348,11 +360,13 @@ int							is_builtin_command(const char *word);
 int							execute_builtin(t_command *cmd, t_minishell *shell);
 int							set_output_fd(t_files *outfile);
 void						print_builtin_error(char *command, char *message);
-int							too_many_arguments(char **args);
+int							handle_exit_if_requested(char *input,
+								t_minishell *shell);
 
 /* builtin_pwd_env.c */
 int							builtin_pwd(t_command *cmd);
 int							builtin_env(t_command *cmd, t_minishell *shell);
+int							too_many_arguments(char **args);
 
 /* builtin_pwd_env.c */
 int							builtin_echo(t_command *cmd);

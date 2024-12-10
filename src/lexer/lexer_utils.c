@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dlemaire <dlemaire@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/02 17:02:08 by tmurua            #+#    #+#             */
-/*   Updated: 2024/12/10 20:02:59 by dlemaire         ###   ########.fr       */
+/*   Updated: 2024/12/10 23:51:42 by tmurua           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,24 +27,6 @@ int	count_tokens(t_token *tokens)
 	return (count);
 }
 
-/* creates new token with specified type and value */
-t_token	*create_token(t_token_type type, char *value, t_minishell *shell)
-{
-	t_token	*token;
-
-	token = gc_calloc(&shell->gc_head, 1, sizeof(t_token));
-	if (!token)
-	{
-		perror("minishell: create_token");
-		gc_free_all(shell->gc_head);
-		exit(EXIT_FAILURE);
-	}
-	token->type = type;
-	token->value = value;
-	token->next = NULL;
-	return (token);
-}
-
 /*	adds a new token to the end of the tokens linked list */
 void	token_to_list(t_token **tokens, t_token **current, t_token *new)
 {
@@ -55,6 +37,7 @@ void	token_to_list(t_token **tokens, t_token **current, t_token *new)
 	*current = new;
 }
 
+/* mark next token as filename if the current token is redirect type */
 void	update_redirect_tokens(t_token *tokens)
 {
 	while (tokens)
@@ -74,4 +57,21 @@ void	update_redirect_tokens(t_token *tokens)
 		}
 		tokens = tokens->next;
 	}
+}
+
+/*	skip all leading whitespace characters in the input */
+void	skip_whitespace(t_lexer *lexer)
+{
+	while (lexer->current_char != '\0' && ft_iswhitespace(lexer->current_char))
+		advance_lexer_char(lexer);
+}
+
+/* moves lexer forward by one char, update current_char based on new position */
+void	advance_lexer_char(t_lexer *lexer)
+{
+	lexer->pos++;
+	if (lexer->pos < ft_strlen(lexer->str))
+		lexer->current_char = lexer->str[lexer->pos];
+	else
+		lexer->current_char = '\0';
 }
