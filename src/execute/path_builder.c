@@ -6,7 +6,7 @@
 /*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 00:37:05 by dlemaire          #+#    #+#             */
-/*   Updated: 2024/12/09 19:52:00 by tmurua           ###   ########.fr       */
+/*   Updated: 2024/12/10 19:38:19 by tmurua           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ char	**create_directories(t_minishell *shell)
 			if (!path_value)
 				return (NULL);
 			directories = gc_split(&shell->gc_head,
-					ft_strchr(shell->env[i], '/'), ':');
+					shell->env[i] + 5, ':');
 			if (!directories)
 			{
 				gc_free_all(shell->gc_head);
