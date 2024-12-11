@@ -6,7 +6,7 @@
 /*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/13 08:54:22 by tmurua            #+#    #+#             */
-/*   Updated: 2024/11/29 12:38:26 by tmurua           ###   ########.fr       */
+/*   Updated: 2024/12/11 19:24:09 by tmurua           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@ int	builtin_export(char **args, t_minishell *shell)
 	int	return_status;
 	int	result;
 
+	if (!args[1])
+		return (print_export_without_args(shell));
 	return_status = 0;
 	i = 1;
 	while (args[i])
@@ -73,6 +75,7 @@ int	set_env_variable(const char *name, const char *value, t_minishell *shell)
 	return (0);
 }
 
+/* create environment string in the format NAME=VALUE */
 char	*create_env_string(const char *name, const char *value,
 		t_minishell *shell)
 {
