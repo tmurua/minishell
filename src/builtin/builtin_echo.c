@@ -6,7 +6,7 @@
 /*   By: dlemaire <dlemaire@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/10 20:40:59 by tmurua            #+#    #+#             */
-/*   Updated: 2024/12/11 20:41:31 by dlemaire         ###   ########.fr       */
+/*   Updated: 2024/12/11 22:55:45 by dlemaire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,13 +18,17 @@ int	builtin_echo(t_command *cmd)
 {
 	int		i;
 	int		newline;
+	t_files	*output;
 	int		output_fd;
 
 	i = 1;
 	newline = 1;
 	parse_echo_flags(cmd->args, &i, &newline);
-	//output_fd = set_output_fd(cmd->outfile);
-	output_fd = (get_last_file(cmd->outfile))->fd;
+	output = get_last_file(cmd->outfile);
+	if (output)
+		output_fd = output->fd;
+	else
+		output_fd = STDOUT_FILENO;
 	print_arguments(cmd->args, i, newline, output_fd);
 	return (0);
 }

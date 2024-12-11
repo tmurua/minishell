@@ -6,7 +6,7 @@
 /*   By: dlemaire <dlemaire@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/31 13:33:08 by tmurua            #+#    #+#             */
-/*   Updated: 2024/12/11 20:52:42 by dlemaire         ###   ########.fr       */
+/*   Updated: 2024/12/11 21:50:24 by dlemaire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ int	builtin_pwd(t_command *cmd)
 	char	*current_working_directory;
 	char	path_buffer[PATH_MAX];
 	int		output_fd;
+	t_files	*output;
 
 	if (too_many_arguments(cmd->args))
 		return (1);
@@ -30,20 +31,29 @@ int	builtin_pwd(t_command *cmd)
 		return (1);
 	}
 	//output_fd = set_output_fd(cmd->outfile);
-	output_fd = (get_last_file(cmd->outfile))->fd;
+	output = get_last_file(cmd->outfile);
+	if (output)
+		output_fd = output->fd;
+	else
+		output_fd = STDOUT_FILENO;
 	ft_putendl_fd(current_working_directory, output_fd);
 	return (0);
 }
 
 int	builtin_env(t_command *cmd, t_minishell *shell)
 {
-	int	i;
-	int	output_fd;
+	int		i;
+	int		output_fd;
+	t_files	*output;
 
 	if (too_many_arguments(cmd->args))
 		return (1);
 	//output_fd = set_output_fd(cmd->outfile);
-	output_fd = (get_last_file(cmd->outfile))->fd;
+	output = get_last_file(cmd->outfile);
+	if (output)
+		output_fd = output->fd;
+	else
+		output_fd = STDOUT_FILENO;
 	i = 0;
 	while (shell->env[i] != NULL)
 	{

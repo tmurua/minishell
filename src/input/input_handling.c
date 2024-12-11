@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   input_handling.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
+/*   By: dlemaire <dlemaire@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 16:48:08 by tmurua            #+#    #+#             */
-/*   Updated: 2024/12/10 23:20:59 by tmurua           ###   ########.fr       */
+/*   Updated: 2024/12/11 22:49:25 by dlemaire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,7 @@ int	handle_empty_input(char *input)
 void	process_valid_input(char *input, t_minishell *shell)
 {
 	add_history(input);
+	heredoc_scan(input, shell);
 	run_lexer(input, shell);
 	if (shell->tokens == NULL)
 	{
