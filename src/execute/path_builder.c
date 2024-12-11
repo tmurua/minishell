@@ -6,15 +6,11 @@
 /*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 00:37:05 by dlemaire          #+#    #+#             */
-/*   Updated: 2024/12/10 20:08:25 by tmurua           ###   ########.fr       */
+/*   Updated: 2024/12/11 16:07:45 by tmurua           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
-
-char	**create_directories(t_minishell *shell);
-char	*find_executable_path(char *str, char **directories,
-			t_minishell *shell);
 
 /* build full executable path for a command by searching PATH directories */
 char	*build_command_path(char *str, t_minishell *shell)

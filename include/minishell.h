@@ -6,7 +6,7 @@
 /*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 09:08:10 by tmurua            #+#    #+#             */
-/*   Updated: 2024/12/10 23:56:01 by tmurua           ###   ########.fr       */
+/*   Updated: 2024/12/11 16:07:43 by tmurua           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -335,6 +335,9 @@ void						add_outfile_to_cmd(t_command *cmd, char *filename,
 
 /* path_builder.c */
 char						*build_command_path(char *str, t_minishell *shell);
+char						**create_directories(t_minishell *shell);
+char						*find_executable_path(char *str, char **directories,
+								t_minishell *shell);
 
 /* execute_external.c */
 void						execute_external(t_command *cmd, char **env,
