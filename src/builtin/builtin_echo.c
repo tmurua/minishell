@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_echo.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
+/*   By: dlemaire <dlemaire@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/10 20:40:59 by tmurua            #+#    #+#             */
-/*   Updated: 2024/12/10 21:49:37 by tmurua           ###   ########.fr       */
+/*   Updated: 2024/12/11 20:41:31 by dlemaire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,14 +16,15 @@
 	handle output redirection and print arguments accordingly */
 int	builtin_echo(t_command *cmd)
 {
-	int	i;
-	int	newline;
-	int	output_fd;
+	int		i;
+	int		newline;
+	int		output_fd;
 
 	i = 1;
 	newline = 1;
 	parse_echo_flags(cmd->args, &i, &newline);
-	output_fd = set_output_fd(cmd->outfile);
+	//output_fd = set_output_fd(cmd->outfile);
+	output_fd = (get_last_file(cmd->outfile))->fd;
 	print_arguments(cmd->args, i, newline, output_fd);
 	return (0);
 }

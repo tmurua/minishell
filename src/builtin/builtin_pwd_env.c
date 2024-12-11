@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_pwd_env.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
+/*   By: dlemaire <dlemaire@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/31 13:33:08 by tmurua            #+#    #+#             */
-/*   Updated: 2024/12/11 19:23:22 by tmurua           ###   ########.fr       */
+/*   Updated: 2024/12/11 20:52:42 by dlemaire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,8 @@ int	builtin_pwd(t_command *cmd)
 		perror("minishell: pwd");
 		return (1);
 	}
-	output_fd = set_output_fd(cmd->outfile);
+	//output_fd = set_output_fd(cmd->outfile);
+	output_fd = (get_last_file(cmd->outfile))->fd;
 	ft_putendl_fd(current_working_directory, output_fd);
 	return (0);
 }
@@ -41,7 +42,8 @@ int	builtin_env(t_command *cmd, t_minishell *shell)
 
 	if (too_many_arguments(cmd->args))
 		return (1);
-	output_fd = set_output_fd(cmd->outfile);
+	//output_fd = set_output_fd(cmd->outfile);
+	output_fd = (get_last_file(cmd->outfile))->fd;
 	i = 0;
 	while (shell->env[i] != NULL)
 	{

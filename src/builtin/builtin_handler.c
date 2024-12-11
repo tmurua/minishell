@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_handler.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
+/*   By: dlemaire <dlemaire@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 15:53:43 by tmurua            #+#    #+#             */
-/*   Updated: 2024/12/10 23:03:50 by tmurua           ###   ########.fr       */
+/*   Updated: 2024/12/11 20:58:21 by dlemaire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,13 +56,13 @@ int	execute_builtin(t_command *cmd, t_minishell *shell)
 	return (status);
 }
 
-int	set_output_fd(t_files *outfile)
-{
-	if (!outfile)
-		return (STDOUT_FILENO);
-	else
-		return (outfile->fd);
-}
+// int	set_output_fd(t_files *outfile)
+// {
+// 	if (!outfile)
+// 		return (STDOUT_FILENO);
+// 	else
+// 		return (outfile->fd);
+// }
 
 /* print error messages for built-in commands */
 void	print_builtin_error(char *command, char *message)

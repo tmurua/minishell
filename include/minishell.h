@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
+/*   By: dlemaire <dlemaire@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 09:08:10 by tmurua            #+#    #+#             */
-/*   Updated: 2024/12/11 19:30:50 by tmurua           ###   ########.fr       */
+/*   Updated: 2024/12/11 20:58:17 by dlemaire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -361,7 +361,7 @@ void						setup_redirections(t_files *infile,
 /* builtin_handler.c */
 int							is_builtin_command(const char *word);
 int							execute_builtin(t_command *cmd, t_minishell *shell);
-int							set_output_fd(t_files *outfile);
+//int							set_output_fd(t_files *outfile);
 void						print_builtin_error(char *command, char *message);
 int							handle_exit_if_requested(char *input,
 								t_minishell *shell);
