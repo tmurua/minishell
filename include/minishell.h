@@ -6,7 +6,7 @@
 /*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 09:08:10 by tmurua            #+#    #+#             */
-/*   Updated: 2024/12/10 23:56:01 by tmurua           ###   ########.fr       */
+/*   Updated: 2024/12/11 19:24:06 by tmurua           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -374,6 +374,7 @@ void						parse_echo_flags(char **args, int *i, int *newline);
 int							is_all_n_flag(char *arg);
 void						print_arguments(char **args, int i, int newline,
 								int output_fd);
+int							print_export_without_args(t_minishell *shell);
 
 /* builtin_exit.c */
 int							handle_exit_command(char *input,
