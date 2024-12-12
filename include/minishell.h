@@ -6,7 +6,7 @@
 /*   By: dlemaire <dlemaire@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 09:08:10 by tmurua            #+#    #+#             */
-/*   Updated: 2024/12/11 20:58:17 by dlemaire         ###   ########.fr       */
+/*   Updated: 2024/12/12 23:46:46 by dlemaire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -164,6 +164,14 @@ char						*read_user_input(void);
 int							handle_empty_input(char *input);
 void						process_valid_input(char *input,
 								t_minishell *shell);
+int							handle_syntax_error(char *input);
+
+/* syntax_scanner.c */
+int							handle_syntax_error(char *input);
+int							validate_heredoc_delimiter(char *str);
+int							check_missing_left(const char *str);
+int							check_missing_right(const char *str);
+int							check_missing_middle(const char *str);
 
 /* lexer_main.c */
 void						run_lexer(char *str, t_minishell *shell);

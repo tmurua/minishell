@@ -11,6 +11,7 @@ SRC		= \
 	./src/environment/environment_utils.c \
 	./src/environment/variable_expansion.c \
 	./src/input/input_handling.c \
+	./src/input/syntax_scanner.c \
 	./src/lexer/lexer_main.c \
 	./src/lexer/lexer_token.c \
 	./src/lexer/lexer_assign_types.c \
