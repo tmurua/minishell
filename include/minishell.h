@@ -75,7 +75,11 @@ typedef struct s_minishell
 	t_command				*cmd;
 	t_list					*heredocs;
 	int						sigint_heredocs;
+	int						cmd_in_execution;
 }							t_minishell;
+
+/* global variable to handle signals */
+extern t_minishell		*g_shell;
 
 /* enumerate all possible token types in minishell */
 typedef enum e_token_type

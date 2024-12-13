@@ -20,11 +20,13 @@ int	main(int ac, char *av[], char *envp[])
 	shell.heredocs = NULL;
 	shell.env = duplicate_env(envp, &shell);
 	shell.last_exit_status = 0;
+	shell.cmd_in_execution = 0;
 	if (!shell.env)
 	{
 		perror("minishell: duplicate_env");
 		return (1);
 	}
+	g_shell = &shell;
 	setup_prompt_signals(&shell);
 	main_input_loop(ac, av, &shell);
 	gc_free_all(shell.gc_head);
