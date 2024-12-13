@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dlemaire <dlemaire@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 09:08:10 by tmurua            #+#    #+#             */
-/*   Updated: 2024/12/12 23:46:46 by dlemaire         ###   ########.fr       */
+/*   Updated: 2024/12/13 03:49:32 by tmurua           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ typedef struct s_minishell
 }							t_minishell;
 
 /* global variable to handle signals */
-extern t_minishell		*g_shell;
+extern t_minishell			*g_shell;
 
 /* enumerate all possible token types in minishell */
 typedef enum e_token_type
@@ -373,7 +373,7 @@ void						setup_redirections(t_files *infile,
 /* builtin_handler.c */
 int							is_builtin_command(const char *word);
 int							execute_builtin(t_command *cmd, t_minishell *shell);
-//int							set_output_fd(t_files *outfile);
+// int							set_output_fd(t_files *outfile);
 void						print_builtin_error(char *command, char *message);
 int							handle_exit_if_requested(char *input,
 								t_minishell *shell);

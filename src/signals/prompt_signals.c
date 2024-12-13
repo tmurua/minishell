@@ -3,14 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   prompt_signals.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dlemaire <dlemaire@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 19:47:34 by tmurua            #+#    #+#             */
-/*   Updated: 2024/12/06 17:31:05 by dlemaire         ###   ########.fr       */
+/*   Updated: 2024/12/13 13:44:12 by tmurua           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
+
+void	setup_sigpipe_handler(t_minishell *shell);
 
 /* global variable to handle signals */
 t_minishell	*g_shell;
@@ -21,6 +23,7 @@ void	setup_prompt_signals(t_minishell *shell)
 {
 	setup_sigint_handler(shell);
 	setup_sigquit_handler(shell);
+	setup_sigpipe_handler(shell);
 }
 
 /*	setup SIGINT (Ctrl+C) signal handler for the prompt
@@ -77,6 +80,21 @@ void	setup_sigquit_handler(t_minishell *shell)
 	sa.sa_flags = SA_RESTART;
 	sigemptyset(&sa.sa_mask);
 	if (sigaction(SIGQUIT, &sa, NULL) == -1)
+	{
+		perror("minishell: sigaction");
+		gc_free_all(shell->gc_head);
+		exit(EXIT_FAILURE);
+	}
+}
+
+void	setup_sigpipe_handler(t_minishell *shell)
+{
+	struct sigaction	sa;
+
+	sa.sa_handler = SIG_IGN; // Ignore SIGPIPE
+	sa.sa_flags = SA_RESTART;
+	sigemptyset(&sa.sa_mask);
+	if (sigaction(SIGPIPE, &sa, NULL) == -1)
 	{
 		perror("minishell: sigaction");
 		gc_free_all(shell->gc_head);
