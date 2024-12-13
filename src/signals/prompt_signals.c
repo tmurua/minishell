@@ -12,6 +12,9 @@
 
 #include "../../include/minishell.h"
 
+/* global variable to handle signals */
+t_minishell	*g_shell;
+
 /*	sets up signal handlers for the shell prompt.
 	handles SIGINT (Ctrl+C) and ignores SIGQUIT (Ctrl+\). */
 void	setup_prompt_signals(t_minishell *shell)
@@ -45,7 +48,19 @@ void	setup_sigint_handler(t_minishell *shell)
 void	handle_sigint_at_prompt(int sig)
 {
 	(void)sig;
-	write(STDOUT_FILENO, "\n", 1);
+	if (g_shell && g_shell->cmd_in_execution == 0)
+	{
+		write(STDOUT_FILENO, "\n", 1);
+		rl_replace_line("", 0);
+		rl_on_new_line();
+		rl_redisplay();
+	}
+	else if (g_shell && g_shell->cmd_in_execution == 1)
+	{
+		write(STDOUT_FILENO, "\n", 1);
+		rl_redisplay();
+		g_shell->cmd_in_execution = 0;
+	}
 }
 
 /*	setup SIGQUIT (Ctrl+\) signal handler to ignore it at the prompt

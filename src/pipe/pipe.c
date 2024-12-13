@@ -27,12 +27,14 @@ int	init_pipe(t_ast_node *node, t_minishell *shell)
 		perror("pipe");
 		return (-1);
 	}
+	shell->cmd_in_execution = 1;
 	pids[0] = fork_left_child(fds, node->left, shell);
 	pids[1] = fork_right_child(fds, node->right, shell);
 	close(fds[READ_END]);
 	close(fds[WRITE_END]);
 	waitpid(pids[0], &status, 0);
 	waitpid(pids[1], &status, 0);
+	shell->cmd_in_execution = 0;
 	return (0);
 }
 
