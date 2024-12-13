@@ -6,7 +6,7 @@
 /*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 19:47:34 by tmurua            #+#    #+#             */
-/*   Updated: 2024/12/13 13:44:12 by tmurua           ###   ########.fr       */
+/*   Updated: 2024/12/13 17:13:34 by tmurua           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,7 @@ void	setup_sigpipe_handler(t_minishell *shell)
 {
 	struct sigaction	sa;
 
-	sa.sa_handler = SIG_IGN; // Ignore SIGPIPE
+	sa.sa_handler = SIG_IGN;
 	sa.sa_flags = SA_RESTART;
 	sigemptyset(&sa.sa_mask);
 	if (sigaction(SIGPIPE, &sa, NULL) == -1)
