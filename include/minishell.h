@@ -6,7 +6,7 @@
 /*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 09:08:10 by tmurua            #+#    #+#             */
-/*   Updated: 2024/12/13 13:59:19 by tmurua           ###   ########.fr       */
+/*   Updated: 2024/12/13 16:43:58 by tmurua           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -176,6 +176,13 @@ int							validate_heredoc_delimiter(char *str);
 int							check_missing_left(const char *str);
 int							check_missing_right(const char *str);
 int							check_missing_middle(const char *str);
+
+/* syntax_scanner_utils.c */
+char						*skip_whitespace_input(char *str);
+const char					*skip_operator_right(const char *str,
+								const char **last_valid, int *offset);
+const char					*handle_pipe_middle(const char *str);
+const char					*handle_and_middle(const char *str);
 
 /* lexer_main.c */
 void						run_lexer(char *str, t_minishell *shell);
