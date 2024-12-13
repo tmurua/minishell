@@ -31,6 +31,8 @@ SRC		= \
 	./src/builtin/builtin_pwd_env.c \
 	./src/builtin/builtin_echo.c \
 	./src/builtin/builtin_exit.c \
+	./src/builtin/builtin_exit_parse_args.c \
+	./src/builtin/builtin_exit_utils.c \
 	./src/builtin/builtin_cd.c \
 	./src/builtin/builtin_export.c \
 	./src/builtin/builtin_unset.c \

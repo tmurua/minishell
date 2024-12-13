@@ -6,7 +6,7 @@
 /*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 09:08:10 by tmurua            #+#    #+#             */
-/*   Updated: 2024/12/13 16:43:58 by tmurua           ###   ########.fr       */
+/*   Updated: 2024/12/13 21:32:22 by tmurua           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -409,6 +409,22 @@ int							handle_numeric_argument(char *arg,
 char						*remove_surrounding_quotes(char *arg,
 								t_minishell *shell);
 int							is_numeric_argument(const char *arg);
+
+/* buitin_exit_parse_args.c */
+char						**parse_arguments(t_list **gc_head,
+								const char *input);
+char						*prepare_input(t_list **gc_head, const char *input);
+void						add_arg_to_list(t_list **gc_head,
+								t_list **args_list, char *arg);
+char						**list_to_array(t_list **gc_head,
+								t_list *args_list);
+
+/* builtin_exit_utils.c */
+void						skip_spaces(const char **str);
+char						*read_quoted_arg(t_list **gc_head, const char **str,
+								char quote);
+char						*read_unquoted_arg(t_list **gc_head,
+								const char **str);
 
 /* builtin_cd.c */
 int							builtin_cd(char **args, t_minishell *shell);
