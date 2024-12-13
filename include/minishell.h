@@ -6,7 +6,7 @@
 /*   By: dlemaire <dlemaire@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 09:08:10 by tmurua            #+#    #+#             */
-/*   Updated: 2024/12/12 23:46:46 by dlemaire         ###   ########.fr       */
+/*   Updated: 2024/12/13 01:57:04 by dlemaire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -164,10 +164,10 @@ char						*read_user_input(void);
 int							handle_empty_input(char *input);
 void						process_valid_input(char *input,
 								t_minishell *shell);
-int							handle_syntax_error(char *input);
 
 /* syntax_scanner.c */
-int							handle_syntax_error(char *input);
+int							handle_syntax_error(char *input,
+								t_minishell *shell);
 int							validate_heredoc_delimiter(char *str);
 int							check_missing_left(const char *str);
 int							check_missing_right(const char *str);
@@ -214,7 +214,8 @@ int							advance_and_append(t_lexer *lexer, char **buffer,
 int							count_tokens(t_token *tokens);
 void						token_to_list(t_token **tokens, t_token **current,
 								t_token *new);
-void						update_redirect_tokens(t_token *tokens);
+void						update_redirect_tokens(t_token *tokens,
+								t_minishell *shell);
 void						skip_whitespace(t_lexer *lexer);
 void						advance_lexer_char(t_lexer *lexer);
 

@@ -6,18 +6,19 @@
 /*   By: dlemaire <dlemaire@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/12 00:54:03 by dlemaire          #+#    #+#             */
-/*   Updated: 2024/12/12 23:49:07 by dlemaire         ###   ########.fr       */
+/*   Updated: 2024/12/13 01:59:48 by dlemaire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-int	handle_syntax_error(char *input)
+int	handle_syntax_error(char *input, t_minishell *shell)
 {
 	if (!validate_heredoc_delimiter(input) || !check_missing_left(input)
 		|| !check_missing_right(input) || !check_missing_middle(input))
 	{
 		ft_putstr_fd("minishell: syntax error near unexpected token\n", 2);
+		shell->last_exit_status = 2;
 		add_history(input);
 		free(input);
 		return (1);
@@ -40,7 +41,8 @@ int	validate_heredoc_delimiter(char *str)
 				|| ft_strncmp(str + 2, "&", 1) == 0
 				|| ft_strncmp(str + 2, "#", 1) == 0
 				|| ft_strncmp(str + 2, "-", 1) == 0
-				|| ft_strncmp(str + 2, "|", 1) == 0)
+				|| ft_strncmp(str + 2, "|", 1) == 0
+				|| ft_strncmp(str + 2, "", 1) == 0)
 				return (0);
 		}
 		str++;

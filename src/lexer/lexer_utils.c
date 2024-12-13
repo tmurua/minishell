@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
+/*   By: dlemaire <dlemaire@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/02 17:02:08 by tmurua            #+#    #+#             */
-/*   Updated: 2024/12/10 23:51:42 by tmurua           ###   ########.fr       */
+/*   Updated: 2024/12/13 01:56:41 by dlemaire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ void	token_to_list(t_token **tokens, t_token **current, t_token *new)
 }
 
 /* mark next token as filename if the current token is redirect type */
-void	update_redirect_tokens(t_token *tokens)
+void	update_redirect_tokens(t_token *tokens, t_minishell *shell)
 {
 	while (tokens)
 	{
@@ -52,8 +52,11 @@ void	update_redirect_tokens(t_token *tokens)
 			if (tokens->next)
 				tokens->next->type = TOKEN_HEREDOC_DELIMITER;
 			else
+			{
 				ft_putstr_fd("minishell: syntax error near unexpected token\n",
 					2);
+				shell->last_exit_status = 2;
+			}
 		}
 		tokens = tokens->next;
 	}

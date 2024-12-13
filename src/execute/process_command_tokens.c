@@ -6,7 +6,7 @@
 /*   By: dlemaire <dlemaire@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 20:34:26 by tmurua            #+#    #+#             */
-/*   Updated: 2024/12/10 19:59:20 by dlemaire         ###   ########.fr       */
+/*   Updated: 2024/12/13 01:49:05 by dlemaire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,7 @@ t_token	*process_redirect_in(t_command *cmd, t_token *token, t_minishell *shell)
 	else
 	{
 		ft_putstr_fd("minishell: syntax error near unexpected token\n", 2);
+		shell->last_exit_status = 2;
 		return (token->next);
 	}
 }
@@ -82,6 +83,7 @@ t_token	*process_redirect_out(t_command *cmd, t_token *token,
 	else
 	{
 		ft_putstr_fd("minishell: syntax error near unexpected token\n", 2);
+		shell->last_exit_status = 2;
 		return (token->next);
 	}
 }
@@ -98,6 +100,7 @@ t_token	*process_redirect_append(t_command *cmd, t_token *token,
 	else
 	{
 		ft_putstr_fd("minishell: syntax error near unexpected token\n", 2);
+		shell->last_exit_status = 2;
 		return (token->next);
 	}
 }

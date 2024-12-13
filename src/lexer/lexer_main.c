@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer_main.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
+/*   By: dlemaire <dlemaire@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 17:35:59 by dlemaire          #+#    #+#             */
-/*   Updated: 2024/12/10 23:54:06 by tmurua           ###   ########.fr       */
+/*   Updated: 2024/12/13 01:55:47 by dlemaire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	run_lexer(char *str, t_minishell *shell)
 		return ;
 	if (handle_unclosed_quotes(&lexer, shell))
 		return ;
-	update_redirect_tokens(shell->tokens);
+	update_redirect_tokens(shell->tokens, shell);
 }
 
 /* init lexer and set shell tokens and current token pointers */
