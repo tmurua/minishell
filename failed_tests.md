@@ -1,20 +1,4 @@
 ———————————— builtins
-Test  13: ❌ echo "> >> < * ? [ ] | ; [ ] || && ( ) & # $  <<"
-mini output = ()
-bash output = (> >> < bash_outfiles bash.supp bonus bonus_bonus builtins extras local.supp loop.out manual_tests mini_outfiles os_specific outfiles pipes README.md redirects syntax tester test_files wildcards ? [ ] | ; [ ] || && ( ) & # $ <<)
-mini exit code = 2
-bash exit code = 0
-mini error = ( syntax error near unexpected token)
-bash error = ()
-
-Test  14: ❌ echo '> >> < * ? [ ] | ; [ ] || && ( ) & # $  <<'
-mini output = ()
-bash output = (> >> < bash_outfiles bash.supp bonus bonus_bonus builtins extras local.supp loop.out manual_tests mini_outfiles os_specific outfiles pipes README.md redirects syntax tester test_files wildcards ? [ ] | ; [ ] || && ( ) & # $ <<)
-mini exit code = 2
-bash exit code = 0
-mini error = ( syntax error near unexpected token)
-bash error = ()
-
 Test  17: ❌ echo "$"
 mini output = ()
 bash output = ($)
