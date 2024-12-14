@@ -6,7 +6,7 @@
 /*   By: dlemaire <dlemaire@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2024/12/14 03:05:18 by dlemaire         ###   ########.fr       */
+/*   Updated: 2024/12/14 03:08:38 by dlemaire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,9 +60,8 @@ char	*skip_whitespace_input(char *str)
 	return (str);
 }
 
-int	validate_delimiter_left(const char *str)
 /* check if first non-whitespace char indicates a missing token on left */
-int	check_missing_left(const char *str)
+int	validate_delimiter_left(const char *str)
 {
 	str = skip_whitespace_input((char *)str);
 	if (*str == '\0')
