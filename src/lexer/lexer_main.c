@@ -6,7 +6,7 @@
 /*   By: dlemaire <dlemaire@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 17:35:59 by dlemaire          #+#    #+#             */
-/*   Updated: 2024/12/13 23:49:42 by dlemaire         ###   ########.fr       */
+/*   Updated: 2024/12/14 03:22:45 by dlemaire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,6 +95,7 @@ int	handle_unclosed_quotes(t_lexer *lexer, t_minishell *shell)
 	{
 		ft_putstr_fd("minishell: unexpected EOF while looking for matching `",
 			2);
+		shell->last_exit_status = 2;
 		if (lexer->state == SINGLE_QUOTE_STATE)
 			ft_putstr_fd("'", 2);
 		else
