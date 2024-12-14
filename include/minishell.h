@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dlemaire <dlemaire@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 09:08:10 by tmurua            #+#    #+#             */
-/*   Updated: 2024/12/14 03:11:41 by dlemaire         ###   ########.fr       */
+/*   Updated: 2024/12/14 19:08:48 by tmurua           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -171,29 +171,48 @@ int							handle_empty_input(char *input);
 void						process_valid_input(char *input,
 								t_minishell *shell);
 
-/* syntax_scanner.c */
+/* syntax_validation.c */
 int							handle_syntax_error(char *input,
 								t_minishell *shell);
 int							validate_heredoc_delimiter(char *str);
 int							validate_delimiter_left(const char *str);
 int							validate_delimiter_right(const char *str);
 int							validate_delimiter_middle(const char *str);
-int							validate_balanced_parenthesis(const char *str);
-int							validate_opening_parenthesis(const char *str);
-int							validate_no_empty_parenthesis(const char *str);
-int							validate_closing_parenthesis(const char *str);
 
-/* syntax_scanner_utils.c */
+/* syntax_validation_utils.c */
 char						*skip_whitespace_input(char *str);
 const char					*skip_operator_right(const char *str,
 								const char **last_valid, int *offset);
 const char					*handle_pipe_middle(const char *str);
 const char					*handle_and_middle(const char *str);
+int							check_heredoc_char(char **str);
+
+/* delimiter_utils.c */
+int							check_left_char(const char *str);
+int							check_right_end(const char *last_valid, int offset);
+const char					*process_delimiter_char(const char *str,
+								int *in_quotes, char *quote_char);
+const char					*process_opening_char(const char *str,
+								int *in_quotes, char *quote_char,
+								char *prev_char);
+
+/* quotes_handler.c */
+int							handle_quotes(char *str, int *in_quotes,
+								char *quote_char);
+int							valid_open_prevchar(char prev_char);
+int							check_closing(const char **str);
+int							check_empty_parenthesis(const char **str);
+
+/* parenthesis_validation.c */
+int							validate_balanced_parenthesis(const char *str);
+int							validate_opening_parenthesis(const char *str);
+int							validate_closing_parenthesis(const char *str);
+int							validate_no_empty_parenthesis(const char *str);
 
 /* lexer_main.c */
 void						run_lexer(char *str, t_minishell *shell);
 void						initialize_lexer_and_tokens(char *str,
-								t_lexer *lexer,	t_minishell *shell);
+								t_lexer *lexer, t_minishell *shell);
 t_lexer						init_lexer(const char *arg);
 int							process_lexer_tokens(t_lexer *lexer,
 								t_minishell *shell);
