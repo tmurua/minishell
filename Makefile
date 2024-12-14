@@ -12,6 +12,7 @@ SRC		= \
 	./src/environment/variable_expansion.c \
 	./src/input/input_handling.c \
 	./src/input/syntax_scanner.c \
+	./src/input/syntax_scanner_utils.c \
 	./src/lexer/lexer_main.c \
 	./src/lexer/lexer_token.c \
 	./src/lexer/lexer_assign_types.c \
@@ -30,6 +31,8 @@ SRC		= \
 	./src/builtin/builtin_pwd_env.c \
 	./src/builtin/builtin_echo.c \
 	./src/builtin/builtin_exit.c \
+	./src/builtin/builtin_exit_parse_args.c \
+	./src/builtin/builtin_exit_utils.c \
 	./src/builtin/builtin_cd.c \
 	./src/builtin/builtin_export.c \
 	./src/builtin/builtin_unset.c \

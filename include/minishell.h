@@ -6,7 +6,7 @@
 /*   By: dlemaire <dlemaire@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 09:08:10 by tmurua            #+#    #+#             */
-/*   Updated: 2024/12/14 02:05:49 by dlemaire         ###   ########.fr       */
+/*   Updated: 2024/12/14 02:59:50 by dlemaire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ typedef struct s_minishell
 }							t_minishell;
 
 /* global variable to handle signals */
-extern t_minishell		*g_shell;
+extern t_minishell			*g_shell;
 
 /* enumerate all possible token types in minishell */
 typedef enum e_token_type
@@ -182,6 +182,13 @@ int							validate_balanced_parenthesis(const char *str);
 int							validate_opening_parenthesis(const char *str);
 int							validate_no_empty_parenthesis(const char *str);
 int							validate_closing_parenthesis(const char *str);
+
+/* syntax_scanner_utils.c */
+char						*skip_whitespace_input(char *str);
+const char					*skip_operator_right(const char *str,
+								const char **last_valid, int *offset);
+const char					*handle_pipe_middle(const char *str);
+const char					*handle_and_middle(const char *str);
 
 /* lexer_main.c */
 void						run_lexer(char *str, t_minishell *shell);
@@ -379,7 +386,7 @@ void						setup_redirections(t_files *infile,
 /* builtin_handler.c */
 int							is_builtin_command(const char *word);
 int							execute_builtin(t_command *cmd, t_minishell *shell);
-//int							set_output_fd(t_files *outfile);
+// int							set_output_fd(t_files *outfile);
 void						print_builtin_error(char *command, char *message);
 int							handle_exit_if_requested(char *input,
 								t_minishell *shell);
@@ -407,6 +414,22 @@ int							handle_numeric_argument(char *arg,
 char						*remove_surrounding_quotes(char *arg,
 								t_minishell *shell);
 int							is_numeric_argument(const char *arg);
+
+/* buitin_exit_parse_args.c */
+char						**parse_arguments(t_list **gc_head,
+								const char *input);
+char						*prepare_input(t_list **gc_head, const char *input);
+void						add_arg_to_list(t_list **gc_head,
+								t_list **args_list, char *arg);
+char						**list_to_array(t_list **gc_head,
+								t_list *args_list);
+
+/* builtin_exit_utils.c */
+void						skip_spaces(const char **str);
+char						*read_quoted_arg(t_list **gc_head, const char **str,
+								char quote);
+char						*read_unquoted_arg(t_list **gc_head,
+								const char **str);
 
 /* builtin_cd.c */
 int							builtin_cd(char **args, t_minishell *shell);

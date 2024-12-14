@@ -6,7 +6,7 @@
 /*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/13 08:54:22 by tmurua            #+#    #+#             */
-/*   Updated: 2024/12/11 19:24:09 by tmurua           ###   ########.fr       */
+/*   Updated: 2024/12/13 20:50:51 by tmurua           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,42 +16,43 @@
 int	builtin_export(char **args, t_minishell *shell)
 {
 	int	i;
-	int	return_status;
+	int	error_found;
+	int	success_found;
 	int	result;
 
 	if (!args[1])
 		return (print_export_without_args(shell));
-	return_status = 0;
+	error_found = 0;
+	success_found = 0;
 	i = 1;
 	while (args[i])
 	{
 		result = process_export_argument(args[i], shell);
-		if (result != 0)
-			return_status = result;
+		if (result == 0)
+			success_found = 1;
+		else
+			error_found = 1;
 		i++;
 	}
-	return (return_status);
+	if (!success_found && error_found)
+		print_builtin_error("export", "invalid argument");
+	return (error_found);
 }
 
 /*	process a single export argument;
-	split arg into name and value, validate name, set environment variable */
+	split arg into name and value, validate name, set environment variable.
+	return 0 on success, 1 on error */
 int	process_export_argument(const char *arg, t_minishell *shell)
 {
 	char	*value;
 
 	value = ft_strchr(arg, '=');
 	if (!value)
-	{
-		print_builtin_error("export", "invalid argument");
 		return (1);
-	}
 	*value = '\0';
 	value++;
 	if (!is_valid_env_name(arg))
-	{
-		print_builtin_error("export", "invalid variable name");
 		return (1);
-	}
 	return (set_env_variable(arg, value, shell));
 }
 
