@@ -6,7 +6,7 @@
 /*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/31 13:33:08 by tmurua            #+#    #+#             */
-/*   Updated: 2024/12/15 00:31:14 by tmurua           ###   ########.fr       */
+/*   Updated: 2024/12/15 00:36:22 by tmurua           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,6 @@ int	builtin_pwd(t_command *cmd)
 	int		output_fd;
 	t_files	*output;
 
-	// if (too_many_arguments(cmd->args))
-	// 	return (1);
 	current_working_directory = getcwd(path_buffer, PATH_MAX);
 	if (current_working_directory == NULL)
 	{

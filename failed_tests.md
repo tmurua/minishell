@@ -7,14 +7,6 @@ Test  19: ❌ echo $
 mini output = ()
 bash output = ($)
 
-Test  23: ❌ pwd oi
-mini output = ()
-bash output = (/home/tmurua/Desktop/minishell/minishell_tester)
-mini exit code = 1
-bash exit code = 0
-mini error = ( too many arguments)
-bash error = ()
-
 Test  24: ❌ export hello
 mini exit code = 1
 bash exit code = 0
