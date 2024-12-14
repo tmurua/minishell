@@ -5,10 +5,11 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: dlemaire <dlemaire@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/12/12 00:54:03 by dlemaire          #+#    #+#             */
-/*   Updated: 2024/12/14 02:59:02 by dlemaire         ###   ########.fr       */
+/*   Created: Invalid date        by                   #+#    #+#             */
+/*   Updated: 2024/12/14 03:05:18 by dlemaire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 
 #include "../../include/minishell.h"
 
@@ -52,7 +53,16 @@ int	validate_heredoc_delimiter(char *str)
 }
 
 /* check if first non-whitespace char indicates a missing token on left */
+char	*skip_whitespace_input(char *str)
+{
+	while (*str && ft_iswhitespace(*str))
+		str++;
+	return (str);
+}
+
 int	validate_delimiter_left(const char *str)
+/* check if first non-whitespace char indicates a missing token on left */
+int	check_missing_left(const char *str)
 {
 	str = skip_whitespace_input((char *)str);
 	if (*str == '\0')
