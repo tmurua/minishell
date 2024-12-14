@@ -6,7 +6,7 @@
 /*   By: dlemaire <dlemaire@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2024/12/14 03:08:38 by dlemaire         ###   ########.fr       */
+/*   Updated: 2024/12/14 03:11:37 by dlemaire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,14 +50,6 @@ int	validate_heredoc_delimiter(char *str)
 		str++;
 	}
 	return (1);
-}
-
-/* check if first non-whitespace char indicates a missing token on left */
-char	*skip_whitespace_input(char *str)
-{
-	while (*str && ft_iswhitespace(*str))
-		str++;
-	return (str);
 }
 
 /* check if first non-whitespace char indicates a missing token on left */
