@@ -6,11 +6,11 @@
 /*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 16:09:18 by tmurua            #+#    #+#             */
-/*   Updated: 2024/12/10 21:14:22 by tmurua           ###   ########.fr       */
+/*   Updated: 2024/12/13 21:28:34 by tmurua           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "../../include/minishell.h"
 
 /* main function to handle exit command */
 int	handle_exit_command(char *input, t_minishell *shell)
@@ -20,7 +20,7 @@ int	handle_exit_command(char *input, t_minishell *shell)
 
 	if (ft_strncmp(input, "exit", 4) != 0)
 		return (0);
-	args = gc_split(&shell->gc_head, input, ' ');
+	args = parse_arguments(&shell->gc_head, input);
 	if (!args)
 		return (0);
 	printf("exit\n");
@@ -54,12 +54,21 @@ int	handle_exit_with_arguments(char **args, t_minishell *shell)
 int	handle_numeric_argument(char *arg, t_minishell *shell)
 {
 	char	*cleaned_arg;
+	char	*trimmed_arg;
 
 	cleaned_arg = remove_surrounding_quotes(arg, shell);
 	if (!cleaned_arg)
 		return (2);
-	if (is_numeric_argument(cleaned_arg))
-		return (ft_atoi(cleaned_arg) % 256);
+	trimmed_arg = gc_strtrim(&shell->gc_head, cleaned_arg, " \t\n\v\f\r");
+	if (!trimmed_arg)
+	{
+		ft_putstr_fd("minishell: exit: ", 2);
+		ft_putstr_fd(arg, 2);
+		ft_putstr_fd(": numeric argument required\n", 2);
+		return (2);
+	}
+	if (is_numeric_argument(trimmed_arg))
+		return (ft_atoi(trimmed_arg) % 256);
 	else
 	{
 		ft_putstr_fd("minishell: exit: ", 2);
@@ -80,8 +89,8 @@ char	*remove_surrounding_quotes(char *arg, t_minishell *shell)
 	if (len > 1)
 	{
 		first_char = arg[0];
-		if ((first_char == '\'' || first_char == '\"')
-			&& arg[len - 1] == first_char)
+		if ((first_char == '\'' || first_char == '\"') && arg[len
+				- 1] == first_char)
 			return (gc_substr(&shell->gc_head, arg, 1, len - 2));
 	}
 	return (gc_strdup(&shell->gc_head, arg));
