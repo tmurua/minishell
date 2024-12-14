@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   syntax_scanner_utils.c                             :+:      :+:    :+:   */
+/*   syntax_validation_utils.c                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/13 16:09:33 by tmurua            #+#    #+#             */
-/*   Updated: 2024/12/13 16:41:43 by tmurua           ###   ########.fr       */
+/*   Updated: 2024/12/14 19:07:50 by tmurua           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,4 +72,15 @@ const char	*handle_and_middle(const char *str)
 	else
 		str++;
 	return (str);
+}
+
+int	check_heredoc_char(char **str)
+{
+	*str += 2;
+	*str = skip_whitespace_input(*str);
+	if (!**str || (**str == '<' || **str == '>' || **str == '(' || **str == ')'
+			|| **str == '&' || **str == '#' || **str == '-' || **str == '|'
+			|| **str == '\0'))
+		return (0);
+	return (1);
 }

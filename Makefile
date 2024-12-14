@@ -11,8 +11,11 @@ SRC		= \
 	./src/environment/environment_utils.c \
 	./src/environment/variable_expansion.c \
 	./src/input/input_handling.c \
-	./src/input/syntax_scanner.c \
-	./src/input/syntax_scanner_utils.c \
+	./src/input/syntax_validation.c \
+	./src/input/syntax_validation_utils.c \
+	./src/input/delimiter_utils.c \
+	./src/input/quotes_handler.c \
+	./src/input/parenthesis_validation.c \
 	./src/lexer/lexer_main.c \
 	./src/lexer/lexer_token.c \
 	./src/lexer/lexer_assign_types.c \

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   syntax_scanner.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dlemaire <dlemaire@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2024/12/14 18:49:17 by dlemaire         ###   ########.fr       */
+/*   Updated: 2024/12/14 19:13:21 by tmurua           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -225,3 +225,4 @@ int	validate_no_empty_parenthesis(const char *str)
 	}
 	return (1);
 }
+
