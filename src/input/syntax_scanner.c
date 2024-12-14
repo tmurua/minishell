@@ -6,7 +6,7 @@
 /*   By: dlemaire <dlemaire@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2024/12/14 03:11:37 by dlemaire         ###   ########.fr       */
+/*   Updated: 2024/12/14 18:49:17 by dlemaire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,40 +117,54 @@ int	validate_delimiter_middle(const char *str)
 int	validate_balanced_parenthesis(const char *str)
 {
 	int	counter;
+	int	in_single_quote;
+	int	in_double_quote;
 
 	counter = 0;
+	in_single_quote = 0;
+	in_double_quote = 0;
 	while (*str)
 	{
-		if (*str == '(')
+		if (*str == '\'' && !in_double_quote)
+			in_single_quote = !in_single_quote;
+		else if (*str == '\"' && !in_single_quote)
+			in_double_quote = !in_double_quote;
+		else if (*str == '(' && !in_single_quote && !in_double_quote)
 			counter++;
-		else if (*str == ')')
+		else if (*str == ')' && !in_single_quote && !in_double_quote)
 			counter--;
 		str++;
 	}
-	if (counter == 0)
-		return (1);
-	else
-		return (0);
+	return (counter == 0);
 }
 
 int	validate_opening_parenthesis(const char *str)
 {
 	char	prev_char;
 	int		i;
+	int		in_single_quote;
+	int		in_double_quote;
 
+	in_single_quote = 0;
+	in_double_quote = 0;
 	prev_char = '\0';
 	i = 0;
 	while (str[i])
 	{
-		while (ft_iswhitespace(str[i]))
+		while (str[i] && ft_iswhitespace(str[i]))
 			i++;
-		if (str[i] == '(')
+		if (str[i] == '\'' && !in_double_quote)
+			in_single_quote = !in_single_quote;
+		else if (str[i] == '\"' && !in_single_quote)
+			in_double_quote = !in_double_quote;
+		else if (str[i] == '(' && !in_single_quote && !in_double_quote)
 		{
 			if (prev_char != '\0' && prev_char != '|' && prev_char != '&'
-				&& prev_char != '(')
+				&& prev_char != '(' && !ft_iswhitespace(prev_char))
 				return (0);
 		}
-		prev_char = str[i];
+		if (!in_single_quote && !in_double_quote)
+			prev_char = str[i];
 		i++;
 	}
 	return (1);
@@ -159,23 +173,29 @@ int	validate_opening_parenthesis(const char *str)
 int	validate_closing_parenthesis(const char *str)
 {
 	int		i;
+	int		in_single_quote;
+	int		in_double_quote;
 
 	i = 0;
+	in_single_quote = 0;
+	in_double_quote = 0;
 	while (str[i])
 	{
-		while (ft_iswhitespace(str[i]))
-			i++;
-		if (str[i] == ')')
+		if (str[i] == '\'' && !in_double_quote)
+			in_single_quote = !in_single_quote;
+		else if (str[i] == '\"' && !in_single_quote)
+			in_double_quote = !in_double_quote;
+		else if (str[i] == ')' && !in_single_quote && !in_double_quote)
 		{
 			i++;
-			while (ft_iswhitespace(str[i]))
+			while (str[i] && ft_iswhitespace(str[i]))
 				i++;
 			if (str[i] != '\0' && str[i] != '|' && str[i] != '&'
 				&& str[i] != ')')
 				return (0);
+			continue;
 		}
-		else
-			i++;
+		i++;
 	}
 	return (1);
 }
