@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
+/*   By: dlemaire <dlemaire@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 17:10:48 by dlemaire          #+#    #+#             */
-/*   Updated: 2024/12/09 10:14:23 by tmurua           ###   ########.fr       */
+/*   Updated: 2024/12/13 04:20:13 by dlemaire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,8 @@ t_ast_node	*parse_expression(t_minishell *shell, int precedence_threshold)
 	int			precedence_lvl;
 	int			delimiter;
 
-	left = parse_command(shell);
+	//left = parse_command(shell);
+	left = parse_condition(shell);
 	if (!left)
 		return (NULL);
 	while (shell->tokens && is_statement_delimiter(shell->tokens->type)
@@ -54,6 +55,29 @@ t_ast_node	*parse_expression(t_minishell *shell, int precedence_threshold)
 	return (left);
 }
 
+t_ast_node	*parse_condition(t_minishell *shell)  // BONUS
+{
+	t_ast_node	*node;
+
+	if (is_statement_delimiter(shell->tokens->type)
+		|| shell->tokens->type == TOKEN_CL_PARENTHESIS)  // BONUS
+		perror(shell->tokens->value);
+	if (shell->tokens->type == TOKEN_OP_PARENTHESIS)  // BONUS
+	{
+		shell->tokens = shell->tokens->next;
+		if (!shell->tokens)
+			return (NULL);
+		node = parse_expression(shell, 0);
+		if (shell->tokens && shell->tokens->type == TOKEN_CL_PARENTHESIS)
+			shell->tokens = shell->tokens->next;
+		else
+			return (NULL);
+	}
+	else
+		node = parse_command(shell);
+	return (node);
+}
+
 t_ast_node	*parse_command(t_minishell *shell)
 {
 	t_ast_node	*node;
@@ -61,7 +85,9 @@ t_ast_node	*parse_command(t_minishell *shell)
 
 	shell->sigint_heredocs = 0;
 	node = create_ast_node(NODE_COMMAND, NULL, NULL, shell);
-	while (shell->tokens && !is_statement_delimiter(shell->tokens->type))
+	while (shell->tokens && !is_statement_delimiter(shell->tokens->type)
+		&& shell->tokens->type != TOKEN_OP_PARENTHESIS
+		&& shell->tokens->type != TOKEN_CL_PARENTHESIS)
 	{
 		if (shell->tokens->type == TOKEN_HEREDOC && !shell->sigint_heredocs)
 			init_heredoc(shell, shell->tokens);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execute_external.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
+/*   By: dlemaire <dlemaire@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/06 08:57:29 by tmurua            #+#    #+#             */
-/*   Updated: 2024/11/29 14:36:51 by tmurua           ###   ########.fr       */
+/*   Updated: 2024/12/13 04:32:58 by dlemaire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,15 @@
 
 /*	check if cmd path exists, handle errors if not or exec cmd by forking a
 	child process */
-void	execute_external(t_command *cmd, char **env, t_minishell *shell)
+int	execute_external(t_command *cmd, char **env, t_minishell *shell)
 {
 	if (!cmd->path)
 	{
 		handle_command_not_found(cmd->cmd_name, shell);
-		return ;
+		return (1);
 	}
 	fork_and_execute(cmd, env, shell);
+	return (0);
 }
 
 /* print an error message and set last exit status to 127 */

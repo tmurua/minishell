@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer_assign_types.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
+/*   By: dlemaire <dlemaire@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/11 18:06:47 by tmurua            #+#    #+#             */
-/*   Updated: 2024/12/10 23:46:56 by tmurua           ###   ########.fr       */
+/*   Updated: 2024/12/13 05:13:09 by dlemaire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ int	is_special_character(t_lexer *lexer)
 
 	c = lexer->current_char;
 	next_c = lexer->str[lexer->pos + 1];
-	if (c == '|' || c == '<' || c == '>' || c == '&' || c == '!')
+	if (c == '|' || c == '<' || c == '>' || c == '&' || c == '!' || c == '(')
 		return (1);
 	if ((c == '&' && next_c == '&') || (c == '|' && next_c == '|') || (c == '<'
 			&& next_c == '<') || (c == '>' && next_c == '>'))
@@ -39,7 +39,8 @@ t_token_type	handle_special_char_token(t_lexer *lexer, char **value,
 	if (!*value)
 		return (TOKEN_INVALID);
 	type = get_special_character_token_type(*value);
-	if (type == TOKEN_PIPE || type == TOKEN_AND || type == TOKEN_OR)
+	if (type == TOKEN_PIPE || type == TOKEN_AND || type == TOKEN_OR
+		|| type == TOKEN_OP_PARENTHESIS)
 		lexer->command_expected = 1;
 	else
 		lexer->command_expected = 0;
@@ -87,6 +88,10 @@ t_token_type	get_special_character_token_type(char *value)
 		return (TOKEN_HEREDOC);
 	else if (ft_strncmp(value, ">>", 3) == 0)
 		return (TOKEN_REDIRECT_APPEND);
+	else if (ft_strncmp(value, "(", 2) == 0)
+		return (TOKEN_OP_PARENTHESIS);
+	else if (ft_strncmp(value, ")", 2) == 0)
+		return (TOKEN_CL_PARENTHESIS);
 	else
 		return (TOKEN_INVALID);
 }

@@ -6,7 +6,7 @@
 /*   By: dlemaire <dlemaire@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/02 17:02:08 by tmurua            #+#    #+#             */
-/*   Updated: 2024/12/13 01:56:41 by dlemaire         ###   ########.fr       */
+/*   Updated: 2024/12/13 06:58:36 by dlemaire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,13 +28,19 @@ int	count_tokens(t_token *tokens)
 }
 
 /*	adds a new token to the end of the tokens linked list */
-void	token_to_list(t_token **tokens, t_token **current, t_token *new)
+void	token_to_list(t_token **tokens, t_token *new)
 {
+	t_token	*tmp;
+
 	if (!*tokens)
 		*tokens = new;
 	else
-		(*current)->next = new;
-	*current = new;
+	{
+		tmp = *tokens;
+		while (tmp->next)
+			tmp = tmp->next;
+		tmp->next = new;
+	}
 }
 
 /* mark next token as filename if the current token is redirect type */

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   interpreter.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
+/*   By: dlemaire <dlemaire@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/02 16:26:15 by dlemaire          #+#    #+#             */
-/*   Updated: 2024/12/03 15:52:37 by tmurua           ###   ########.fr       */
+/*   Updated: 2024/12/13 04:56:34 by dlemaire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,9 +51,9 @@ int	execute_command_node(t_ast_node *node, t_minishell *shell)
 
 	init_command(&cmd, node->tokens, shell);
 	if (node->tokens && node->tokens->type == TOKEN_EXTERN_CMD)
-		execute_external(&cmd, shell->env, shell);
+		return (execute_external(&cmd, shell->env, shell));
 	else if (node->tokens && node->tokens->type == TOKEN_BUILTIN_CMD)
-		execute_builtin(&cmd, shell);
+		return (execute_builtin(&cmd, shell));
 	return (0);
 }
 
@@ -64,10 +64,8 @@ int	execute_logical_operator_node(t_ast_node *node, t_minishell *shell)
 	int	left_result;
 
 	left_result = evaluate_and_execute(node->left, shell);
-	if ((node->type == NODE_AND && left_result == 0) || (node->type == NODE_OR
-			&& left_result != 0))
-	{
+	if ((node->type == NODE_AND && shell->last_exit_status == 0) || (node->type == NODE_OR
+			&& shell->last_exit_status != 0))
 		evaluate_and_execute(node->right, shell);
-	}
 	return (left_result);
 }

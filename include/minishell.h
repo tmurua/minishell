@@ -6,7 +6,7 @@
 /*   By: dlemaire <dlemaire@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 09:08:10 by tmurua            #+#    #+#             */
-/*   Updated: 2024/12/13 01:57:04 by dlemaire         ###   ########.fr       */
+/*   Updated: 2024/12/14 02:05:49 by dlemaire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,6 +98,8 @@ typedef enum e_token_type
 	TOKEN_FILENAME,
 	TOKEN_AND,
 	TOKEN_OR,
+	TOKEN_OP_PARENTHESIS,
+	TOKEN_CL_PARENTHESIS
 }							t_token_type;
 
 typedef enum e_node_type
@@ -173,18 +175,21 @@ void						process_valid_input(char *input,
 int							handle_syntax_error(char *input,
 								t_minishell *shell);
 int							validate_heredoc_delimiter(char *str);
-int							check_missing_left(const char *str);
-int							check_missing_right(const char *str);
-int							check_missing_middle(const char *str);
+int							validate_delimiter_left(const char *str);
+int							validate_delimiter_right(const char *str);
+int							validate_delimiter_middle(const char *str);
+int							validate_balanced_parenthesis(const char *str);
+int							validate_opening_parenthesis(const char *str);
+int							validate_no_empty_parenthesis(const char *str);
+int							validate_closing_parenthesis(const char *str);
 
 /* lexer_main.c */
 void						run_lexer(char *str, t_minishell *shell);
 void						initialize_lexer_and_tokens(char *str,
-								t_lexer *lexer, t_minishell *shell,
-								t_token **current_token);
+								t_lexer *lexer,	t_minishell *shell);
 t_lexer						init_lexer(const char *arg);
 int							process_lexer_tokens(t_lexer *lexer,
-								t_minishell *shell, t_token **current_token);
+								t_minishell *shell);
 int							handle_unclosed_quotes(t_lexer *lexer,
 								t_minishell *shell);
 
@@ -216,8 +221,7 @@ int							advance_and_append(t_lexer *lexer, char **buffer,
 
 /* lexer_utils.c */
 int							count_tokens(t_token *tokens);
-void						token_to_list(t_token **tokens, t_token **current,
-								t_token *new);
+void						token_to_list(t_token **tokens, t_token *new);
 void						update_redirect_tokens(t_token *tokens,
 								t_minishell *shell);
 void						skip_whitespace(t_lexer *lexer);
@@ -237,6 +241,7 @@ int							append_to_buffer(char **buffer, const char *str,
 /* parser.c */
 t_ast_node					*parse_expression(t_minishell *shell,
 								int precedence_threshold);
+t_ast_node					*parse_condition(t_minishell *shell);
 t_ast_node					*parse_command(t_minishell *shell);
 t_ast_node					*create_ast_node(t_node_type type, t_ast_node *left,
 								t_ast_node *right, t_minishell *shell);
@@ -353,7 +358,7 @@ char						*find_executable_path(char *str, char **directories,
 								t_minishell *shell);
 
 /* execute_external.c */
-void						execute_external(t_command *cmd, char **env,
+int							execute_external(t_command *cmd, char **env,
 								t_minishell *shell);
 void						handle_command_not_found(const char *cmd_name,
 								t_minishell *shell);
