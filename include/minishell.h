@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dlemaire <dlemaire@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 09:08:10 by tmurua            #+#    #+#             */
-/*   Updated: 2024/12/15 18:40:27 by dlemaire         ###   ########.fr       */
+/*   Updated: 2024/12/15 19:07:11 by tmurua           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -450,6 +450,10 @@ char						*read_quoted_arg(t_list **gc_head, const char **str,
 								char quote);
 char						*read_unquoted_arg(t_list **gc_head,
 								const char **str);
+char						*read_initial_unquoted_part(t_list **gc_head,
+								const char **str);
+char						*append_quoted_part(t_list **gc_head,
+								const char **str, char *arg);
 
 /* builtin_cd.c */
 int							builtin_cd(char **args, t_minishell *shell);
