@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_handler.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
+/*   By: dlemaire <dlemaire@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 15:53:43 by tmurua            #+#    #+#             */
-/*   Updated: 2024/12/15 22:11:31 by tmurua           ###   ########.fr       */
+/*   Updated: 2024/12/15 22:44:58 by dlemaire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ int	execute_builtin(t_command *cmd, t_minishell *shell)
 
 int	execute_builtin_echo(t_command *cmd)
 {
-	if (cmd->infile && cmd->redirect_error_flag == 1)
+	if ((cmd->infile || cmd->outfile) && cmd->redirect_error_flag == 1)
 		return (1);
 	return (builtin_echo(cmd));
 }

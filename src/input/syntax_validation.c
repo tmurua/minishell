@@ -6,7 +6,7 @@
 /*   By: dlemaire <dlemaire@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/11 16:29:20 by dlemaire          #+#    #+#             */
-/*   Updated: 2024/12/15 17:57:51 by dlemaire         ###   ########.fr       */
+/*   Updated: 2024/12/15 22:43:02 by dlemaire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,28 +72,53 @@ int	validate_delimiter_left(const char *str)
 	return (1);
 }
 
-int	validate_delimiter_right(const char *str)
-{
-	const char	*last_valid = NULL;
-	int			offset;
-	int			in_quotes;
-	char		quote_char;
+int validate_delimiter_right(const char *str) {
+    const char *last_valid = NULL;
 
-	offset = 1;
-	in_quotes = 0;
-	quote_char = '\0';
-	while (*str)
-	{
-		str = skip_whitespace_input((char *)str);
-		if (handle_quotes((char *)str, &in_quotes, &quote_char))
-			str++;
-		else if (in_quotes)
-			str++;
-		else
-			str = skip_operator_right(str, &last_valid, &offset);
-	}
-	return (check_right_end(last_valid, offset));
+    while (*str) {
+        str = skip_whitespace_input((char *)str); // Skip leading whitespaces
+
+        if (*str == '|' || (*str == '&' && *(str + 1) == '&')) {
+            last_valid = str; // Track the position of the last delimiter
+            if (*str == '|')
+                str++;
+            else
+                str += 2;
+        } else {
+            str++;
+        }
+    }
+
+    if (last_valid) {
+        str = skip_whitespace_input((char *)(last_valid + 1)); // Skip whitespaces after last delimiter
+        if (*str == '\0') // No valid input after the last delimiter
+            return 0;
+    }
+    return 1;
 }
+
+// int	validate_delimiter_right(const char *str)
+// {
+// 	const char	*last_valid = NULL;
+// 	int			offset;
+// 	int			in_quotes;
+// 	char		quote_char;
+
+// 	offset = 1;
+// 	in_quotes = 0;
+// 	quote_char = '\0';
+// 	while (*str)
+// 	{
+// 		str = skip_whitespace_input((char *)str);
+// 		if (handle_quotes((char *)str, &in_quotes, &quote_char))
+// 			str++;
+// 		else if (in_quotes)
+// 			str++;
+// 		else
+// 			str = skip_operator_right(str, &last_valid, &offset);
+// 	}
+// 	return (check_right_end(last_valid, offset));
+// }
 
 int	validate_delimiter_middle(const char *str)
 {

@@ -6,7 +6,7 @@
 /*   By: dlemaire <dlemaire@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 20:42:48 by tmurua            #+#    #+#             */
-/*   Updated: 2024/12/15 21:25:08 by dlemaire         ###   ########.fr       */
+/*   Updated: 2024/12/15 22:44:04 by dlemaire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,7 @@ void	add_outfile_to_cmd(t_command *cmd, char *filename, t_minishell *shell,
 	{
 		perror(filename);
 		shell->last_exit_status = 1;
+		cmd->redirect_error_flag = 1;
 		new_outfile->fd = open("/dev/null", O_WRONLY);
 	}
 	append_file_node(&cmd->outfile, new_outfile);
