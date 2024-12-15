@@ -20,7 +20,8 @@ int	init_pipe(t_ast_node *node, t_minishell *shell)
 {
 	int		fds[2];
 	pid_t	pids[2];
-	int		status;
+	int		status_left;
+	int		status_right;
 
 	if (pipe(fds) == -1)
 	{
@@ -32,8 +33,14 @@ int	init_pipe(t_ast_node *node, t_minishell *shell)
 	pids[1] = fork_right_child(fds, node->right, shell);
 	close(fds[READ_END]);
 	close(fds[WRITE_END]);
-	waitpid(pids[0], &status, 0);
-	waitpid(pids[1], &status, 0);
+	if (waitpid(pids[0], &status_left, 0) == -1)
+		perror("waitpid");
+	if (waitpid(pids[1], &status_right, 0) == -1)
+		perror("waitpid");
+	if (WIFEXITED(status_right))
+		shell->last_exit_status = WEXITSTATUS(status_right);
+	else if (WIFSIGNALED(status_right))
+		shell->last_exit_status = 128 + WTERMSIG(status_right);
 	shell->cmd_in_execution = 0;
 	return (0);
 }
@@ -62,7 +69,7 @@ pid_t	fork_left_child(int fds[], t_ast_node *node, t_minishell *shell)
 		close(fds[WRITE_END]);
 		read_tree(node, shell);
 		gc_free_all(shell->gc_head);
-		exit(EXIT_SUCCESS);
+		exit(shell->last_exit_status);
 	}
 	return (pid);
 }
@@ -92,7 +99,7 @@ pid_t	fork_right_child(int fds[], t_ast_node *node, t_minishell *shell)
 		close(fds[READ_END]);
 		read_tree(node, shell);
 		gc_free_all(shell->gc_head);
-		exit(EXIT_SUCCESS);
+		exit(shell->last_exit_status);
 	}
 	return (pid);
 }
