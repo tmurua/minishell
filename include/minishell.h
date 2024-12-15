@@ -6,7 +6,7 @@
 /*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 09:08:10 by tmurua            #+#    #+#             */
-/*   Updated: 2024/12/15 21:54:53 by tmurua           ###   ########.fr       */
+/*   Updated: 2024/12/15 22:12:50 by tmurua           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -410,6 +410,7 @@ void						setup_redirections(t_files *infile,
 /* builtin_handler.c */
 int							is_builtin_command(const char *word);
 int							execute_builtin(t_command *cmd, t_minishell *shell);
+int							execute_builtin_echo(t_command *cmd);
 // int							set_output_fd(t_files *outfile);
 void						print_builtin_error(char *command, char *message);
 int							handle_exit_if_requested(char *input,

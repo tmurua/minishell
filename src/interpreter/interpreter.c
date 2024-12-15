@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   interpreter.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dlemaire <dlemaire@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/02 16:26:15 by dlemaire          #+#    #+#             */
-/*   Updated: 2024/12/15 18:40:16 by dlemaire         ###   ########.fr       */
+/*   Updated: 2024/12/15 22:04:57 by tmurua           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ void	execute_command_node(t_ast_node *node, t_minishell *shell)
 void	execute_logical_operator_node(t_ast_node *node, t_minishell *shell)
 {
 	evaluate_and_execute(node->left, shell);
-	if ((node->type == NODE_AND && shell->last_exit_status == 0) || (node->type == NODE_OR
-			&& shell->last_exit_status != 0))
+	if ((node->type == NODE_AND && shell->last_exit_status == 0)
+		|| (node->type == NODE_OR && shell->last_exit_status != 0))
 		evaluate_and_execute(node->right, shell);
 }

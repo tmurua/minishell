@@ -6,7 +6,7 @@
 /*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/15 21:51:08 by tmurua            #+#    #+#             */
-/*   Updated: 2024/12/15 21:52:29 by tmurua           ###   ########.fr       */
+/*   Updated: 2024/12/15 22:04:23 by tmurua           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,6 @@ int	handle_dollar_sign(t_lexer *lexer, char **buffer, t_minishell *shell)
 		next_char = lexer->str[lexer->pos + 1];
 	else
 		next_char = '\0';
-
 	if (next_char == '?' || ft_isalnum(next_char) || next_char == '_')
 	{
 		if (!handle_variable_expansion(lexer, buffer, shell))

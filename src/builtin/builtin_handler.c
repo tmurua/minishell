@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_handler.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dlemaire <dlemaire@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 15:53:43 by tmurua            #+#    #+#             */
-/*   Updated: 2024/12/15 21:25:38 by dlemaire         ###   ########.fr       */
+/*   Updated: 2024/12/15 22:11:31 by tmurua           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,16 +49,18 @@ int	execute_builtin(t_command *cmd, t_minishell *shell)
 	else if (ft_strncmp(cmd->args[0], "unset", 6) == 0)
 		status = builtin_unset(cmd->args, shell);
 	else if (ft_strncmp(cmd->args[0], "echo", 5) == 0)
-	{
-		if (cmd->infile && cmd->redirect_error_flag == 1)
-			status = 1;
-		else
-			status = builtin_echo(cmd);
-	}
+		status = execute_builtin_echo(cmd);
 	else
 		return (-100);
 	shell->last_exit_status = status;
 	return (status);
+}
+
+int	execute_builtin_echo(t_command *cmd)
+{
+	if (cmd->infile && cmd->redirect_error_flag == 1)
+		return (1);
+	return (builtin_echo(cmd));
 }
 
 // int	set_output_fd(t_files *outfile)
