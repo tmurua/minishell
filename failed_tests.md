@@ -31,12 +31,6 @@ bash error = ( not a valid identifier)
 mini error = ( invalid argument)
 bash error = ( not a valid identifier)
 
-Test  40: ❌ cd $PWD hi
-mini exit code = 0
-bash exit code = 1
-mini error = ()
-bash error = ( too many arguments)
-
 Test  46: ❌ exit +"100"
 mini exit code = 1
 bash exit code = 100
@@ -120,13 +114,6 @@ mini exit code = 0
 bash exit code = 1
 mini error = ( Permission denied Permission denied)
 bash error = ( Permission denied)
-
-Test  98: ❌ echo hi >./test_files/invalid_permission >./outfiles/outfile01 | echo bye
-Only in ./mini_outfiles: outfile01
-mini outfiles:
-hi
-bash outfiles:
-cat: './bash_outfiles/*': No such file or directory
 
 Test  99: ❌ echo hi | echo bye >./test_files/invalid_permission
 mini exit code = 0
@@ -301,13 +288,6 @@ mini exit code = 0
 bash exit code = 1
 mini error = ( Permission denied No such file or directory)
 bash error = ( Permission denied)
-
-Test 127: ❌ echo hi >>./test_files/invalid_permission >./outfiles/outfile01 | echo bye
-Only in ./mini_outfiles: outfile01
-mini outfiles:
-hi
-bash outfiles:
-cat: './bash_outfiles/*': No such file or directory
 
 Test 128: ❌ echo hi | echo bye >>./test_files/invalid_permission
 mini exit code = 0
