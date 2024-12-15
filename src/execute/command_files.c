@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   command_files.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
+/*   By: dlemaire <dlemaire@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 20:42:48 by tmurua            #+#    #+#             */
-/*   Updated: 2024/12/15 03:19:24 by tmurua           ###   ########.fr       */
+/*   Updated: 2024/12/15 17:50:43 by dlemaire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ void	add_infile_to_cmd(t_command *cmd, char *filename, t_minishell *shell)
 	{
 		perror(filename);
 		shell->last_exit_status = 1;
-		// new_infile->fd = open("/dev/null", O_RDONLY);
+		new_infile->fd = open("/dev/null", O_RDONLY);
 	}
 	append_file_node(&cmd->infile, new_infile);
 }
@@ -75,7 +75,7 @@ void	add_outfile_to_cmd(t_command *cmd, char *filename, t_minishell *shell,
 	{
 		perror(filename);
 		shell->last_exit_status = 1;
-		// new_outfile->fd = open("/dev/null", O_WRONLY);
+		new_outfile->fd = open("/dev/null", O_WRONLY);
 	}
 	append_file_node(&cmd->outfile, new_outfile);
 }
