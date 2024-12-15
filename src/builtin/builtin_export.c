@@ -6,36 +6,33 @@
 /*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/13 08:54:22 by tmurua            #+#    #+#             */
-/*   Updated: 2024/12/13 20:50:51 by tmurua           ###   ########.fr       */
+/*   Updated: 2024/12/15 19:24:50 by tmurua           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
+
+int		is_valid_identifier(const char *arg);
+int		print_export_error(const char *arg);
 
 /* handle the export built-in command */
 int	builtin_export(char **args, t_minishell *shell)
 {
 	int	i;
 	int	error_found;
-	int	success_found;
 	int	result;
 
 	if (!args[1])
 		return (print_export_without_args(shell));
 	error_found = 0;
-	success_found = 0;
 	i = 1;
 	while (args[i])
 	{
 		result = process_export_argument(args[i], shell);
-		if (result == 0)
-			success_found = 1;
-		else
+		if (result != 0)
 			error_found = 1;
 		i++;
 	}
-	if (!success_found && error_found)
-		print_builtin_error("export", "invalid argument");
 	return (error_found);
 }
 
@@ -45,15 +42,43 @@ int	builtin_export(char **args, t_minishell *shell)
 int	process_export_argument(const char *arg, t_minishell *shell)
 {
 	char	*value;
+	char	*name;
 
 	value = ft_strchr(arg, '=');
 	if (!value)
-		return (1);
+	{
+		if (!is_valid_identifier(arg))
+			return (print_export_error(arg));
+		return (0);
+	}
 	*value = '\0';
 	value++;
-	if (!is_valid_env_name(arg))
-		return (1);
-	return (set_env_variable(arg, value, shell));
+	name = (char *)arg;
+	if (!is_valid_identifier(name))
+		return (print_export_error(arg));
+	return (set_env_variable(name, value, shell));
+}
+
+int	is_valid_identifier(const char *arg)
+{
+	if (!ft_isalpha(*arg) && *arg != '_')
+		return (0);
+	arg++;
+	while (*arg)
+	{
+		if (!ft_isalnum(*arg) && *arg != '_')
+			return (0);
+		arg++;
+	}
+	return (1);
+}
+
+int	print_export_error(const char *arg)
+{
+	ft_putstr_fd("minishell: export: `", 2);
+	ft_putstr_fd((char *)arg, 2);
+	ft_putstr_fd("': not a valid identifier\n", 2);
+	return (1);
 }
 
 /* set an environment variable */

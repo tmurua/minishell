@@ -7,42 +7,6 @@ Test  19: ❌ echo $
 mini output = ()
 bash output = ($)
 
-Test  24: ❌ export hello
-mini exit code = 1
-bash exit code = 0
-mini error = ( invalid argument)
-bash error = ()
-mini error = ( invalid argument)
-bash error = ( not a valid identifier)
-
-Test  27: ❌ export HELLO=123 A
-mini exit code = 1
-bash exit code = 0
-
-Test  29: ❌ export hello world
-mini exit code = 1
-bash exit code = 0
-mini error = ( invalid argument)
-bash error = ()
-mini error = ( invalid argument)
-bash error = ( not a valid identifier)
-mini error = ( invalid argument)
-bash error = ( not a valid identifier)
-mini error = ( invalid argument)
-bash error = ( not a valid identifier)
-
-Test  46: ❌ exit +"100"
-mini exit code = 1
-bash exit code = 100
-mini error = ( too many arguments)
-bash error = ()
-
-Test  49: ❌ exit -"100"
-mini exit code = 1
-bash exit code = 156
-mini error = ( too many arguments)
-bash error = ()
-
 ———————————— pipes
 Test  55: ❌ cat minishell.h | grep ");"$
 mini exit code = 2
