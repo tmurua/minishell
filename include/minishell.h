@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dlemaire <dlemaire@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 09:08:10 by tmurua            #+#    #+#             */
-/*   Updated: 2024/12/15 21:24:47 by dlemaire         ###   ########.fr       */
+/*   Updated: 2024/12/15 21:54:53 by tmurua           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -243,6 +243,10 @@ int							handle_single_quote_state(t_lexer *lexer,
 								char **buffer, t_minishell *shell);
 int							handle_double_quote_state(t_lexer *lexer,
 								char **buffer, t_minishell *shell);
+
+/* lexer_state_utils.c */
+int							handle_dollar_sign(t_lexer *lexer, char **buffer,
+								t_minishell *shell);
 int							advance_and_append(t_lexer *lexer, char **buffer,
 								t_minishell *shell);
 

@@ -20,6 +20,7 @@ SRC		= \
 	./src/lexer/lexer_token.c \
 	./src/lexer/lexer_assign_types.c \
 	./src/lexer/lexer_state_handler.c \
+	./src/lexer/lexer_state_utils.c \
 	./src/lexer/lexer_utils.c \
 	./src/parser/parser.c \
 	./src/parser/parser_utils.c \
