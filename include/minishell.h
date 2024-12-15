@@ -6,7 +6,7 @@
 /*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 09:08:10 by tmurua            #+#    #+#             */
-/*   Updated: 2024/12/14 19:08:48 by tmurua           ###   ########.fr       */
+/*   Updated: 2024/12/15 00:50:31 by tmurua           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -414,6 +414,7 @@ int							handle_exit_if_requested(char *input,
 int							builtin_pwd(t_command *cmd);
 int							builtin_env(t_command *cmd, t_minishell *shell);
 int							too_many_arguments(char **args);
+int							cd_too_many_arguments(char **args);
 
 /* builtin_pwd_env.c */
 int							builtin_echo(t_command *cmd);

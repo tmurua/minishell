@@ -6,7 +6,7 @@
 /*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/31 13:33:08 by tmurua            #+#    #+#             */
-/*   Updated: 2024/12/15 00:36:22 by tmurua           ###   ########.fr       */
+/*   Updated: 2024/12/15 00:56:48 by tmurua           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,8 +63,22 @@ int	too_many_arguments(char **args)
 {
 	if (args[1] != NULL)
 	{
-		ft_putstr_fd("pwd: too many arguments\n", STDERR_FILENO);
+		ft_putstr_fd("env: too many arguments\n", STDERR_FILENO);
 		return (1);
+	}
+	return (0);
+}
+
+int	cd_too_many_arguments(char **args)
+{
+	if (args[1])
+	{
+		if (args[2] != NULL)
+		{
+			ft_putstr_fd("cd: too many arguments\n", STDERR_FILENO);
+			return (1);
+		}
+		return (0);
 	}
 	return (0);
 }

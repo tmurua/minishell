@@ -6,7 +6,7 @@
 /*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 11:52:29 by tmurua            #+#    #+#             */
-/*   Updated: 2024/11/29 12:38:12 by tmurua           ###   ########.fr       */
+/*   Updated: 2024/12/15 00:51:04 by tmurua           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,8 @@ int	builtin_cd(char **args, t_minishell *shell)
 	char	*oldpwd;
 	char	*path;
 
+	if (cd_too_many_arguments(args))
+		return (1);
 	status = get_current_directory(cwd);
 	if (status != 0)
 		return (1);
