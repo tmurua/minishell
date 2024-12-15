@@ -6,7 +6,7 @@
 /*   By: dlemaire <dlemaire@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 15:53:43 by tmurua            #+#    #+#             */
-/*   Updated: 2024/12/11 20:58:21 by dlemaire         ###   ########.fr       */
+/*   Updated: 2024/12/15 18:32:12 by dlemaire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ int	execute_builtin(t_command *cmd, t_minishell *shell)
 	else if (ft_strncmp(cmd->args[0], "echo", 5) == 0)
 		status = builtin_echo(cmd);
 	else
-		return (-1);
+		return (-100);
 	shell->last_exit_status = status;
 	return (status);
 }

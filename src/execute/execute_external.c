@@ -6,7 +6,7 @@
 /*   By: dlemaire <dlemaire@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/06 08:57:29 by tmurua            #+#    #+#             */
-/*   Updated: 2024/12/13 04:32:58 by dlemaire         ###   ########.fr       */
+/*   Updated: 2024/12/15 18:35:59 by dlemaire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,15 +14,14 @@
 
 /*	check if cmd path exists, handle errors if not or exec cmd by forking a
 	child process */
-int	execute_external(t_command *cmd, char **env, t_minishell *shell)
+void	execute_external(t_command *cmd, char **env, t_minishell *shell)
 {
 	if (!cmd->path)
 	{
 		handle_command_not_found(cmd->cmd_name, shell);
-		return (1);
+		return ;
 	}
 	fork_and_execute(cmd, env, shell);
-	return (0);
 }
 
 /* print an error message and set last exit status to 127 */

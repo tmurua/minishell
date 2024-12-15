@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
+/*   By: dlemaire <dlemaire@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 09:08:10 by tmurua            #+#    #+#             */
-/*   Updated: 2024/12/15 00:50:31 by tmurua           ###   ########.fr       */
+/*   Updated: 2024/12/15 18:40:27 by dlemaire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -322,11 +322,11 @@ void						add_list_to_outer_list(t_list **head,
 
 /* interpreter.c */
 void						read_tree(t_ast_node *root, t_minishell *shell);
-int							evaluate_and_execute(t_ast_node *node,
+void						evaluate_and_execute(t_ast_node *node,
 								t_minishell *shell);
-int							execute_command_node(t_ast_node *node,
+void						execute_command_node(t_ast_node *node,
 								t_minishell *shell);
-int							execute_logical_operator_node(t_ast_node *node,
+void						execute_logical_operator_node(t_ast_node *node,
 								t_minishell *shell);
 
 /* prompt_signals.c */
@@ -384,7 +384,7 @@ char						*find_executable_path(char *str, char **directories,
 								t_minishell *shell);
 
 /* execute_external.c */
-int							execute_external(t_command *cmd, char **env,
+void						execute_external(t_command *cmd, char **env,
 								t_minishell *shell);
 void						handle_command_not_found(const char *cmd_name,
 								t_minishell *shell);
@@ -484,7 +484,7 @@ int							find_env_index(const char *name,
 char						**duplicate_env(char **envp, t_minishell *shell);
 
 /* pipe.c */
-int							init_pipe(t_ast_node *node, t_minishell *shell);
+void						init_pipe(t_ast_node *node, t_minishell *shell);
 pid_t						fork_left_child(int fds[], t_ast_node *node,
 								t_minishell *shell);
 pid_t						fork_right_child(int fds[], t_ast_node *node,

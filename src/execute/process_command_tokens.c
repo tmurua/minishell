@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   process_command_tokens.c                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
+/*   By: dlemaire <dlemaire@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 20:34:26 by tmurua            #+#    #+#             */
-/*   Updated: 2024/12/15 03:42:41 by tmurua           ###   ########.fr       */
+/*   Updated: 2024/12/15 18:27:32 by dlemaire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,8 +61,8 @@ t_token	*process_redirect_in(t_command *cmd, t_token *token, t_minishell *shell)
 	if (token->next && token->next->type == TOKEN_FILENAME)
 	{
 		add_infile_to_cmd(cmd, token->next->value, shell);
-		if (shell->last_exit_status != 0)
-			return (NULL);
+		// if (shell->last_exit_status != 0)
+		// 	return (NULL);
 		return (token->next->next);
 	}
 	else

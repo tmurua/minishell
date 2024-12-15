@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipe.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
+/*   By: dlemaire <dlemaire@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/14 17:23:19 by dlemaire          #+#    #+#             */
-/*   Updated: 2024/12/05 16:49:31 by tmurua           ###   ########.fr       */
+/*   Updated: 2024/12/15 18:38:57 by dlemaire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 #define WRITE_END 1
 
 /* initialize pipe between two commands represented by AST nodes */
-int	init_pipe(t_ast_node *node, t_minishell *shell)
+void	init_pipe(t_ast_node *node, t_minishell *shell)
 {
 	int		fds[2];
 	pid_t	pids[2];
@@ -26,7 +26,7 @@ int	init_pipe(t_ast_node *node, t_minishell *shell)
 	if (pipe(fds) == -1)
 	{
 		perror("pipe");
-		return (-1);
+		return ;
 	}
 	shell->cmd_in_execution = 1;
 	pids[0] = fork_left_child(fds, node->left, shell);
@@ -42,7 +42,6 @@ int	init_pipe(t_ast_node *node, t_minishell *shell)
 	else if (WIFSIGNALED(status_right))
 		shell->last_exit_status = 128 + WTERMSIG(status_right);
 	shell->cmd_in_execution = 0;
-	return (0);
 }
 
 /*fork left child process, setup writing to pipe; return pid of forked process*/
