@@ -6,11 +6,13 @@
 /*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/01 16:42:16 by tmurua            #+#    #+#             */
-/*   Updated: 2024/11/26 18:38:32 by tmurua           ###   ########.fr       */
+/*   Updated: 2024/12/15 21:16:50 by tmurua           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
+
+int		handle_dollar_sign(t_lexer *lexer, char **buffer, t_minishell *shell);
 
 /*	collects the next token from the lexer based on its current state */
 char	*collect_token(t_lexer *lexer, t_minishell *shell)
@@ -55,10 +57,7 @@ int	handle_default_state(t_lexer *lexer, char **buffer, t_minishell *shell)
 		advance_lexer_char(lexer);
 	}
 	else if (lexer->current_char == '$')
-	{
-		if (!handle_variable_expansion(lexer, buffer, shell))
-			return (TOKEN_ERROR);
-	}
+		return (handle_dollar_sign(lexer, buffer, shell));
 	else if (is_special_character(lexer))
 		return (TOKEN_COMPLETE);
 	else
@@ -94,10 +93,7 @@ int	handle_double_quote_state(t_lexer *lexer, char **buffer, t_minishell *shell)
 		advance_lexer_char(lexer);
 	}
 	else if (lexer->current_char == '$')
-	{
-		if (!handle_variable_expansion(lexer, buffer, shell))
-			return (TOKEN_ERROR);
-	}
+		return (handle_dollar_sign(lexer, buffer, shell));
 	else
 	{
 		if (!advance_and_append(lexer, buffer, shell))
@@ -105,6 +101,34 @@ int	handle_double_quote_state(t_lexer *lexer, char **buffer, t_minishell *shell)
 	}
 	return (TOKEN_CONTINUE);
 }
+
+/* function still has too many lines of code (29) */
+int	handle_dollar_sign(t_lexer *lexer, char **buffer, t_minishell *shell)
+{
+	size_t	str_len;
+	char	next_char;
+
+	str_len = ft_strlen(lexer->str);
+	if (lexer->pos + 1 < str_len)
+		next_char = lexer->str[lexer->pos + 1];
+	else
+		next_char = '\0';
+
+	if (next_char == '?' || ft_isalnum(next_char) || next_char == '_')
+	{
+		if (!handle_variable_expansion(lexer, buffer, shell))
+			return (TOKEN_ERROR);
+	}
+	else
+	{
+		advance_lexer_char(lexer);
+		*buffer = gc_strjoin(&shell->gc_head, *buffer, "$");
+		if (!*buffer)
+			return (TOKEN_ERROR);
+	}
+	return (TOKEN_CONTINUE);
+}
+
 
 /*	current_char_str: temp str to hold current_char as a null-terminated str
 	join current buffer with current_char_str at the end, move lexer forward */

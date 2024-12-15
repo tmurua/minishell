@@ -6,7 +6,7 @@
 /*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 09:08:10 by tmurua            #+#    #+#             */
-/*   Updated: 2024/12/15 19:07:11 by tmurua           ###   ########.fr       */
+/*   Updated: 2024/12/15 19:36:45 by tmurua           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -468,11 +468,8 @@ int							update_environment(char *oldpwd,
 int							builtin_export(char **args, t_minishell *shell);
 int							process_export_argument(const char *arg,
 								t_minishell *shell);
-int							set_env_variable(const char *name,
-								const char *value, t_minishell *shell);
-char						*create_env_string(const char *name,
-								const char *value, t_minishell *shell);
-int							add_env_variable(char *new_var, t_minishell *shell);
+int							is_valid_identifier(const char *arg);
+int							print_export_error(const char *arg);
 
 /* builtin_unset.c */
 int							builtin_unset(char **args, t_minishell *shell);
@@ -486,6 +483,11 @@ int							find_env_index(const char *name,
 
 /* environment_utils.c */
 char						**duplicate_env(char **envp, t_minishell *shell);
+int							set_env_variable(const char *name,
+								const char *value, t_minishell *shell);
+char						*create_env_string(const char *name,
+								const char *value, t_minishell *shell);
+int							add_env_variable(char *new_var, t_minishell *shell);
 
 /* pipe.c */
 void						init_pipe(t_ast_node *node, t_minishell *shell);
