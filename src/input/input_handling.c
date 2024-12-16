@@ -6,7 +6,7 @@
 /*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 16:48:08 by tmurua            #+#    #+#             */
-/*   Updated: 2024/12/16 22:24:22 by tmurua           ###   ########.fr       */
+/*   Updated: 2024/12/16 22:44:24 by tmurua           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,11 @@ void	main_input_loop(int ac, char **av, t_minishell *shell)
 	while (1)
 	{
 		input = read_user_input();
+		if (g_received_signal)
+		{
+			shell->last_exit_status = 128 + g_received_signal;
+			g_received_signal = 0;
+		}
 		if (input == NULL)
 			break ;
 		if (handle_empty_input(input))
@@ -29,11 +34,6 @@ void	main_input_loop(int ac, char **av, t_minishell *shell)
 		if (handle_exit_if_requested(input, shell))
 			continue ;
 		process_valid_input(input, shell);
-	}
-	if (g_received_signal)
-	{
-		shell->last_exit_status = 128 + g_received_signal;
-		g_received_signal = 0;
 	}
 }
 
