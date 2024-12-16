@@ -6,7 +6,7 @@
 /*   By: dlemaire <dlemaire@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 17:35:59 by dlemaire          #+#    #+#             */
-/*   Updated: 2024/12/14 03:22:45 by dlemaire         ###   ########.fr       */
+/*   Updated: 2024/12/17 00:26:39 by dlemaire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,14 +15,13 @@
 void	run_lexer(char *str, t_minishell *shell)
 {
 	t_lexer	lexer;
-	//t_token	*current_token;
 
 	initialize_lexer_and_tokens(str, &lexer, shell);
 	if (process_lexer_tokens(&lexer, shell))
 		return ;
 	if (handle_unclosed_quotes(&lexer, shell))
 		return ;
-	update_redirect_tokens(shell->tokens, shell);
+	//update_redirect_tokens(shell->tokens, shell);
 }
 
 /* init lexer and set shell tokens and current token pointers */
@@ -31,7 +30,6 @@ void	initialize_lexer_and_tokens(char *str, t_lexer *lexer,
 {
 	*lexer = init_lexer(str);
 	shell->tokens = NULL;
-	//*current_token = NULL;
 }
 
 /*	init lexer with input str, set pos, state, and establish cmd is expected */

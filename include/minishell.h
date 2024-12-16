@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
+/*   By: dlemaire <dlemaire@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 09:08:10 by tmurua            #+#    #+#             */
-/*   Updated: 2024/12/16 21:47:37 by tmurua           ###   ########.fr       */
+/*   Updated: 2024/12/17 00:30:14 by dlemaire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -256,6 +256,7 @@ void						update_redirect_tokens(t_token *tokens,
 								t_minishell *shell);
 void						skip_whitespace(t_lexer *lexer);
 void						advance_lexer_char(t_lexer *lexer);
+t_token						*get_last_token(t_token *lst);
 
 /* variable_expansion.c */
 int							handle_variable_expansion(t_lexer *lexer,

@@ -6,7 +6,7 @@
 /*   By: dlemaire <dlemaire@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/02 17:02:08 by tmurua            #+#    #+#             */
-/*   Updated: 2024/12/13 06:58:36 by dlemaire         ###   ########.fr       */
+/*   Updated: 2024/12/17 00:28:07 by dlemaire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,18 @@ void	token_to_list(t_token **tokens, t_token *new)
 			tmp = tmp->next;
 		tmp->next = new;
 	}
+}
+
+t_token	*get_last_token(t_token *lst)
+{
+	t_token	*tmp;
+
+	if (!lst)
+		return (NULL);
+	tmp = lst;
+	while (tmp->next)
+		tmp = tmp->next;
+	return (tmp);
 }
 
 /* mark next token as filename if the current token is redirect type */

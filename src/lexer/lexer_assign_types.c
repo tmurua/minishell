@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer_assign_types.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
+/*   By: dlemaire <dlemaire@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/11 18:06:47 by tmurua            #+#    #+#             */
-/*   Updated: 2024/12/16 00:59:39 by tmurua           ###   ########.fr       */
+/*   Updated: 2024/12/17 00:28:51 by dlemaire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,11 @@ t_token_type	handle_special_char_token(t_lexer *lexer, char **value,
 	type = get_special_character_token_type(*value);
 	if (type == TOKEN_PIPE || type == TOKEN_AND || type == TOKEN_OR
 		|| type == TOKEN_OP_PARENTHESIS)
+		lexer->command_expected = 1;
+	else if (type == TOKEN_FILENAME || type == TOKEN_HEREDOC_DELIMITER
+		|| type == TOKEN_HEREDOC || type == TOKEN_REDIRECT_APPEND
+		|| type == TOKEN_REDIRECT_IN || type == TOKEN_REDIRECT_OUT
+	)
 		lexer->command_expected = 1;
 	else
 		lexer->command_expected = 0;
@@ -108,7 +113,14 @@ t_token_type	handle_regular_token(t_lexer *lexer, char **value,
 		return (TOKEN_INVALID);
 	if ((*value)[0] == '\0')
 		return (TOKEN_INVALID);
-	if (lexer->command_expected == 1)
+	if (shell->tokens && get_last_token(shell->tokens)->type == TOKEN_HEREDOC)
+		type = TOKEN_HEREDOC_DELIMITER;
+	else if (shell->tokens && (
+			get_last_token(shell->tokens)->type == TOKEN_REDIRECT_IN
+			|| get_last_token(shell->tokens)->type == TOKEN_REDIRECT_OUT
+			|| get_last_token(shell->tokens)->type == TOKEN_REDIRECT_APPEND))
+		type = TOKEN_FILENAME;
+	else if (lexer->command_expected == 1)
 	{
 		if (is_builtin_command(*value))
 			type = TOKEN_BUILTIN_CMD;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   command_init.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
+/*   By: dlemaire <dlemaire@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/07 10:32:58 by tmurua            #+#    #+#             */
-/*   Updated: 2024/12/09 11:47:16 by tmurua           ###   ########.fr       */
+/*   Updated: 2024/12/17 00:26:10 by dlemaire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ void	init_command(t_command *cmd, t_token *node_tokens, t_minishell *shell)
 
 	initialize_command_struct(cmd);
 	cmd->has_heredoc = 0;
+	cmd->redirect_error_flag = 0;
 	arg_count = count_arg_tokens(node_tokens);
 	i = 0;
 	cmd->args = gc_calloc(&shell->gc_head, arg_count + 2, sizeof(char *));
