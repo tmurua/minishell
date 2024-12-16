@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   process_execution.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dlemaire <dlemaire@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 13:56:17 by tmurua            #+#    #+#             */
-/*   Updated: 2024/12/13 04:49:31 by dlemaire         ###   ########.fr       */
+/*   Updated: 2024/12/16 17:04:14 by tmurua           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,18 +16,78 @@
 	if execve fails, print an error, free garbage, and exit with status 126 */
 void	execute_command_child(t_command *cmd, char **env, t_minishell *shell)
 {
-	t_files	*infile;
-	t_files	*outfile;
+	t_files		*infile;
+	t_files		*outfile;
+	struct stat	st;
 
 	reset_signal_handlers(shell);
 	infile = get_last_file(cmd->infile);
 	outfile = get_last_file(cmd->outfile);
 	setup_redirections(infile, outfile, shell);
+
+	/* Perform stat on cmd->path to check file status */
+	if (stat(cmd->path, &st) == -1)
+	{
+		/* File doesn't exist */
+		ft_putstr_fd("minishell: ", STDERR_FILENO);
+		ft_putstr_fd(cmd->cmd_name, STDERR_FILENO);
+		ft_putstr_fd(": command not found\n", STDERR_FILENO);
+		gc_free_all(shell->gc_head);
+		exit(127);
+	}
+	else
+	{
+		/* File exists, check if it's a directory */
+		if (S_ISDIR(st.st_mode))
+		{
+			ft_putstr_fd("minishell: ", STDERR_FILENO);
+			ft_putstr_fd(cmd->cmd_name, STDERR_FILENO);
+			ft_putstr_fd(": Is a directory\n", STDERR_FILENO);
+			gc_free_all(shell->gc_head);
+			exit(126);
+		}
+
+		/* Check if the file is executable */
+		if (access(cmd->path, X_OK) != 0)
+		{
+			ft_putstr_fd("minishell: ", STDERR_FILENO);
+			ft_putstr_fd(cmd->cmd_name, STDERR_FILENO);
+			ft_putstr_fd(": Permission denied\n", STDERR_FILENO);
+			gc_free_all(shell->gc_head);
+			exit(126);
+		}
+	}
+
+	/* Attempt to execute the command */
 	if (execve(cmd->path, cmd->args, env) == -1)
 	{
-		perror("execve");
-		gc_free_all(shell->gc_head);
-		exit(126);
+		if (errno == EACCES)
+		{
+			/* Permission denied */
+			ft_putstr_fd("minishell: ", STDERR_FILENO);
+			ft_putstr_fd(cmd->cmd_name, STDERR_FILENO);
+			ft_putstr_fd(": Permission denied\n", STDERR_FILENO);
+			gc_free_all(shell->gc_head);
+			exit(126);
+		}
+		else if (errno == ENOEXEC)
+		{
+			/* Exec format error */
+			ft_putstr_fd("minishell: ", STDERR_FILENO);
+			ft_putstr_fd(cmd->cmd_name, STDERR_FILENO);
+			ft_putstr_fd(": Exec format error\n", STDERR_FILENO);
+			gc_free_all(shell->gc_head);
+			exit(126);
+		}
+		else
+		{
+			/* Other exec errors */
+			ft_putstr_fd("minishell: ", STDERR_FILENO);
+			ft_putstr_fd(cmd->cmd_name, STDERR_FILENO);
+			ft_putstr_fd(": command not found\n", STDERR_FILENO);
+			gc_free_all(shell->gc_head);
+			exit(127);
+		}
 	}
 }
 

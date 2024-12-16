@@ -6,7 +6,7 @@
 /*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 09:08:10 by tmurua            #+#    #+#             */
-/*   Updated: 2024/12/15 22:12:50 by tmurua           ###   ########.fr       */
+/*   Updated: 2024/12/16 17:10:34 by tmurua           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -383,7 +383,7 @@ void						add_outfile_to_cmd(t_command *cmd, char *filename,
 								t_minishell *shell, int append_flag);
 
 /* path_builder.c */
-char						*build_command_path(char *str, t_minishell *shell);
+char						*build_command_path(char *cmd, t_minishell *shell);
 char						**create_directories(t_minishell *shell);
 char						*find_executable_path(char *str, char **directories,
 								t_minishell *shell);
@@ -391,7 +391,7 @@ char						*find_executable_path(char *str, char **directories,
 /* execute_external.c */
 void						execute_external(t_command *cmd, char **env,
 								t_minishell *shell);
-void						handle_command_not_found(const char *cmd_name,
+void						handle_command_not_found(char *cmd_name,
 								t_minishell *shell);
 void						fork_and_execute(t_command *cmd, char **env,
 								t_minishell *shell);

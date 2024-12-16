@@ -6,20 +6,26 @@
 /*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 00:37:05 by dlemaire          #+#    #+#             */
-/*   Updated: 2024/12/11 16:07:45 by tmurua           ###   ########.fr       */
+/*   Updated: 2024/12/16 17:14:53 by tmurua           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-/* build full executable path for a command by searching PATH directories */
+/* build full executable path for a command by searching PATH directories
+	if cmd contains '/', treat it as direct path, otherwise search in PATH */
 char	*build_command_path(char *str, t_minishell *shell)
 {
 	char	**directories;
 	char	*result_path;
 
-	if (access(str, X_OK) == 0)
-		return (gc_strdup(&shell->gc_head, str));
+	if (ft_strchr(str, '/'))
+	{
+		if (access(str, F_OK) == 0)
+			return (gc_strdup(&shell->gc_head, str));
+		else
+			return (NULL);
+	}
 	directories = create_directories(shell);
 	if (!directories)
 		return (NULL);
