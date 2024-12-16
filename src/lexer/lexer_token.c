@@ -6,7 +6,7 @@
 /*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/10 23:48:14 by tmurua            #+#    #+#             */
-/*   Updated: 2024/12/10 23:51:09 by tmurua           ###   ########.fr       */
+/*   Updated: 2024/12/16 01:01:57 by tmurua           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,8 @@ t_token	*get_next_token(t_lexer *lexer, t_minishell *shell)
 		type = handle_special_char_token(lexer, &value, shell);
 	else
 		type = handle_regular_token(lexer, &value, shell);
+	if (type == TOKEN_INVALID && value && value[0] == '\0')
+		return (get_next_token(lexer, shell));
 	if (type == TOKEN_INVALID)
 		return (NULL);
 	new_token = create_token(type, value, shell);

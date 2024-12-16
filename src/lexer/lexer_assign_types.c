@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer_assign_types.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dlemaire <dlemaire@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/11 18:06:47 by tmurua            #+#    #+#             */
-/*   Updated: 2024/12/13 05:13:09 by dlemaire         ###   ########.fr       */
+/*   Updated: 2024/12/16 00:59:39 by tmurua           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,6 +105,8 @@ t_token_type	handle_regular_token(t_lexer *lexer, char **value,
 
 	*value = collect_token(lexer, shell);
 	if (!*value)
+		return (TOKEN_INVALID);
+	if ((*value)[0] == '\0')
 		return (TOKEN_INVALID);
 	if (lexer->command_expected == 1)
 	{
