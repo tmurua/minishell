@@ -15,7 +15,7 @@
    - **Single Quotes (`'`)**: Prevent the shell from interpreting meta-characters within the quotes.
    - **Double Quotes (`"`):** Prevent the shell from interpreting meta-characters within the quotes except for the `$` character.
 
-- [ ] 5.  **Redirections**:
+- [x] 5.  **Redirections**:
    - Input Redirection (`<`): Redirects input from a file.
    - Output Redirection (`>`): Redirects output to a file.
    - Append Output Redirection (`>>`): Appends output to the end of a file.

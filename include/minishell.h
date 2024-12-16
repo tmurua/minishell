@@ -6,7 +6,7 @@
 /*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 09:08:10 by tmurua            #+#    #+#             */
-/*   Updated: 2024/12/16 17:58:02 by tmurua           ###   ########.fr       */
+/*   Updated: 2024/12/16 18:56:20 by tmurua           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ typedef struct s_minishell
 }							t_minishell;
 
 /* global variable to handle signals */
-extern t_minishell			*g_shell;
+extern int					g_received_signal;
 
 /* enumerate all possible token types in minishell */
 typedef enum e_token_type

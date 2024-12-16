@@ -6,16 +6,13 @@
 /*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 19:47:34 by tmurua            #+#    #+#             */
-/*   Updated: 2024/12/13 17:13:34 by tmurua           ###   ########.fr       */
+/*   Updated: 2024/12/16 18:59:16 by tmurua           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
 void	setup_sigpipe_handler(t_minishell *shell);
-
-/* global variable to handle signals */
-t_minishell	*g_shell;
 
 /*	sets up signal handlers for the shell prompt.
 	handles SIGINT (Ctrl+C) and ignores SIGQUIT (Ctrl+\). */
@@ -51,18 +48,18 @@ void	setup_sigint_handler(t_minishell *shell)
 void	handle_sigint_at_prompt(int sig)
 {
 	(void)sig;
-	if (g_shell && g_shell->cmd_in_execution == 0)
+	if (g_received_signal == 0)
 	{
 		write(STDOUT_FILENO, "\n", 1);
 		rl_replace_line("", 0);
 		rl_on_new_line();
 		rl_redisplay();
 	}
-	else if (g_shell && g_shell->cmd_in_execution == 1)
+	else if (g_received_signal == 1)
 	{
 		write(STDOUT_FILENO, "\n", 1);
 		rl_redisplay();
-		g_shell->cmd_in_execution = 0;
+		g_received_signal = 0;
 	}
 }
 
