@@ -6,7 +6,7 @@
 /*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 09:08:10 by tmurua            #+#    #+#             */
-/*   Updated: 2024/12/16 18:56:20 by tmurua           ###   ########.fr       */
+/*   Updated: 2024/12/16 21:47:37 by tmurua           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,6 @@ typedef struct s_minishell
 	t_command				*cmd;
 	t_list					*heredocs;
 	int						sigint_heredocs;
-	int						cmd_in_execution;
 }							t_minishell;
 
 /* global variable to handle signals */
@@ -339,6 +338,12 @@ void						setup_prompt_signals(t_minishell *shell);
 void						setup_sigint_handler(t_minishell *shell);
 void						handle_sigint_at_prompt(int sig);
 void						setup_sigquit_handler(t_minishell *shell);
+void						setup_sigpipe_handler(t_minishell *shell);
+
+/* pipe_signals.c */
+void						setup_pipe_signals(t_minishell *shell);
+void						setup_sigint_handler_at_pipe(t_minishell *shell);
+void						handle_sigint_at_pipe(int sig);
 
 /* child_signals.c */
 void						reset_signal_handlers(t_minishell *shell);
