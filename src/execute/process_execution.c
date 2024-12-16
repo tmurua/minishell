@@ -6,89 +6,72 @@
 /*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 13:56:17 by tmurua            #+#    #+#             */
-/*   Updated: 2024/12/16 17:04:14 by tmurua           ###   ########.fr       */
+/*   Updated: 2024/12/16 17:58:04 by tmurua           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
-/*	reset signal handlers, setup redirections, exec cmd in child process.
-	if execve fails, print an error, free garbage, and exit with status 126 */
+/*	reset signal handlers, setup redirections, validate the command
+	and attempt to execute it; handle any execution errors appropriately */
 void	execute_command_child(t_command *cmd, char **env, t_minishell *shell)
 {
-	t_files		*infile;
-	t_files		*outfile;
-	struct stat	st;
+	t_files	*infile;
+	t_files	*outfile;
 
 	reset_signal_handlers(shell);
 	infile = get_last_file(cmd->infile);
 	outfile = get_last_file(cmd->outfile);
 	setup_redirections(infile, outfile, shell);
-
-	/* Perform stat on cmd->path to check file status */
-	if (stat(cmd->path, &st) == -1)
-	{
-		/* File doesn't exist */
-		ft_putstr_fd("minishell: ", STDERR_FILENO);
-		ft_putstr_fd(cmd->cmd_name, STDERR_FILENO);
-		ft_putstr_fd(": command not found\n", STDERR_FILENO);
-		gc_free_all(shell->gc_head);
-		exit(127);
-	}
-	else
-	{
-		/* File exists, check if it's a directory */
-		if (S_ISDIR(st.st_mode))
-		{
-			ft_putstr_fd("minishell: ", STDERR_FILENO);
-			ft_putstr_fd(cmd->cmd_name, STDERR_FILENO);
-			ft_putstr_fd(": Is a directory\n", STDERR_FILENO);
-			gc_free_all(shell->gc_head);
-			exit(126);
-		}
-
-		/* Check if the file is executable */
-		if (access(cmd->path, X_OK) != 0)
-		{
-			ft_putstr_fd("minishell: ", STDERR_FILENO);
-			ft_putstr_fd(cmd->cmd_name, STDERR_FILENO);
-			ft_putstr_fd(": Permission denied\n", STDERR_FILENO);
-			gc_free_all(shell->gc_head);
-			exit(126);
-		}
-	}
-
-	/* Attempt to execute the command */
+	validate_command(cmd, shell);
 	if (execve(cmd->path, cmd->args, env) == -1)
 	{
-		if (errno == EACCES)
-		{
-			/* Permission denied */
-			ft_putstr_fd("minishell: ", STDERR_FILENO);
-			ft_putstr_fd(cmd->cmd_name, STDERR_FILENO);
-			ft_putstr_fd(": Permission denied\n", STDERR_FILENO);
-			gc_free_all(shell->gc_head);
-			exit(126);
-		}
-		else if (errno == ENOEXEC)
-		{
-			/* Exec format error */
-			ft_putstr_fd("minishell: ", STDERR_FILENO);
-			ft_putstr_fd(cmd->cmd_name, STDERR_FILENO);
-			ft_putstr_fd(": Exec format error\n", STDERR_FILENO);
-			gc_free_all(shell->gc_head);
-			exit(126);
-		}
+		if (errno == EACCES || errno == ENOEXEC)
+			print_error_and_exit(cmd->cmd_name, "Permission denied", 126,
+				shell);
 		else
-		{
-			/* Other exec errors */
-			ft_putstr_fd("minishell: ", STDERR_FILENO);
-			ft_putstr_fd(cmd->cmd_name, STDERR_FILENO);
-			ft_putstr_fd(": command not found\n", STDERR_FILENO);
-			gc_free_all(shell->gc_head);
-			exit(127);
-		}
+			print_error_and_exit(cmd->cmd_name, "command not found", 127,
+				shell);
 	}
+}
+
+/*	validate cmd by checking its existence, check if its a dir & if its exec;
+	if a check fails, print appropriate error msg and exit with correct code */
+void	validate_command(t_command *cmd, t_minishell *shell)
+{
+	struct stat	st;
+
+	if (stat(cmd->path, &st) == -1)
+	{
+		if (errno == ENOENT)
+			print_error_and_exit(cmd->cmd_name, "command not found", 127,
+				shell);
+		else
+			print_error_and_exit(cmd->cmd_name, strerror(errno), 127, shell);
+	}
+	if (S_ISDIR(st.st_mode))
+		print_error_and_exit(cmd->cmd_name, "Is a directory", 126, shell);
+	if (access(cmd->path, X_OK) != 0)
+	{
+		if (errno == EACCES)
+			print_error_and_exit(cmd->cmd_name, "Permission denied", 126,
+				shell);
+		else
+			print_error_and_exit(cmd->cmd_name, strerror(errno), 126, shell);
+	}
+}
+
+/*	print error msg to STDERR, free gc, exit with the given status code */
+void	print_error_and_exit(char *cmd_name, char *message,
+		int exit_code, t_minishell *shell)
+{
+	ft_putstr_fd("minishell: ", STDERR_FILENO);
+	ft_putstr_fd(cmd_name, STDERR_FILENO);
+	ft_putstr_fd(": ", STDERR_FILENO);
+	ft_putstr_fd(message, STDERR_FILENO);
+	ft_putstr_fd("\n", STDERR_FILENO);
+	gc_free_all(shell->gc_head);
+	exit(exit_code);
 }
 
 /*	wait for child process to finish, update last exit status based on

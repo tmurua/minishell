@@ -6,7 +6,7 @@
 /*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 09:08:10 by tmurua            #+#    #+#             */
-/*   Updated: 2024/12/16 17:10:34 by tmurua           ###   ########.fr       */
+/*   Updated: 2024/12/16 17:58:02 by tmurua           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -399,6 +399,10 @@ void						fork_and_execute(t_command *cmd, char **env,
 /* process_execution.c */
 void						execute_command_child(t_command *cmd, char **env,
 								t_minishell *shell);
+void						validate_command(t_command *cmd,
+								t_minishell *shell);
+void						print_error_and_exit(char *cmd_name, char *message,
+								int exit_code, t_minishell *shell);
 void						handle_parent_process(pid_t pid,
 								t_minishell *shell);
 
