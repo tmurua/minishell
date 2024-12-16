@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   input_handling.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dlemaire <dlemaire@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 16:48:08 by tmurua            #+#    #+#             */
-/*   Updated: 2024/12/13 01:26:42 by dlemaire         ###   ########.fr       */
+/*   Updated: 2024/12/16 22:24:22 by tmurua           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,11 @@ void	main_input_loop(int ac, char **av, t_minishell *shell)
 		if (handle_exit_if_requested(input, shell))
 			continue ;
 		process_valid_input(input, shell);
+	}
+	if (g_received_signal)
+	{
+		shell->last_exit_status = 128 + g_received_signal;
+		g_received_signal = 0;
 	}
 }
 
