@@ -6,7 +6,7 @@
 /*   By: dlemaire <dlemaire@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/02 16:26:15 by dlemaire          #+#    #+#             */
-/*   Updated: 2024/12/17 00:40:01 by dlemaire         ###   ########.fr       */
+/*   Updated: 2024/12/17 05:44:07 by dlemaire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,8 @@ void	read_tree(t_ast_node *root, t_minishell *shell)
 {
 	if (root == NULL)
 		return ;
-	evaluate_and_execute(root, shell);
+	if (!g_received_signal)
+		evaluate_and_execute(root, shell);
 }
 
 /*	handle execution of diffrent types of AST nodes

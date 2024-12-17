@@ -6,7 +6,7 @@
 /*   By: dlemaire <dlemaire@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 09:08:10 by tmurua            #+#    #+#             */
-/*   Updated: 2024/12/17 03:42:11 by dlemaire         ###   ########.fr       */
+/*   Updated: 2024/12/17 05:34:38 by dlemaire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -350,6 +350,11 @@ void						handle_sigint_at_pipe(int sig);
 /* child_signals.c */
 void						reset_signal_handlers(t_minishell *shell);
 void						ignore_signal_handlers(t_minishell *shell);
+
+/* heredoc_signals.c */
+void						setup_heredoc_signals(t_minishell *shell);
+void						setup_sigint_handler_at_heredoc(t_minishell *shell);
+void						handle_sigint_at_heredoc(int sig);
 
 /* command_init.c */
 void						init_command(t_command *cmd, t_token *node_tokens,

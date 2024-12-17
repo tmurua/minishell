@@ -50,7 +50,9 @@ SRC		= \
 	./src/execute/path_builder.c \
 	./src/signals/prompt_signals.c \
 	./src/signals/pipe_signals.c \
+	./src/signals/heredoc_signals.c \
 	./src/signals/child_signals.c
+	
 
 OBJ		= $(SRC:.c=.o)
 
