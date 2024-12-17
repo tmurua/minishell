@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc_loop.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
+/*   By: dlemaire <dlemaire@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/09 12:29:50 by tmurua            #+#    #+#             */
-/*   Updated: 2024/12/09 12:33:58 by tmurua           ###   ########.fr       */
+/*   Updated: 2024/12/17 01:52:34 by dlemaire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ void	heredoc_loop(t_minishell *shell, t_token *token, int *pipe,
 	}
 	close(pipe[1]);
 	rl_clear_history();
+	gc_free_all(shell->gc_head);
 	exit(0);
 }
 
