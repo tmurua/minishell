@@ -3,16 +3,38 @@
 /*                                                        :::      ::::::::   */
 /*   parenthesis_validation.c                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
+/*   By: dlemaire <dlemaire@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/14 18:19:03 by tmurua            #+#    #+#             */
-/*   Updated: 2024/12/17 06:41:13 by tmurua           ###   ########.fr       */
+/*   Updated: 2024/12/17 23:50:17 by dlemaire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
 void	update_quote_states(char c, int *in_single_quote, int *in_double_quote);
+
+int	validate_balanced_quotes(const char *str)
+{
+	int	in_single_quote;
+	int	in_double_quote;
+
+	in_single_quote = 0;
+	in_double_quote = 0;
+	while (*str)
+	{
+		if (*str == '\'' && !in_double_quote)
+			in_single_quote = !in_single_quote;
+		else if (*str == '\"' && !in_single_quote)
+			in_double_quote = !in_double_quote;
+
+		str++;
+	}
+	if (in_single_quote || in_double_quote)
+		return (0);
+	return (1);
+}
+
 
 int	validate_balanced_parenthesis(const char *str)
 {

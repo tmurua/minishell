@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
+/*   By: dlemaire <dlemaire@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 09:08:10 by tmurua            #+#    #+#             */
-/*   Updated: 2024/12/17 18:47:29 by tmurua           ###   ########.fr       */
+/*   Updated: 2024/12/17 23:51:17 by dlemaire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -179,6 +179,7 @@ int							validate_heredoc_delimiter(char *str);
 int							validate_delimiter_left(const char *str);
 int							validate_delimiter_right(const char *str);
 int							validate_delimiter_middle(const char *str);
+int							validate_balanced_quotes(const char *str);
 
 /* syntax_validation_utils.c */
 char						*skip_whitespace_input(char *str);

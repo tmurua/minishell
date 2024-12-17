@@ -6,7 +6,7 @@
 /*   By: dlemaire <dlemaire@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/11 16:29:20 by dlemaire          #+#    #+#             */
-/*   Updated: 2024/12/17 06:09:53 by dlemaire         ###   ########.fr       */
+/*   Updated: 2024/12/17 23:50:35 by dlemaire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ int	handle_syntax_error(char *input, t_minishell *shell)
 	if (!validate_heredoc_delimiter(input) || !validate_delimiter_left(input)
 		|| !validate_delimiter_right(input) || !validate_delimiter_middle(input)
 		|| !validate_balanced_parenthesis(input)
+		|| !validate_balanced_quotes(input)
 		|| !validate_opening_parenthesis(input)
 		|| !validate_closing_parenthesis(input)
 		|| !validate_no_empty_parenthesis(input))
