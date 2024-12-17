@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_exit.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dlemaire <dlemaire@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 16:09:18 by tmurua            #+#    #+#             */
-/*   Updated: 2024/12/17 03:40:17 by dlemaire         ###   ########.fr       */
+/*   Updated: 2024/12/17 04:26:24 by tmurua           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,11 @@ int	handle_exit_command(char **args, t_minishell *shell)
 		gc_free_all(shell->gc_head);
 		exit(exit_status);
 	}
+	if (exit_status == -1)
+	{
+		shell->last_exit_status = 1;
+		return (1);
+	}
 	return (0);
 }
 
@@ -49,7 +54,6 @@ int	handle_exit_with_arguments(char **args, t_minishell *shell)
 		if (is_numeric_argument(args[1]))
 		{
 			ft_putstr_fd("minishell: exit: too many arguments\n", STDERR_FILENO);
-			shell->last_exit_status = 1;
 			return (-1);
 		}
 		else
