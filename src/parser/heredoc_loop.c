@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc_loop.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dlemaire <dlemaire@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/09 12:29:50 by tmurua            #+#    #+#             */
-/*   Updated: 2024/12/17 07:43:24 by dlemaire         ###   ########.fr       */
+/*   Updated: 2024/12/17 18:47:06 by tmurua           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,11 @@ void	heredoc_loop(t_minishell *shell, t_token *token, int *pipe,
 		buffer = readline("> ");
 		if (is_heredoc_delimiter(buffer, delimiter))
 			break ;
+		if (buffer == NULL)
+		{
+			heredoc_warning_message();
+			break ;
+		}
 		catch_heredoc_input(shell, buffer, pipe[1], heredoc);
 	}
 	close(pipe[1]);
@@ -54,12 +59,14 @@ int	is_heredoc_delimiter(const char *input, const char *delimiter)
 void	catch_heredoc_input(t_minishell *shell, char *str, int fd,
 		t_files *heredoc)
 {
-	int	i;
+	int		i;
 
 	if (!str)
 	{
-		perror("warning: here-doc at line 2 delimited by EOF \n");
-		return ;
+		printf("minishell: warning: here-document at current ");
+		printf("line delimited by end-of-file (wanted `EOF')\n");
+		gc_free_all(shell->gc_head);
+		g_received_signal = 99;
 	}
 	i = 0;
 	while (str[i])
@@ -73,6 +80,7 @@ void	catch_heredoc_input(t_minishell *shell, char *str, int fd,
 		}
 	}
 	ft_putchar_fd('\n', fd);
+	return ;
 }
 
 int	expend_in_heredoc(t_minishell *shell, char *str, int fd)

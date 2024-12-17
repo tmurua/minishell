@@ -6,7 +6,7 @@
 /*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 09:08:10 by tmurua            #+#    #+#             */
-/*   Updated: 2024/12/17 16:52:59 by tmurua           ###   ########.fr       */
+/*   Updated: 2024/12/17 18:47:29 by tmurua           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -311,6 +311,7 @@ char						*get_env_variable(const char *var_name, char **env);
 /* heredoc_cleanup.c */
 void						close_heredoc_list(t_minishell *shell);
 void						close_all_heredocs(t_minishell *shell);
+void						heredoc_warning_message(void);
 
 /* heredoc_handler.c */
 void						handle_heredoc_token_in_input(char **input,
