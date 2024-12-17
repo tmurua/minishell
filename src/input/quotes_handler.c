@@ -6,7 +6,7 @@
 /*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/14 18:10:19 by tmurua            #+#    #+#             */
-/*   Updated: 2024/12/14 18:53:30 by tmurua           ###   ########.fr       */
+/*   Updated: 2024/12/18 00:10:19 by tmurua           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,30 @@ int	check_empty_parenthesis(const char **str)
 			(*str)++;
 		if (**str == '\0')
 			return (0);
+	}
+	return (1);
+}
+
+int	validate_no_empty_parenthesis(const char *str)
+{
+	while (*str != '\0')
+	{
+		if (*str == '(')
+		{
+			str++;
+			while (ft_iswhitespace(*str))
+				str++;
+			if (*str == ')')
+			{
+				str++;
+				while (ft_iswhitespace(*str))
+					str++;
+				if (*str == '\0')
+					return (0);
+			}
+		}
+		else
+			str++;
 	}
 	return (1);
 }

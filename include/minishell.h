@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dlemaire <dlemaire@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 09:08:10 by tmurua            #+#    #+#             */
-/*   Updated: 2024/12/17 23:51:17 by dlemaire         ###   ########.fr       */
+/*   Updated: 2024/12/18 00:12:35 by tmurua           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -204,12 +204,15 @@ int							handle_quotes(char *str, int *in_quotes,
 int							valid_open_prevchar(char prev_char);
 int							check_closing(const char **str);
 int							check_empty_parenthesis(const char **str);
+int							validate_no_empty_parenthesis(const char *str);
 
 /* parenthesis_validation.c */
+int							validate_balanced_quotes(const char *str);
 int							validate_balanced_parenthesis(const char *str);
 int							validate_opening_parenthesis(const char *str);
 int							validate_closing_parenthesis(const char *str);
-int							validate_no_empty_parenthesis(const char *str);
+void						update_quote_states(char c, int *in_single_quote,
+								int *in_double_quote);
 
 /* lexer_main.c */
 void						run_lexer(char *str, t_minishell *shell);

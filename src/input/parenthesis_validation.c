@@ -3,16 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   parenthesis_validation.c                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dlemaire <dlemaire@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/14 18:19:03 by tmurua            #+#    #+#             */
-/*   Updated: 2024/12/17 23:50:17 by dlemaire         ###   ########.fr       */
+/*   Updated: 2024/12/18 00:12:47 by tmurua           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
-
-void	update_quote_states(char c, int *in_single_quote, int *in_double_quote);
 
 int	validate_balanced_quotes(const char *str)
 {
@@ -27,14 +25,12 @@ int	validate_balanced_quotes(const char *str)
 			in_single_quote = !in_single_quote;
 		else if (*str == '\"' && !in_single_quote)
 			in_double_quote = !in_double_quote;
-
 		str++;
 	}
 	if (in_single_quote || in_double_quote)
 		return (0);
 	return (1);
 }
-
 
 int	validate_balanced_parenthesis(const char *str)
 {
@@ -119,28 +115,4 @@ void	update_quote_states(char c, int *in_single_quote, int *in_double_quote)
 		*in_single_quote = !*in_single_quote;
 	else if (c == '\"' && !*in_single_quote)
 		*in_double_quote = !*in_double_quote;
-}
-
-int	validate_no_empty_parenthesis(const char *str)
-{
-	while (*str != '\0')
-	{
-		if (*str == '(')
-		{
-			str++;
-			while (ft_iswhitespace(*str))
-				str++;
-			if (*str == ')')
-			{
-				str++;
-				while (ft_iswhitespace(*str))
-					str++;
-				if (*str == '\0')
-					return (0);
-			}
-		}
-		else
-			str++;
-	}
-	return (1);
 }
