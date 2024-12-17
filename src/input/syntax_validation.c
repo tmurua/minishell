@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   syntax_validation.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
+/*   By: dlemaire <dlemaire@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/11 16:29:20 by dlemaire          #+#    #+#             */
-/*   Updated: 2024/12/17 05:00:42 by tmurua           ###   ########.fr       */
+/*   Updated: 2024/12/17 06:09:53 by dlemaire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,9 +76,8 @@ int	validate_delimiter_right(const char *str)
 {
 	const char	*last_valid = NULL;
 
-	while (*str && *(str + 1) != '\0')
+	while (*str != '\0')
 	{
-		str = skip_whitespace_input((char *)str);
 		if (*str == '|' || (*str == '&' && *(str + 1) == '&'))
 		{
 			last_valid = str;
@@ -101,29 +100,6 @@ int	validate_delimiter_right(const char *str)
 	return (1);
 }
 
-// int	validate_delimiter_right(const char *str)
-// {
-// 	const char	*last_valid = NULL;
-// 	int			offset;
-// 	int			in_quotes;
-// 	char		quote_char;
-
-// 	offset = 1;
-// 	in_quotes = 0;
-// 	quote_char = '\0';
-// 	while (*str)
-// 	{
-// 		str = skip_whitespace_input((char *)str);
-// 		if (handle_quotes((char *)str, &in_quotes, &quote_char))
-// 			str++;
-// 		else if (in_quotes)
-// 			str++;
-// 		else
-// 			str = skip_operator_right(str, &last_valid, &offset);
-// 	}
-// 	return (check_right_end(last_valid, offset));
-// }
-
 int	validate_delimiter_middle(const char *str)
 {
 	int			in_quotes;
@@ -132,7 +108,7 @@ int	validate_delimiter_middle(const char *str)
 
 	in_quotes = 0;
 	quote_char = '\0';
-	while (*str && *(str + 1) != '\0')
+	while (*str != '\0')
 	{
 		new_str = process_delimiter_char(str, &in_quotes, &quote_char);
 		if (!new_str)

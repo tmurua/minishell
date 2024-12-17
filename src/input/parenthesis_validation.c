@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parenthesis_validation.c                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
+/*   By: dlemaire <dlemaire@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/14 18:19:03 by tmurua            #+#    #+#             */
-/*   Updated: 2024/12/17 05:01:50 by tmurua           ###   ########.fr       */
+/*   Updated: 2024/12/17 06:10:47 by dlemaire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,10 +49,11 @@ int	validate_opening_parenthesis(const char *str)
 	in_double_quote = 0;
 	prev_char = '\0';
 	i = 0;
-	while (str[i] && *(str + 1) != '\0')
+	// while (str[i] && *(str + 1) != '\0')
+	while (str[i] != '\0')
 	{
-		while (ft_iswhitespace(str[i]))
-			i++;
+		// while (ft_iswhitespace(str[i]))
+		// 	i++;
 		update_quote_states(str[i], &in_single_quote, &in_double_quote);
 		if (str[i] == '(' && !in_single_quote && !in_double_quote)
 		{
@@ -103,10 +104,8 @@ void	update_quote_states(char c, int *in_single_quote, int *in_double_quote)
 
 int	validate_no_empty_parenthesis(const char *str)
 {
-	while (*str && *(str + 1) != '\0')
+	while (*str != '\0')
 	{
-		while (ft_iswhitespace(*str))
-			str++;
 		if (*str == '(')
 		{
 			str++;

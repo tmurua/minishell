@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   delimiter_utils.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
+/*   By: dlemaire <dlemaire@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/14 18:16:30 by tmurua            #+#    #+#             */
-/*   Updated: 2024/12/14 18:52:41 by tmurua           ###   ########.fr       */
+/*   Updated: 2024/12/17 06:10:40 by dlemaire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,6 @@ int	check_right_end(const char *last_valid, int offset)
 const char	*process_delimiter_char(const char *str, int *in_quotes,
 		char *quote_char)
 {
-	str = skip_whitespace_input((char *)str);
 	if (handle_quotes((char *)str, in_quotes, quote_char))
 		return (str + 1);
 	if (*in_quotes)
