@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc_signals.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dlemaire <dlemaire@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/17 04:24:57 by dlemaire          #+#    #+#             */
-/*   Updated: 2024/12/17 05:34:30 by dlemaire         ###   ########.fr       */
+/*   Updated: 2024/12/17 06:45:16 by tmurua           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,6 @@ void	setup_sigint_handler_at_heredoc(t_minishell *shell)
 
 void	handle_sigint_at_heredoc(int sig)
 {
-//	write(STDOUT_FILENO, "\n", 1);
 	rl_redisplay();
 	g_received_signal = sig;
 }
