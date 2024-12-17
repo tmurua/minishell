@@ -6,7 +6,7 @@
 /*   By: dlemaire <dlemaire@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/09 12:29:50 by tmurua            #+#    #+#             */
-/*   Updated: 2024/12/17 05:37:10 by dlemaire         ###   ########.fr       */
+/*   Updated: 2024/12/17 06:53:48 by dlemaire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,12 +24,6 @@ void	heredoc_loop(t_minishell *shell, t_token *token, int *pipe,
 	close(pipe[0]);
 	while (1)
 	{
-		// if (g_received_signal == SIGINT)
-		// {
-		// 	printf("HELLO\n");
-		// 	//free(some_shit);
-		// 	exit(130);
-		// }
 		buffer = readline("> ");
 		if (is_heredoc_delimiter(buffer, delimiter))
 			break ;
@@ -37,6 +31,7 @@ void	heredoc_loop(t_minishell *shell, t_token *token, int *pipe,
 	}
 	close(pipe[1]);
 	rl_clear_history();
+	gc_free_all(shell->gc_head);
 	exit(0);
 }
 

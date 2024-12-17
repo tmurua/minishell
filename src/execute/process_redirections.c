@@ -6,7 +6,7 @@
 /*   By: dlemaire <dlemaire@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 14:01:08 by tmurua            #+#    #+#             */
-/*   Updated: 2024/12/15 19:38:58 by dlemaire         ###   ########.fr       */
+/*   Updated: 2024/12/17 06:55:23 by dlemaire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,10 @@ void	setup_redirections(t_files *infile, t_files *outfile,
 		t_minishell *shell)
 {
 	if (shell->last_exit_status == 1)
+	{
+		gc_free_all(shell->gc_head);
 		exit(1);
+	}
 	if (infile)
 	{
 		if (dup2(infile->fd, STDIN_FILENO) == -1)

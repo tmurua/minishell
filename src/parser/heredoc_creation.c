@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc_creation.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
+/*   By: dlemaire <dlemaire@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/09 12:46:35 by tmurua            #+#    #+#             */
-/*   Updated: 2024/12/09 12:47:38 by tmurua           ###   ########.fr       */
+/*   Updated: 2024/12/17 06:55:05 by dlemaire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ t_files	*create_heredoc_file(char *delimiter, int is_quoted, t_minishell *shell)
 	if (!new_file)
 	{
 		perror("malloc");
+		gc_free_all(shell->gc_head);
 		exit(EXIT_FAILURE);
 	}
 	new_file->delim = delimiter;
@@ -37,6 +38,7 @@ t_list	*create_heredoc_list(t_minishell *shell)
 	if (!new_list)
 	{
 		perror("malloc");
+		gc_free_all(shell->gc_head);
 		exit(EXIT_FAILURE);
 	}
 	new_list->content = NULL;
