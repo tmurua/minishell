@@ -6,7 +6,7 @@
 /*   By: dlemaire <dlemaire@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/09 12:29:50 by tmurua            #+#    #+#             */
-/*   Updated: 2024/12/17 06:58:54 by dlemaire         ###   ########.fr       */
+/*   Updated: 2024/12/17 07:43:24 by dlemaire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,8 @@ int	is_heredoc_delimiter(const char *input, const char *delimiter)
 {
 	size_t	delimiter_len;
 
+	if (!input || !delimiter)
+		return (0);
 	delimiter_len = ft_strlen(delimiter);
 	if (ft_strncmp(input, delimiter, delimiter_len) == 0)
 	{
@@ -54,6 +56,11 @@ void	catch_heredoc_input(t_minishell *shell, char *str, int fd,
 {
 	int	i;
 
+	if (!str)
+	{
+		perror("warning: here-doc at line 2 delimited by EOF \n");
+		return ;
+	}
 	i = 0;
 	while (str[i])
 	{
