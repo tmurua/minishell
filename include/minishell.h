@@ -6,7 +6,7 @@
 /*   By: dlemaire <dlemaire@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 09:08:10 by tmurua            #+#    #+#             */
-/*   Updated: 2024/12/17 00:30:14 by dlemaire         ###   ########.fr       */
+/*   Updated: 2024/12/17 03:42:11 by dlemaire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,6 +69,7 @@ typedef struct s_minishell
 {
 	char					**env;
 	int						last_exit_status;
+	int						in_pipe;
 	t_list					*gc_head;
 	t_token					*tokens;
 	t_ast_node				*ast_root;
@@ -421,10 +422,7 @@ void						setup_redirections(t_files *infile,
 int							is_builtin_command(const char *word);
 int							execute_builtin(t_command *cmd, t_minishell *shell);
 int							execute_builtin_echo(t_command *cmd);
-// int							set_output_fd(t_files *outfile);
 void						print_builtin_error(char *command, char *message);
-int							handle_exit_if_requested(char *input,
-								t_minishell *shell);
 
 /* builtin_pwd_env.c */
 int							builtin_pwd(t_command *cmd);
@@ -441,7 +439,7 @@ void						print_arguments(char **args, int i, int newline,
 int							print_export_without_args(t_minishell *shell);
 
 /* builtin_exit.c */
-int							handle_exit_command(char *input,
+int							handle_exit_command(char **args,
 								t_minishell *shell);
 int							handle_exit_with_arguments(char **args,
 								t_minishell *shell);

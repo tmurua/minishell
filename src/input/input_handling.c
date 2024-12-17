@@ -6,7 +6,7 @@
 /*   By: dlemaire <dlemaire@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 16:48:08 by tmurua            #+#    #+#             */
-/*   Updated: 2024/12/17 00:29:22 by dlemaire         ###   ########.fr       */
+/*   Updated: 2024/12/17 03:41:03 by dlemaire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,6 @@ void	main_input_loop(int ac, char **av, t_minishell *shell)
 		if (handle_empty_input(input))
 			continue ;
 		if (handle_syntax_error(input, shell))
-			continue ;
-		if (handle_exit_if_requested(input, shell))
 			continue ;
 		process_valid_input(input, shell);
 	}

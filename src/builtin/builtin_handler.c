@@ -6,7 +6,7 @@
 /*   By: dlemaire <dlemaire@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 15:53:43 by tmurua            #+#    #+#             */
-/*   Updated: 2024/12/15 22:44:58 by dlemaire         ###   ########.fr       */
+/*   Updated: 2024/12/17 03:40:54 by dlemaire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,8 @@ int	execute_builtin(t_command *cmd, t_minishell *shell)
 		status = builtin_unset(cmd->args, shell);
 	else if (ft_strncmp(cmd->args[0], "echo", 5) == 0)
 		status = execute_builtin_echo(cmd);
+	else if (ft_strncmp(cmd->args[0], "exit", 5) == 0)
+		status = handle_exit_command(cmd->args, shell);
 	else
 		return (-100);
 	shell->last_exit_status = status;
@@ -63,14 +65,6 @@ int	execute_builtin_echo(t_command *cmd)
 	return (builtin_echo(cmd));
 }
 
-// int	set_output_fd(t_files *outfile)
-// {
-// 	if (!outfile)
-// 		return (STDOUT_FILENO);
-// 	else
-// 		return (outfile->fd);
-// }
-
 /* print error messages for built-in commands */
 void	print_builtin_error(char *command, char *message)
 {
@@ -81,12 +75,3 @@ void	print_builtin_error(char *command, char *message)
 	ft_putstr_fd("\n", STDERR_FILENO);
 }
 
-int	handle_exit_if_requested(char *input, t_minishell *shell)
-{
-	if (handle_exit_command(input, shell))
-	{
-		free(input);
-		return (1);
-	}
-	return (0);
-}

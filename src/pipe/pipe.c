@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipe.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
+/*   By: dlemaire <dlemaire@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/14 17:23:19 by dlemaire          #+#    #+#             */
-/*   Updated: 2024/12/16 21:41:10 by tmurua           ###   ########.fr       */
+/*   Updated: 2024/12/17 03:47:32 by dlemaire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ void	init_pipe(t_ast_node *node, t_minishell *shell)
 		perror("pipe");
 		return ;
 	}
+	shell->in_pipe = 1;
 	setup_pipe_signals(shell);
 	pids[0] = fork_left_child(fds, node->left, shell);
 	pids[1] = fork_right_child(fds, node->right, shell);
@@ -44,6 +45,7 @@ void	init_pipe(t_ast_node *node, t_minishell *shell)
 	else if (WIFSIGNALED(status_right))
 		shell->last_exit_status = 128 + WTERMSIG(status_right);
 	setup_prompt_signals(shell);
+	shell->in_pipe = 0;
 }
 
 /*fork left child process, setup writing to pipe; return pid of forked process*/

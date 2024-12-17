@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
+/*   By: dlemaire <dlemaire@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 11:19:43 by dlemaire          #+#    #+#             */
-/*   Updated: 2024/12/16 18:59:06 by tmurua           ###   ########.fr       */
+/*   Updated: 2024/12/17 03:46:39 by dlemaire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ int	main(int ac, char *av[], char *envp[])
 	shell.heredocs = NULL;
 	shell.env = duplicate_env(envp, &shell);
 	shell.last_exit_status = 0;
+	shell.in_pipe = 0;
 	g_received_signal = 0;
 	if (!shell.env)
 	{

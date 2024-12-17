@@ -3,27 +3,25 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_exit.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
+/*   By: dlemaire <dlemaire@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 16:09:18 by tmurua            #+#    #+#             */
-/*   Updated: 2024/12/17 00:54:20 by tmurua           ###   ########.fr       */
+/*   Updated: 2024/12/17 03:40:17 by dlemaire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
+
 /* main function to handle exit command */
-int	handle_exit_command(char *input, t_minishell *shell)
+int	handle_exit_command(char **args, t_minishell *shell)
 {
-	char	**args;
 	int		exit_status;
 
-	if (ft_strncmp(input, "exit", 4) != 0)
+	if (ft_strncmp(args[0], "exit", 4) != 0)
 		return (0);
-	args = parse_arguments(&shell->gc_head, input);
-	if (!args)
-		return (0);
-	printf("exit\n");
+	if (shell->in_pipe == 0)
+		printf("exit\n");
 	exit_status = handle_exit_with_arguments(args, shell);
 	if (exit_status != -1)
 	{
