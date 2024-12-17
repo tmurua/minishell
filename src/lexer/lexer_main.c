@@ -6,7 +6,7 @@
 /*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 17:35:59 by dlemaire          #+#    #+#             */
-/*   Updated: 2024/12/17 06:44:48 by tmurua           ###   ########.fr       */
+/*   Updated: 2024/12/17 07:14:19 by tmurua           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,65 +42,4 @@ t_lexer	init_lexer(const char *arg)
 	lexer.state = DEFAULT_STATE;
 	lexer.command_expected = 1;
 	return (lexer);
-}
-
-/* loop over input chars, creating tokens until EOF or error */
-int	process_lexer_tokens(t_lexer *lexer, t_minishell *shell)
-{
-	t_token	*new_token;
-	t_token	*cl_parenthesis_token;
-	size_t	len;
-	int		cl_parenthesis_counter;
-
-	while (lexer->current_char != '\0')
-	{
-		skip_whitespace(lexer);
-		new_token = get_next_token(lexer, shell);
-		if (!new_token || new_token->type == TOKEN_INVALID)
-			return (1);
-		cl_parenthesis_counter = 0;
-		while (1)
-		{
-			len = ft_strlen(new_token->value);
-			if (len > 0 && new_token->value[len - 1] == ')')
-			{
-				cl_parenthesis_counter++;
-				new_token->value[len - 1] = '\0';
-			}
-			else
-			{
-				if (*new_token->value != '\0')
-					token_to_list(&(shell->tokens), new_token);
-				while (cl_parenthesis_counter)
-				{
-					cl_parenthesis_token = create_token(TOKEN_CL_PARENTHESIS,
-							")", shell);
-					token_to_list(&(shell->tokens), cl_parenthesis_token);
-					cl_parenthesis_counter--;
-				}
-				break ;
-			}
-		}
-	}
-	return (0);
-}
-
-/* check for unclosed quotes and print error if found */
-int	handle_unclosed_quotes(t_lexer *lexer, t_minishell *shell)
-{
-	if (lexer->state == SINGLE_QUOTE_STATE
-		|| lexer->state == DOUBLE_QUOTE_STATE)
-	{
-		ft_putstr_fd("minishell: unexpected EOF while looking for matching `",
-			2);
-		shell->last_exit_status = 2;
-		if (lexer->state == SINGLE_QUOTE_STATE)
-			ft_putstr_fd("'", 2);
-		else
-			ft_putstr_fd("\"", 2);
-		ft_putstr_fd("'\n", 2);
-		shell->tokens = NULL;
-		return (1);
-	}
-	return (0);
 }

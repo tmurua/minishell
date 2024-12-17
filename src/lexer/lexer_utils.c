@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dlemaire <dlemaire@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/02 17:02:08 by tmurua            #+#    #+#             */
-/*   Updated: 2024/12/17 00:28:07 by dlemaire         ###   ########.fr       */
+/*   Updated: 2024/12/17 07:10:36 by tmurua           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,13 +78,6 @@ void	update_redirect_tokens(t_token *tokens, t_minishell *shell)
 		}
 		tokens = tokens->next;
 	}
-}
-
-/*	skip all leading whitespace characters in the input */
-void	skip_whitespace(t_lexer *lexer)
-{
-	while (lexer->current_char != '\0' && ft_iswhitespace(lexer->current_char))
-		advance_lexer_char(lexer);
 }
 
 /* moves lexer forward by one char, update current_char based on new position */

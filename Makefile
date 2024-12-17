@@ -17,6 +17,7 @@ SRC		= \
 	./src/input/quotes_handler.c \
 	./src/input/parenthesis_validation.c \
 	./src/lexer/lexer_main.c \
+	./src/lexer/lexer_process.c \
 	./src/lexer/lexer_token.c \
 	./src/lexer/lexer_assign_types.c \
 	./src/lexer/lexer_state_handler.c \
@@ -50,7 +51,7 @@ SRC		= \
 	./src/signals/pipe_signals.c \
 	./src/signals/heredoc_signals.c \
 	./src/signals/child_signals.c
-	
+
 
 OBJ		= $(SRC:.c=.o)
 
