@@ -6,7 +6,7 @@
 /*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/17 04:24:57 by dlemaire          #+#    #+#             */
-/*   Updated: 2024/12/17 06:45:16 by tmurua           ###   ########.fr       */
+/*   Updated: 2024/12/17 16:52:49 by tmurua           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,4 +38,34 @@ void	handle_sigint_at_heredoc(int sig)
 {
 	rl_redisplay();
 	g_received_signal = sig;
+}
+
+void	ignore_sigquit_at_heredoc(t_minishell *shell)
+{
+	struct sigaction	sa;
+
+	sigemptyset(&sa.sa_mask);
+	sa.sa_handler = SIG_IGN;
+	sa.sa_flags = 0;
+	if (sigaction(SIGQUIT, &sa, NULL) == -1)
+	{
+		perror("minishell: sigaction");
+		gc_free_all(shell->gc_head);
+		exit(EXIT_FAILURE);
+	}
+}
+
+void	reset_sigint_at_heredoc(t_minishell *shell)
+{
+	struct sigaction	sa;
+
+	sigemptyset(&sa.sa_mask);
+	sa.sa_handler = SIG_DFL;
+	sa.sa_flags = 0;
+	if (sigaction(SIGINT, &sa, NULL) == -1)
+	{
+		perror("minishell: sigaction");
+		gc_free_all(shell->gc_head);
+		exit(EXIT_FAILURE);
+	}
 }

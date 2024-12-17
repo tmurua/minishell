@@ -6,7 +6,7 @@
 /*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/25 23:18:42 by dlemaire          #+#    #+#             */
-/*   Updated: 2024/12/17 06:48:21 by tmurua           ###   ########.fr       */
+/*   Updated: 2024/12/17 16:53:15 by tmurua           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,8 @@ void	fork_heredoc_child(t_minishell *shell, t_token *token, int fd[2],
 	pid = fork();
 	if (pid == 0)
 	{
-		reset_signal_handlers(shell);
+		ignore_sigquit_at_heredoc(shell);
+		reset_sigint_at_heredoc(shell);
 		heredoc_loop(shell, token, fd, heredoc);
 	}
 	else if (pid > 0)

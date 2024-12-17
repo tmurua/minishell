@@ -6,7 +6,7 @@
 /*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 09:08:10 by tmurua            #+#    #+#             */
-/*   Updated: 2024/12/17 07:48:43 by tmurua           ###   ########.fr       */
+/*   Updated: 2024/12/17 16:52:59 by tmurua           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -360,6 +360,8 @@ void						ignore_signal_handlers(t_minishell *shell);
 void						setup_heredoc_signals(t_minishell *shell);
 void						setup_sigint_handler_at_heredoc(t_minishell *shell);
 void						handle_sigint_at_heredoc(int sig);
+void						ignore_sigquit_at_heredoc(t_minishell *shell);
+void						reset_sigint_at_heredoc(t_minishell *shell);
 
 /* command_init.c */
 void						init_command(t_command *cmd, t_token *node_tokens,
