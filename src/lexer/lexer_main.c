@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer_main.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dlemaire <dlemaire@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 17:35:59 by dlemaire          #+#    #+#             */
-/*   Updated: 2024/12/17 00:26:39 by dlemaire         ###   ########.fr       */
+/*   Updated: 2024/12/17 06:44:48 by tmurua           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,6 @@ void	run_lexer(char *str, t_minishell *shell)
 		return ;
 	if (handle_unclosed_quotes(&lexer, shell))
 		return ;
-	//update_redirect_tokens(shell->tokens, shell);
 }
 
 /* init lexer and set shell tokens and current token pointers */
@@ -74,7 +73,8 @@ int	process_lexer_tokens(t_lexer *lexer, t_minishell *shell)
 					token_to_list(&(shell->tokens), new_token);
 				while (cl_parenthesis_counter)
 				{
-					cl_parenthesis_token = create_token(TOKEN_CL_PARENTHESIS, ")", shell);
+					cl_parenthesis_token = create_token(TOKEN_CL_PARENTHESIS,
+							")", shell);
 					token_to_list(&(shell->tokens), cl_parenthesis_token);
 					cl_parenthesis_counter--;
 				}

@@ -6,12 +6,11 @@
 /*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 16:09:18 by tmurua            #+#    #+#             */
-/*   Updated: 2024/12/17 04:26:24 by tmurua           ###   ########.fr       */
+/*   Updated: 2024/12/17 06:39:18 by tmurua           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
-
 
 /* main function to handle exit command */
 int	handle_exit_command(char **args, t_minishell *shell)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc_init.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dlemaire <dlemaire@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/25 23:18:42 by dlemaire          #+#    #+#             */
-/*   Updated: 2024/12/17 05:32:34 by dlemaire         ###   ########.fr       */
+/*   Updated: 2024/12/17 06:48:21 by tmurua           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,6 @@ void	fork_heredoc_child(t_minishell *shell, t_token *token, int fd[2],
 	if (pid == 0)
 	{
 		reset_signal_handlers(shell);
-		//setup_prompt_signals(shell);
 		heredoc_loop(shell, token, fd, heredoc);
 	}
 	else if (pid > 0)
@@ -54,7 +53,6 @@ void	handle_heredoc_parent(pid_t pid, t_minishell *shell, int fd[2])
 {
 	int	status;
 
-	//ignore_signal_handlers(shell);
 	setup_heredoc_signals(shell);
 	if (waitpid(pid, &status, 0) == -1)
 		perror("minishell: waitpid");

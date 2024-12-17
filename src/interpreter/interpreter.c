@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   interpreter.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dlemaire <dlemaire@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/02 16:26:15 by dlemaire          #+#    #+#             */
-/*   Updated: 2024/12/17 05:44:07 by dlemaire         ###   ########.fr       */
+/*   Updated: 2024/12/17 06:44:14 by tmurua           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ void	execute_command_node(t_ast_node *node, t_minishell *shell)
 			execute_external(&cmd, shell->env, shell);
 		else if (node->tokens && node->tokens->type == TOKEN_BUILTIN_CMD)
 			execute_builtin(&cmd, shell);
-		node->tokens = node->tokens->next; // leak?
+		node->tokens = node->tokens->next;
 	}
 }
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dlemaire <dlemaire@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/29 17:10:48 by dlemaire          #+#    #+#             */
-/*   Updated: 2024/12/17 05:00:54 by dlemaire         ###   ########.fr       */
+/*   Updated: 2024/12/17 06:47:23 by tmurua           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,6 @@ t_ast_node	*parse_expression(t_minishell *shell, int precedence_threshold)
 	int			precedence_lvl;
 	int			delimiter;
 
-	//left = parse_command(shell);
 	left = parse_condition(shell);
 	if (!left)
 		return (NULL);
@@ -55,14 +54,14 @@ t_ast_node	*parse_expression(t_minishell *shell, int precedence_threshold)
 	return (left);
 }
 
-t_ast_node	*parse_condition(t_minishell *shell)  // BONUS
+t_ast_node	*parse_condition(t_minishell *shell)
 {
 	t_ast_node	*node;
 
 	if (is_statement_delimiter(shell->tokens->type)
-		|| shell->tokens->type == TOKEN_CL_PARENTHESIS)  // BONUS
+		|| shell->tokens->type == TOKEN_CL_PARENTHESIS)
 		perror(shell->tokens->value);
-	if (shell->tokens->type == TOKEN_OP_PARENTHESIS)  // BONUS
+	if (shell->tokens->type == TOKEN_OP_PARENTHESIS)
 	{
 		shell->tokens = shell->tokens->next;
 		if (!shell->tokens)
