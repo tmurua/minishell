@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   interpreter.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
+/*   By: dlemaire <dlemaire@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/02 16:26:15 by dlemaire          #+#    #+#             */
-/*   Updated: 2024/12/17 06:44:14 by tmurua           ###   ########.fr       */
+/*   Updated: 2024/12/17 20:29:37 by dlemaire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ void	execute_command_node(t_ast_node *node, t_minishell *shell)
 	t_command	cmd;
 
 	init_command(&cmd, node->tokens, shell);
-	while (node->tokens)
+	while (node->tokens && cmd.redirect_error_flag != 1)
 	{
 		if (node->tokens && node->tokens->type == TOKEN_EXTERN_CMD
 			&& cmd.redirect_error_flag != 1)
