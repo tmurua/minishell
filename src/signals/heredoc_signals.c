@@ -6,11 +6,13 @@
 /*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/17 04:24:57 by dlemaire          #+#    #+#             */
-/*   Updated: 2024/12/17 16:52:49 by tmurua           ###   ########.fr       */
+/*   Updated: 2024/12/17 23:30:10 by tmurua           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
+
+void	handle_sigint_at_child_heredoc(int sig);
 
 void	setup_heredoc_signals(t_minishell *shell)
 {
@@ -68,4 +70,25 @@ void	reset_sigint_at_heredoc(t_minishell *shell)
 		gc_free_all(shell->gc_head);
 		exit(EXIT_FAILURE);
 	}
+	if (sigaction(SIGPIPE, &sa, NULL) == -1)
+	{
+		perror("minishell: sigaction");
+		gc_free_all(shell->gc_head);
+		exit(EXIT_FAILURE);
+	}
+	if (g_received_signal == 2)
+	{
+		gc_free_all(shell->gc_head);
+		exit(EXIT_FAILURE);
+	}
 }
+
+/*	signal handler for SIGINT (Ctrl+C) at prompt */
+// void	handle_sigint_at_child_heredoc(int sig)
+// {
+// 	g_received_signal = sig;
+// 	write(STDOUT_FILENO, "\n", 1);
+// 	rl_replace_line("", 0);
+// 	rl_on_new_line();
+// 	write(STDOUT_FILENO, "Press enter", 11);
+// }

@@ -6,13 +6,18 @@
 /*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/09 12:29:50 by tmurua            #+#    #+#             */
-/*   Updated: 2024/12/17 18:47:06 by tmurua           ###   ########.fr       */
+/*   Updated: 2024/12/17 23:31:54 by tmurua           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
 
 /* "close_all_heredocs(shell);" after "close(pipe[1]);"? */
+		// if (g_received_signal == 2)
+		// {
+		// 	g_received_signal = 0;
+		// 	break ;
+		// }
 void	heredoc_loop(t_minishell *shell, t_token *token, int *pipe,
 		t_files *heredoc)
 {
@@ -35,8 +40,8 @@ void	heredoc_loop(t_minishell *shell, t_token *token, int *pipe,
 		catch_heredoc_input(shell, buffer, pipe[1], heredoc);
 	}
 	close(pipe[1]);
-	rl_clear_history();
 	gc_free_all(shell->gc_head);
+	rl_clear_history();
 	exit(0);
 }
 
@@ -61,13 +66,6 @@ void	catch_heredoc_input(t_minishell *shell, char *str, int fd,
 {
 	int		i;
 
-	if (!str)
-	{
-		printf("minishell: warning: here-document at current ");
-		printf("line delimited by end-of-file (wanted `EOF')\n");
-		gc_free_all(shell->gc_head);
-		g_received_signal = 99;
-	}
 	i = 0;
 	while (str[i])
 	{

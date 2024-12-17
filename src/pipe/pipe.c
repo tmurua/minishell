@@ -6,7 +6,7 @@
 /*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/14 17:23:19 by dlemaire          #+#    #+#             */
-/*   Updated: 2024/12/17 07:47:22 by tmurua           ###   ########.fr       */
+/*   Updated: 2024/12/17 19:52:09 by tmurua           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,6 @@
 
 #define READ_END 0
 #define WRITE_END 1
-
-void	setup_pipe_signals(t_minishell *shell);
 
 /* initialize pipe between two commands represented by AST nodes */
 void	init_pipe(t_ast_node *node, t_minishell *shell)
