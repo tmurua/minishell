@@ -6,7 +6,7 @@
 /*   By: dlemaire <dlemaire@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/11 18:06:47 by tmurua            #+#    #+#             */
-/*   Updated: 2024/12/17 00:28:51 by dlemaire         ###   ########.fr       */
+/*   Updated: 2024/12/17 00:59:01 by dlemaire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,13 +42,6 @@ t_token_type	handle_special_char_token(t_lexer *lexer, char **value,
 	if (type == TOKEN_PIPE || type == TOKEN_AND || type == TOKEN_OR
 		|| type == TOKEN_OP_PARENTHESIS)
 		lexer->command_expected = 1;
-	else if (type == TOKEN_FILENAME || type == TOKEN_HEREDOC_DELIMITER
-		|| type == TOKEN_HEREDOC || type == TOKEN_REDIRECT_APPEND
-		|| type == TOKEN_REDIRECT_IN || type == TOKEN_REDIRECT_OUT
-	)
-		lexer->command_expected = 1;
-	else
-		lexer->command_expected = 0;
 	return (type);
 }
 
