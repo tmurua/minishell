@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipe.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dlemaire <dlemaire@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/14 17:23:19 by dlemaire          #+#    #+#             */
-/*   Updated: 2024/12/17 03:47:32 by dlemaire         ###   ########.fr       */
+/*   Updated: 2024/12/17 07:47:22 by tmurua           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,11 +25,8 @@ void	init_pipe(t_ast_node *node, t_minishell *shell)
 	int		status_left;
 	int		status_right;
 
-	if (pipe(fds) == -1)
-	{
-		perror("pipe");
+	if (create_pipe_fds(fds))
 		return ;
-	}
 	shell->in_pipe = 1;
 	setup_pipe_signals(shell);
 	pids[0] = fork_left_child(fds, node->left, shell);
@@ -46,6 +43,17 @@ void	init_pipe(t_ast_node *node, t_minishell *shell)
 		shell->last_exit_status = 128 + WTERMSIG(status_right);
 	setup_prompt_signals(shell);
 	shell->in_pipe = 0;
+}
+
+/* create a pipe and handle error if not created */
+int	create_pipe_fds(int fds[2])
+{
+	if (pipe(fds) == -1)
+	{
+		perror("pipe");
+		return (1);
+	}
+	return (0);
 }
 
 /*fork left child process, setup writing to pipe; return pid of forked process*/

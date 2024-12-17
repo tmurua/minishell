@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dlemaire <dlemaire@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 09:08:10 by tmurua            #+#    #+#             */
-/*   Updated: 2024/12/17 05:49:05 by dlemaire         ###   ########.fr       */
+/*   Updated: 2024/12/17 07:48:43 by tmurua           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -215,8 +215,14 @@ void						run_lexer(char *str, t_minishell *shell);
 void						initialize_lexer_and_tokens(char *str,
 								t_lexer *lexer, t_minishell *shell);
 t_lexer						init_lexer(const char *arg);
+
+/* lexer_process.c */
 int							process_lexer_tokens(t_lexer *lexer,
 								t_minishell *shell);
+void						skip_whitespace(t_lexer *lexer);
+void						add_closing_parentheses(int count,
+								t_minishell *shell);
+int							count_remove_trailing_parenth(char *value);
 int							handle_unclosed_quotes(t_lexer *lexer,
 								t_minishell *shell);
 
@@ -255,7 +261,6 @@ int							count_tokens(t_token *tokens);
 void						token_to_list(t_token **tokens, t_token *new);
 void						update_redirect_tokens(t_token *tokens,
 								t_minishell *shell);
-void						skip_whitespace(t_lexer *lexer);
 void						advance_lexer_char(t_lexer *lexer);
 t_token						*get_last_token(t_token *lst);
 
@@ -490,6 +495,7 @@ int							add_env_variable(char *new_var, t_minishell *shell);
 
 /* pipe.c */
 void						init_pipe(t_ast_node *node, t_minishell *shell);
+int							create_pipe_fds(int fds[2]);
 pid_t						fork_left_child(int fds[], t_ast_node *node,
 								t_minishell *shell);
 pid_t						fork_right_child(int fds[], t_ast_node *node,
