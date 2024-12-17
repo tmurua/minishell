@@ -6,7 +6,7 @@
 /*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/11 16:29:20 by dlemaire          #+#    #+#             */
-/*   Updated: 2024/12/16 01:25:31 by tmurua           ###   ########.fr       */
+/*   Updated: 2024/12/17 05:00:42 by tmurua           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ int	validate_delimiter_right(const char *str)
 {
 	const char	*last_valid = NULL;
 
-	while (*str)
+	while (*str && *(str + 1) != '\0')
 	{
 		str = skip_whitespace_input((char *)str);
 		if (*str == '|' || (*str == '&' && *(str + 1) == '&'))
@@ -132,7 +132,7 @@ int	validate_delimiter_middle(const char *str)
 
 	in_quotes = 0;
 	quote_char = '\0';
-	while (*str)
+	while (*str && *(str + 1) != '\0')
 	{
 		new_str = process_delimiter_char(str, &in_quotes, &quote_char);
 		if (!new_str)

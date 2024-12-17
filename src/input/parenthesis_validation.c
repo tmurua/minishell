@@ -6,7 +6,7 @@
 /*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/14 18:19:03 by tmurua            #+#    #+#             */
-/*   Updated: 2024/12/15 22:43:18 by tmurua           ###   ########.fr       */
+/*   Updated: 2024/12/17 05:01:50 by tmurua           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ int	validate_opening_parenthesis(const char *str)
 	in_double_quote = 0;
 	prev_char = '\0';
 	i = 0;
-	while (str[i])
+	while (str[i] && *(str + 1) != '\0')
 	{
 		while (ft_iswhitespace(str[i]))
 			i++;
@@ -103,7 +103,7 @@ void	update_quote_states(char c, int *in_single_quote, int *in_double_quote)
 
 int	validate_no_empty_parenthesis(const char *str)
 {
-	while (*str)
+	while (*str && *(str + 1) != '\0')
 	{
 		while (ft_iswhitespace(*str))
 			str++;
