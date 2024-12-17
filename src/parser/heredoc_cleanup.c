@@ -6,7 +6,7 @@
 /*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/09 12:33:28 by tmurua            #+#    #+#             */
-/*   Updated: 2024/12/17 18:50:47 by tmurua           ###   ########.fr       */
+/*   Updated: 2024/12/17 19:24:50 by tmurua           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,5 +62,4 @@ void	heredoc_warning_message(void)
 {
 	printf("minishell: warning: here-document at current ");
 	printf("line delimited by end-of-file (wanted specified delimiter)\n");
-	g_received_signal = 99;
 }
