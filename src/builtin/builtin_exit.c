@@ -6,7 +6,7 @@
 /*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/03 16:09:18 by tmurua            #+#    #+#             */
-/*   Updated: 2024/12/13 21:28:34 by tmurua           ###   ########.fr       */
+/*   Updated: 2024/12/17 00:54:20 by tmurua           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,9 +25,12 @@ int	handle_exit_command(char *input, t_minishell *shell)
 		return (0);
 	printf("exit\n");
 	exit_status = handle_exit_with_arguments(args, shell);
-	rl_clear_history();
-	gc_free_all(shell->gc_head);
-	exit(exit_status);
+	if (exit_status != -1)
+	{
+		rl_clear_history();
+		gc_free_all(shell->gc_head);
+		exit(exit_status);
+	}
 	return (0);
 }
 
@@ -45,8 +48,20 @@ int	handle_exit_with_arguments(char **args, t_minishell *shell)
 		return (handle_numeric_argument(args[1], shell));
 	else
 	{
-		ft_putstr_fd("minishell: exit: too many arguments\n", 2);
-		return (1);
+		if (is_numeric_argument(args[1]))
+		{
+			ft_putstr_fd("minishell: exit: too many arguments\n", STDERR_FILENO);
+			shell->last_exit_status = 1;
+			return (-1);
+		}
+		else
+		{
+			ft_putstr_fd("minishell: exit: ", STDERR_FILENO);
+			ft_putstr_fd(args[1], STDERR_FILENO);
+			ft_putstr_fd(": numeric argument required\n", STDERR_FILENO);
+			shell->last_exit_status = 2;
+			return (2);
+		}
 	}
 }
 

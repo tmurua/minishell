@@ -6,7 +6,7 @@
 /*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 13:56:17 by tmurua            #+#    #+#             */
-/*   Updated: 2024/12/16 17:58:04 by tmurua           ###   ########.fr       */
+/*   Updated: 2024/12/17 00:04:05 by tmurua           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,7 @@ void	handle_parent_process(pid_t pid, t_minishell *shell)
 			if (WTERMSIG(status) == SIGINT)
 				write(STDOUT_FILENO, "\n", 1);
 			else if (WTERMSIG(status) == SIGQUIT)
-				ft_putstr_fd("Quit: 3\n", STDERR_FILENO);
+				ft_putstr_fd("Quit\n", STDERR_FILENO);
 		}
 		else
 			shell->last_exit_status = 1;
