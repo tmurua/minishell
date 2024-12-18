@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
+/*   By: dlemaire <dlemaire@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 09:08:10 by tmurua            #+#    #+#             */
-/*   Updated: 2024/12/18 00:12:35 by tmurua           ###   ########.fr       */
+/*   Updated: 2024/12/18 17:35:12 by dlemaire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -383,7 +383,7 @@ t_token						*handle_heredoc_token(t_command *cmd,
 								t_token *token, t_minishell *shell);
 void						add_heredoc_to_cmd(t_command *cmd, char *delimiter,
 								t_minishell *shell);
-int							get_last_heredoc_fd(t_files *heredocs);
+int							get_last_heredoc_fd(t_list *heredocs);
 
 /* process_command_tokens.c */
 int							process_builtin_cmd(t_command *cmd, t_token *token,

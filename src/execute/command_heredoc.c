@@ -6,7 +6,7 @@
 /*   By: dlemaire <dlemaire@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/09 11:41:00 by tmurua            #+#    #+#             */
-/*   Updated: 2024/12/11 22:44:13 by dlemaire         ###   ########.fr       */
+/*   Updated: 2024/12/18 17:40:06 by dlemaire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ void	add_heredoc_to_cmd(t_command *cmd, char *delimiter, t_minishell *shell)
 	}
 	new_infile->delim = gc_strdup(&shell->gc_head, delimiter);
 	new_infile->next = NULL;
-	new_infile->fd = get_last_heredoc_fd((t_files *)(shell->heredocs->content));
+	new_infile->fd = get_last_heredoc_fd(shell->heredocs);
 	if (new_infile->fd < 0)
 		new_infile->fd = open("/dev/null", O_RDONLY);
 	if (!cmd->infile)
@@ -51,14 +51,21 @@ void	add_heredoc_to_cmd(t_command *cmd, char *delimiter, t_minishell *shell)
 	}
 }
 
-int	get_last_heredoc_fd(t_files *heredocs)
+int	get_last_heredoc_fd(t_list *heredocs)
 {
-	t_files	*current;
+	t_list	*current_list;
+	t_files	*current_file;
 
 	if (!heredocs)
 		return (-1);
-	current = heredocs;
-	while (current->next)
-		current = current->next;
-	return (current->fd);
+	current_list = heredocs;
+	while (current_list->next)
+		current_list = current_list->next;
+	current_file = (t_files *)current_list->content;
+	while (current_file && current_file->next)
+		current_file = current_file->next;
+	if (current_file)
+		return (current_file->fd);
+	else
+		return (-1);
 }
