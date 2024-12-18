@@ -6,7 +6,7 @@
 /*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 09:08:10 by tmurua            #+#    #+#             */
-/*   Updated: 2024/12/18 18:21:54 by tmurua           ###   ########.fr       */
+/*   Updated: 2024/12/18 19:10:57 by tmurua           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -440,6 +440,7 @@ int							is_builtin_command(const char *word);
 int							execute_builtin(t_command *cmd, t_minishell *shell);
 int							execute_builtin_echo(t_command *cmd);
 void						print_builtin_error(char *command, char *message);
+void						print_numeric_argument_required(char *arg);
 
 /* builtin_pwd_env.c */
 int							builtin_pwd(t_command *cmd);
