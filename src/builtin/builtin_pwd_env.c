@@ -6,7 +6,7 @@
 /*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/31 13:33:08 by tmurua            #+#    #+#             */
-/*   Updated: 2024/12/15 00:56:48 by tmurua           ###   ########.fr       */
+/*   Updated: 2024/12/18 18:21:41 by tmurua           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ int	builtin_env(t_command *cmd, t_minishell *shell)
 	t_files	*output;
 
 	if (too_many_arguments(cmd->args))
-		return (1);
+		return (127);
 	output = get_last_file(cmd->outfile);
 	if (output)
 		output_fd = output->fd;
@@ -63,7 +63,7 @@ int	too_many_arguments(char **args)
 {
 	if (args[1] != NULL)
 	{
-		ft_putstr_fd("env: too many arguments\n", STDERR_FILENO);
+		ft_putstr_fd("env: No such file or directory\n", STDERR_FILENO);
 		return (1);
 	}
 	return (0);
