@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   syntax_validation.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dlemaire <dlemaire@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/11 16:29:20 by dlemaire          #+#    #+#             */
-/*   Updated: 2024/12/17 23:50:35 by dlemaire         ###   ########.fr       */
+/*   Updated: 2024/12/18 14:09:15 by tmurua           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,14 @@ int	handle_syntax_error(char *input, t_minishell *shell)
 	{
 		ft_putstr_fd("minishell: syntax error near unexpected token\n", 2);
 		shell->last_exit_status = 2;
+		add_history(input);
+		free(input);
+		return (1);
+	}
+	if (!ft_strncmp(input, "''", 3) || !ft_strncmp(input, "\"\"", 5))
+	{
+		ft_putstr_fd("Command '' not found\n", 2);
+		shell->last_exit_status = 127;
 		add_history(input);
 		free(input);
 		return (1);
