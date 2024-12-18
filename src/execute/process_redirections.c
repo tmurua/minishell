@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   process_redirections.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dlemaire <dlemaire@student.42.fr>          +#+  +:+       +#+        */
+/*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 14:01:08 by tmurua            #+#    #+#             */
-/*   Updated: 2024/12/17 06:55:23 by dlemaire         ###   ########.fr       */
+/*   Updated: 2024/12/18 01:59:50 by tmurua           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,11 +29,6 @@ t_files	*get_last_file(t_files *files)
 void	setup_redirections(t_files *infile, t_files *outfile,
 		t_minishell *shell)
 {
-	if (shell->last_exit_status == 1)
-	{
-		gc_free_all(shell->gc_head);
-		exit(1);
-	}
 	if (infile)
 	{
 		if (dup2(infile->fd, STDIN_FILENO) == -1)
