@@ -3,17 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   pipe.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
+/*   By: dlemaire <dlemaire@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/14 17:23:19 by dlemaire          #+#    #+#             */
-/*   Updated: 2024/12/17 19:52:09 by tmurua           ###   ########.fr       */
+/*   Updated: 2024/12/18 19:20:01 by dlemaire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../include/minishell.h"
-
-#define READ_END 0
-#define WRITE_END 1
 
 /* initialize pipe between two commands represented by AST nodes */
 void	init_pipe(t_ast_node *node, t_minishell *shell)

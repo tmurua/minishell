@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tmurua <tmurua@student.42berlin.de>        +#+  +:+       +#+        */
+/*   By: dlemaire <dlemaire@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/28 09:08:10 by tmurua            #+#    #+#             */
-/*   Updated: 2024/12/18 19:10:57 by tmurua           ###   ########.fr       */
+/*   Updated: 2024/12/18 19:19:55 by dlemaire         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,8 @@
 # define TOKEN_CONTINUE 0
 # define TOKEN_ERROR -1
 # define MIN_PRECEDENCE_LVL 0
+# define READ_END 0
+# define WRITE_END 1
 
 /* structures */
 typedef struct s_token		t_token;
